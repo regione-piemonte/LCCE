@@ -10,10 +10,10 @@ Il prodotto ***Configuratore Operatori***   realizza un sistema software per l'a
 Il prodotto è composto attualmente dalle seguenti componenti 
 | Componente |Descrizione  |Versione |
 |--|--|--|
-| PUAWA | Web Application che realizza il PUA |-XXX-|
-| PUARW | Risorse statiche utili alla componente software PUAWA |-XXXXX-|
-| DMALOGINCCEDB | Script per creazione database che memorizza tutte le informazioni relative a utenti, ruoli, collocazioni e abilitazioni attive |-XXXXX-|
-| DMALOGINCCEBL | Web Service utili a realizzare un meccanismo di accesso per consentire l'integrazione sicura fra il PUA e i vari servizi online a cui l'utente è abilitato |-XXXXX-|
+| PUAWA | Web Application che realizza il PUA |-1.1.0-|
+| PUARW | Risorse statiche utili alla componente software PUAWA |-1.0.0-|
+| DMALOGINCCEDB | Script per creazione database che memorizza tutte le informazioni relative a utenti, ruoli, collocazioni e abilitazioni attive |-1.1.0-|
+| DMALOGINCCEBL | Web Service utili a realizzare un meccanismo di accesso per consentire l'integrazione sicura fra il PUA e i vari servizi online a cui l'utente è abilitato |-1.1.0-|
 | SOLCONFIG |  web application che consente di configurare gli utenti del sistema |*DI PROSSIMA PUBBLICAZIONE*|
 
 
