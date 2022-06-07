@@ -1,0 +1,16 @@
+<ivysettings>
+  <settings defaultResolver="myUrlResolver"/>
+  <caches defaultCacheDir="${basedir}/build/cache"/>
+
+  <resolvers>
+    <url name="myUrlResolver">
+        <artifact pattern="http://@repository centrale@/java/[organisation]/[module]/[revision]/lib/[artifact].[type]" />
+        <artifact pattern="http://@repository centrale@/java/[organisation]/[module]/[revision]/conf/[artifact].[type]" />
+
+        <artifact pattern="http://@repository centrale@/java/[organisation]/[module]/lib/[artifact].[type]" />
+
+        <ivy pattern="http://@repository centrale@/java/[organisation]/[module]/[revision]/ivy-[module].xml" />
+        <ivy pattern="http://@repository centrale@/java/[organisation]/[module]/ivy-[module].xml" />
+    </url>
+  </resolvers>
+</ivysettings>

@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--                                                              -->
+<!--  SPDX-FileCopyrightText: (C) Copyright 2022 Regione Piemonte -->
+<!--                                                              -->
+<!--  SPDX-License-Identifier: EUPL-1.2                           -->
+<!--                                                              -->
+
+<project basedir="." default="default" name="dmaloginccebl" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
+
+	<description>Build file per il progetto: [dmaloginccebl]</description>
+	<property environment="env" />
+	<property file="buildfiles/build_jb6.properties" />
+	<property file="buildfiles/beta.properties" />
+	<property file="buildfiles/${target}.properties" />
+
+	<!-- -->
+	<path id="library.ref">
+		<fileset dir="${lib}">
+			<include name="**/*.jar" />
+			<include name="**/*.zip" />
+		</fileset>
+	</path>
+
+	<echo message="beta: ${beta}" />
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # Target: init                                              # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="init" description="Inizializza lo script Ant.">
+		<tstamp />
+		<condition property="target" value="dev">
+			<equals arg1="${target}" arg2="$${target}" />
+		</condition>
+		<condition property="beta" value="on">
+			<equals arg1="${beta}" arg2="$${beta}" />
+		</condition>
+		<mkdir dir="${build}/classes" />
+		<mkdir dir="${temp}/${target}/${earLib}" />
+		<mkdir dir="${build}/archives/${target}" />
+		<mkdir dir="${dist}/${target}" />
+		<mkdir dir="${build}/javadoc" />
+		<mkdir dir="${build}/jsp" />
+		<mkdir dir="${build}/cache" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # Target: default                                           # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="default" description="Eseguire il build per l'environment
+                       specificato a linea di comando con
+                       -Dtarget=${target} o per tutti gli
+                       environment (se non specificato).">
+
+		<condition property="first-call" value="distribution">
+			<not>
+				<equals arg1="${target}" arg2="$${target}" />
+			</not>
+		</condition>
+
+		<condition property="first-call" value="all-targets">
+			<equals arg1="${target}" arg2="$${target}" />
+		</condition>
+
+		<echo message="target: ${server}" />
+		<echo message="target: ${target}" />
+		<echo message="first-call: ${first-call}" />
+
+		<!-- <antcall target="clean-all" /> -->
+		<antcall target="${first-call}" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # Target: environment-recreate                              # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="environment-recreate">
+		<mkdir dir="build/temp/conf" />
+		<copy todir="build/temp/conf" overwrite="true">
+			<fileset dir="${conf}" />
+		</copy>
+		<mkdir dir="build/temp/resources" />
+		<copy todir="build/temp/resources" overwrite="true">
+			<fileset dir="${resourcestemplate}" />
+		</copy>
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # Target: compile-all                                       # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="compile-all" depends="init,load-dependencies" description="Compila tutti i sorgenti.">
+		<echo message="===> Target: ${target}" />
+
+		<javac srcdir="${src}/java" destdir="${build}/classes" optimize="on" deprecation="on" compiler="modern" target="1.8" debug="true">
+			<classpath refid="library.ref" />
+		</javac>
+
+		<copy todir="${build}/classes">
+			<fileset dir="${src}/java" excludes="**/*.java*,**/*.jbx*" />
+		</copy>
+		
+		<antcall target="config-encrypt-key" />
+	</target>
+	
+	<!-- -->
+		<!-- ############################################################# -->
+		<!-- # Target: config-encrypt-key                                # -->
+		<!-- ############################################################# -->
+		<!-- -->
+		<target name="config-encrypt-key" description="Sostituisce la chiave con cui criptare i documenti sul db">
+
+			<echo message="encryption_key======================>${encryption_key}" />
+			<copy todir="${temp}/${target}/src/it/csi/dma/dmaloginccebl/business/dao/impl/">
+				<fileset dir="${src}/java/it/csi/dma/dmaloginccebl/business/dao/impl/" 
+					includes="*LowDaoImpl.java"/>
+				
+			</copy>
+
+			<replace dir="${temp}/${target}/src/it/csi/dma/dmaloginccebl/business/dao/impl/">
+				<include name="*LowDaoImpl.java" />
+				<replacefilter token="@encryption_key@" value="${encryption_key}" />
+			</replace>
+
+			<javac srcdir="${temp}/${target}/src/it/csi/dma/dmaloginccebl/business/dao/impl/" 
+				includes="*LowDaoImpl.java"
+				destdir="${build}/classes" 
+				optimize="on" 
+				deprecation="on" 
+				compiler="modern"
+				target="1.8" source="1.8" debug="true" >
+				<classpath refid="library.ref" />
+			</javac>
+
+
+		</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # Target: about                                             # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="about" description="Visualizza l'elenco dei target
+                                    pubblici dello script.">
+
+		<loadproperties srcfile="buildfiles/build_jb6.properties" />
+		<loadfile property="about" srcfile="buildfiles/about.txt" />
+		<echo message="${about}" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # Target: about-custom                                      # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="about-custom" description="Visualizza l'elenco di tutti i target,
+                       pubblici e privati
+                       (equivalente a 'ant -projecthelp')">
+
+		<loadproperties srcfile="buildfiles/build_jb6.properties" />
+		<loadfile property="about-custom" srcfile="buildfiles/about-custom.txt" />
+		<echo message="${about-custom}" />
+		<java classname="org.apache.tools.ant.Main">
+			<arg value="-projecthelp" />
+		</java>
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [DISTRIB]: all-targets                                    # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="all-targets" description="Esegue il build per le varie distribuzioni in sequenza.">
+		<antcall target="distribution" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [DISTRIB]: distribution                                   # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="distribution" depends="package-all" description="Costruisce il tar per la distribuzione.">
+		<echo message="====== Creating distribution for ${target} ..." />
+		<echo message="====== Basedir: ${build}/archives/${target} ..." />
+		<!--<copy file="${conf}/tar/${target}/${componente}-ds.xml" todir="${build}/archives/${target}" /> -->
+		<copy file="${temp}/conf/tar/${target}/${componente}-ds.xml" todir="${build}/archives/${target}" />
+		<!--<copy file="${temp}/conf/tar/${target}/dmaccwa-ds.xml" todir="${build}/archives/${target}" />
+		<copy file="${temp}/conf/tar/${target}/dmacm-ds.xml" todir="${build}/archives/${target}" />-->
+		<tar tarfile="${dist}/${target}/${dist-file-name}.tar"
+       basedir="${build}/archives/${target}"
+       includes="*.ear" />
+	</target>
+	
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [IVY]: resolve-dependencies                               # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="resolve-dependencies" description="carica le librerie dal repository remoto">
+		<ivy:configure file="${basedir}/buildfiles/ivyconf.xml" />
+		<ivy:resolve file="${basedir}/buildfiles/ivy.xml" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [IVY]: internal target: load-dependencies                 # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="load-dependencies" depends="resolve-dependencies" 
+		       description="Risolve le dipendenze esterne.">
+		<ivy:retrieve pattern="${basedir}/lib/[artifact].[type]" />
+		<antcall target="beta-${beta}" />
+		
+		<copy todir="${lib}">
+			<fileset dir="lib_ext" />
+		</copy>
+	</target>
+
+	<target name="beta-off">
+		<!-- elemino le librerie di dma scaricate da repart per riprenderle da dmaccmediator -->
+		<!--	<delete>
+			<fileset dir="lib" includes="dmacc*.jar,dmadd*.jar"/>
+		</delete>-->
+		<!-- copio le librerie da dmaccmediator mantenendo la versione-->
+		<!--<copy tofile="${lib}/dmacc-${version}.jar">
+			<fileset dir="../dmaccmediator/build/archives" includes="dmacc.jar" />
+		</copy>
+		<copy tofile="${lib}/dmadd-${version}.jar">
+			<fileset dir="../dmaccmediator/build/archives" includes="dmadd.jar" />
+		</copy>-->
+	</target>
+
+	<target name="beta-on">
+		<move todir="lib" overwrite="true">
+			<fileset dir="lib" />
+			<mapper>
+				<mapper type="regexp" from="(.*)-(\d{1,}\.\d{1,}.\d{1,})-beta(.*)\.jar" to="\1\.jar" />
+			</mapper>
+		</move>
+	</target>
+
+	<target name="beta-jenkins" depends="_clean-jenkins-tmplib">
+		<mkdir dir="${temp}/jenkins-tmplib" />
+		<!-- elemino le librerie di dma scaricate da repart per riprenderle da dmaccmediator -->
+		<!--<delete>
+			<fileset dir="lib" includes="dmacc*.jar,dmadd*.jar,ropva*.jar"/>
+		</delete>-->
+
+		<!-- copio le librerie da dmaccmediator -->
+		<!--<unzip dest="${temp}/jenkins-tmplib">
+			<fileset dir="build/jenkins-lib">
+				<include name="**/*.zip"/>
+			</fileset>
+		</unzip>	-->
+		
+		<!-- copio le librerie da dmaccmediator mantenendo la versione-->
+		<!-- <copy tofile="${lib}/dmacc-${version}.jar">
+			<fileset dir="${temp}/jenkins-tmplib" includes="dmacc.jar" />
+		</copy>
+		<copy tofile="${lib}/dmadd-${version}.jar">
+			<fileset dir="${temp}/jenkins-tmplib" includes="dmadd.jar" />
+		</copy>
+		<copy tofile="${lib}/ropva-${version}.jar">
+			<fileset dir="${temp}/jenkins-tmplib" includes="ropva.jar" />
+		</copy>-->
+	</target>	
+
+
+	<target name="_clean-jenkins-tmplib" description="Rimuove la cartella di cache di Ivy e la lib.">
+		<delete dir="${temp}/jenkins-tmplib" failonerror="no" />
+	</target>
+	
+	
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # Target: environment-config                                # -->
+	<!-- #         Gestire qui i  replace delle variabile d'ambiente # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="environment-config" description="Predispone le configurazioni dipendenti dall'ambiente.">
+		<echo message="====== gestire qui i  replace delle variabile d'ambiente" />
+
+		<!-- JBoss replacements -->
+		<replace dir="${temp}/conf/ear/${webapp}/META-INF/">
+			<include name="application.xml" />
+			<include name="jboss-deployment-structure.xml" />
+
+			<replacefilter token="@web-uri@" value="${war-file-name}.war" />
+			<replacefilter token="@context-root@" value="${target-context}" />
+			<replacefilter token="@ear-file-name@" value="${ear-file-name}" />
+		</replace>
+
+		<replace dir="${temp}/conf/web/${webapp}/WEB-INF/">
+			<include name="applicationContext.xml" />
+			<replacefilter token="@ambiente@" value="${target}" />
+			<replacefilter token="@dataSource.url@" value="${dataSource.url}" />
+			<replacefilter token="@dataSource.username@" value="${dataSource.username}" />
+			<replacefilter token="@dataSource.password@" value="${dataSource.password}" />
+		</replace>
+
+		<replace dir="${temp}/conf/web/${webapp}/WEB-INF/">
+			<include name="cxf.xml" />
+			<replacefilter token="@ambiente@" value="${target}" />
+			<replacefilter token="@dataSource.password@" value="${dataSource.password}" />
+            <replacefilter token="@irideServiceUrl@" value="${irideServiceUrl}" />
+			<replacefilter token="@trustStoreAuthPassword@" value="${trustStoreAuthPassword}" />
+			<replacefilter token="@trustStoreAuthAlias@" value="${trustStoreAuthAlias}" />
+		</replace>
+
+		<replace dir="${temp}/resources/">
+			<include name="authenticationServiceTrustStore.properties" />
+			<replacefilter token="@trustStoreAuthPassword@" value="${trustStoreAuthPassword}" />
+			<replacefilter token="@trustStoreAuthAlias@" value="${trustStoreAuthAlias}" />
+			<replacefilter token="@trustStoreAuthPath@" value="${trustStoreAuthPath}" />
+		</replace>
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [PKG]: package-all                                        # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="package-all" description="esegue il packaging di ogni componente del prodotto">
+		<antcall target="package-ear" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [PKG]: package-ear                                        # -->
+	<!-- ############################################################# -->
+	<!-- --> 
+	<target name="package-ear" depends="environment-recreate, environment-config,
+                   compile-all,commons-jar,
+                   package-war" description="costruisce l&apos;ear">
+
+		<copy todir="${temp}/${target}/${earLib}">
+			<fileset dir="${lib}" includes="${ear-libs-filter}" />
+		</copy>
+
+	   <move file="${build}/archives/${target}/commons.jar" tofile="${temp}/${target}/${earLib}/commons.jar" />
+		
+		<ear appxml="${temp}/conf/ear/${webapp}/META-INF/application.xml" destfile="${build}/archives/${target}/${ear-file-name}.ear">
+			<fileset dir="${build}/archives/${target}" includes="*.jar,${war-file-name}.war" />
+							<fileset dir="${temp}/${target}" excludes="src/**" >
+								<include name="**/*" />
+							</fileset>
+
+			<metainf dir="${temp}/conf/ear/${webapp}/META-INF/" includes="jboss-deployment-structure.xml" />
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Built-Date" value="${DSTAMP}" />
+				<attribute name="Target" value="${target}" />
+				<attribute name="Appl-Version" value="${version}" />
+			</manifest>
+		</ear>
+	</target>
+	
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [PKG]: package-war                                        # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="package-war" 
+		description="Genera il war per lo strato web.">
+		<copy todir="${build}/classes">
+			<fileset dir="${conf}/web/${webapp}/WEB-INF" includes="struts*.xml" />
+		</copy>
+		<copy todir="${resources}">
+			<fileset dir="${temp}/resources/"
+					 includes="authenticationServiceTrustStore.properties" />
+		</copy>
+		<war destfile="${build}/archives/${target}/${war-file-name}.war" 
+			webxml="${build}/temp/conf/web/${webapp}/WEB-INF/web.xml" 
+			roundup="false" manifest="${build}/temp/conf/web/${webapp}/META-INF/MANIFEST.MF">
+			<webinf dir="${conf}/web/${webapp}/WEB-INF" 
+				includes="classes/cache.ccf, classes/monitor.conf, certs/*.cer" />
+			<webinf dir="${temp}/conf/web/${webapp}/WEB-INF"
+           		includes="applicationContext.xml, cxf.xml" />
+			<fileset dir="${srcweb}" />
+			<classes dir="${build}/jsp" includes="**" />
+			<classes dir="${build}/classes" 
+				includes="it/csi/${prodotto}/${componente}/**,*.xml,*.properties,it/finanze/**" />
+
+			<lib dir="${lib}" includes="*" excludes="${war-exclude-libs-filter}" />
+			<lib dir="${build}/archives/${target}" includes="*.jar"/>
+		</war>
+	</target>
+
+
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [PKG]: commons-jar                                        # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="commons-jar" description="Genera il jar per le classi comuni.">
+		<jar destfile="${build}/archives/${target}/commons.jar" 
+			basedir="${build}/classes" includes="it/csi/${prodotto}/${componente}/business/dao/dmacc/dto/**,
+                   it/csi/${prodotto}/${componente}/exception/**,
+                   it/csi/${prodotto}/${componente}/util/**">
+		</jar>
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: clean-all                                        # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="clean-all" description="Rimuove tutte le cartelle temporanee." depends="clean-archives,clean-cache,clean-classes,
+                  clean-dist,clean-javadoc,clean-jsp,clean-temp" />
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: clean-cache                                      # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="clean-cache" description="Rimuove la cartella di cache di Ivy e la lib.">
+		<delete dir="${build}/cache" failonerror="no" />
+		<delete dir="${lib}" failonerror="no" />
+	</target>
+
+
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: clean-temp                                       # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="clean-temp" description="Rimuove la cartella dei files temporanei di build.">
+		<delete dir="${temp}" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: clean-archives                                  # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="clean-archives" description="Rimuove la cartella degli archivi (war, ear, ...).">
+		<delete dir="${build}/archives" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: clean-dist                                       # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="clean-dist" description="Rimuove la cartella delle distribuzioni.">
+		<delete dir="${dist}" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: clean-classes                                    # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="clean-classes" description="Rimuove la cartella dei sorgenti compilati.">
+		<delete dir="${build}/classes" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: clean-javadoc                                    # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="clean-javadoc" description="Rimuove la cartella temporanea dei javadoc.">
+		<delete dir="${build}/javadoc" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: clean-jsp                                        # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="clean-jsp" description="Rimuove la cartella temporanea delle jsp compilate.">
+		<delete dir="${build}/jsp" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: _clean-web-inf                                   # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="_clean-web-inf" description="Rimuove il contenuto di lib e classes della
+                       web application (per run locali).">
+		<delete dir="${srcweb}/WEB-INF/classes" />
+		<delete dir="${srcweb}/WEB-INF/lib" />
+	</target>
+</project>

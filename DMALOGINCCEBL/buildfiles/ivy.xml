@@ -1,0 +1,290 @@
+<ivy-module version="1.0">
+	<info organisation="csipiemonte" module="dmaccbl" />
+ 	<dependencies>
+	<!-- 	<dependency org="csipiemonte" name="dma" rev="${version}">
+   <artifact name="dmacc-${dmacc.art}" type="jar" />
+   <artifact name="dmadd-${dmadd.art}" type="jar" />
+   <artifact name="ropva-${ropva.art}" type="jar" /> 
+  </dependency>-->
+  
+        <dependency org="others" name="cglib-nodep" rev="2.1_3" />
+
+		<dependency org="alfresco" name="aopalliance" rev="2.1" />
+		
+		<dependency org="apache" name="commons-beanutils" rev="1.8.3" />
+		<dependency org="apache" name="commons-codec" rev="1.7" />
+		<dependency org="apache" name="commons-collections" rev="3.2.1" />
+		<dependency org="apache" name="commons-digester" rev="2.0" />
+		<dependency org="apache" name="commons-logging" rev="1.1" />
+		<dependency org="apache" name="commons-jcs" rev="1.3" />
+		<dependency org="apache" name="commons-lang" rev="2.6"/>
+		<dependency org="apache" name="commons-io" rev="2.2"/>
+		<dependency org="apache" name="jstl" rev="1.0" />
+		
+		<dependency org="others" name="freemarker" rev="2.3.8" />
+		<dependency org="others" name="edu-oswego" rev="1.3.4" />
+		<dependency org="opensymphony" name="ognl" rev="2.6.10" />
+
+		<dependency org="others" name="spring" rev="3.1.1.RELEASE" />
+<!--		<dependency org="apache" name="cxf" rev="2.4.6" />-->
+
+		<dependency org="sun" name="servlet" rev="2.4" />
+		<dependency org="sun" name="servlet-jsp" rev="2.0" />
+
+		<dependency org="csipiemonte" name="util-perf" rev="1.0.1" />
+		<dependency org="apache" name="log4j" rev="1.2.14" />
+		
+		<dependency org="lowagie" name="com.lowagie.text" rev="2.1.7" />
+
+		<dependency org="others" name="jboss" rev="4.3.0">
+			<artifact name="jboss-j2ee-4.3.0" type="jar" />
+		</dependency>
+
+		<dependency org="codehaus" name="jackson" rev="1.9.11" />
+		<dependency org="codehaus" name="jackson-core-asl" rev="1.9.12" />
+		<dependency org="codehaus" name="jackson-jaxrs" rev="1.9.12" />
+		<dependency org="codehaus" name="jackson-mapper-asl" rev="1.9.12" />
+		<dependency org="codehaus" name="jackson-xc" rev="1.9.12" />
+		<!-- BASE CXF DEPENDENCIES -->
+		<!-- <dependency org="apache" name="geronimo-activation" rev="1.1" /> -->
+<!-- 		<dependency org="apache" name="geronimo-annotation" rev="1.0" /> -->
+
+		<dependency org="apache" name="geronimo-javamail" rev="1.4">
+			<artifact name="geronimo-javamail_1.4_spec-1.6" type="jar" />		
+		</dependency>
+		
+		<!-- <dependency org="apache" name="geronimo-stax" rev="1.0" /> -->
+		<dependency org="others" name="neethi" rev="3.0.2" />
+		<dependency org="others" name="stax2-api" rev="3.1.1" />
+	<!--  	<dependency org="others" name="xmlschema" rev="1.4.7" /> -->
+		<dependency org="sun" name="activation" rev="1.0.2" />
+		<dependency org="sun" name="jaxb" rev="2.1">
+			<artifact name="jaxb-api-2.1" type="jar" />
+		</dependency>
+		<dependency org="sun" name="jaxb" rev="2.1.12">
+			<artifact name="jaxb-impl-2.1.12" type="jar" />
+		</dependency>
+		<dependency org="apache" name="xmlschema-core" rev="2.0.3" />
+		
+ 		<!--<dependency org="others" name="wstx-asl" rev="3.2.9" />-->
+		<dependency org="others" name="wsdl4j" rev="1.6.3" />
+
+<!-- 		<dependency org="others" name="xml-resolver" rev="1.2" /> -->
+<!-- 		<dependency org="apache" name="geronimo-ws" rev="2.0" /> -->
+<!-- 		<dependency org="apache" name="geronimo-jaxws" rev="2.1" /> -->
+
+		<!--  <dependency org="others" name="asm" rev="2.2.3">
+			<artifact name="asm-2.2.3" type="jar" />
+		</dependency>  -->
+
+	    <!-- ############################################################## -->
+	    <!-- # JBOSS EAP 6.0                                              # -->
+	    <!-- ############################################################## -->
+<!--	    <dependency org="others" name="jboss" rev="eap-6.0" transitive="false">-->
+<!--	 		<artifact name="cxf-api-2.4.6-redhat-1" type="jar" /> &#45;&#45; NO //nessuna versione nuova-->
+<!--	 		<artifact name="cxf-common-utilities-2.4.6-redhat-1" type="jar" /> &#45;&#45; NO //nessuna versione nuova-->
+<!--	 		<artifact name="cxf-rt-bindings-coloc-2.4.6-redhat-1" type="jar" />-->
+<!--	 		<artifact name="cxf-rt-bindings-http-2.4.6-redhat-1" type="jar" /> &#45;&#45; NO //nessuna versione nuova-->
+<!--	 		<artifact name="cxf-rt-bindings-object-2.4.6-redhat-1" type="jar" /> &#45;&#45; NO // c'e' qualche versione piu' recente-->
+<!--	 		<artifact name="cxf-rt-bindings-soap-2.4.6-redhat-1" type="jar" />-->
+<!--	 		<artifact name="cxf-rt-bindings-xml-2.4.6-redhat-1" type="jar" />-->
+<!--	 		<artifact name="cxf-rt-core-2.4.6-redhat-1" type="jar" />-->
+<!--	 		<artifact name="cxf-rt-databinding-aegis-2.4.6-redhat-1" type="jar" />-->
+<!--	 		<artifact name="cxf-rt-databinding-jaxb-2.4.6-redhat-1" type="jar" />-->
+<!--	 		<artifact name="cxf-rt-frontend-jaxws-2.4.6-redhat-1" type="jar" />-->
+<!--	 		<artifact name="cxf-rt-frontend-simple-2.4.6-redhat-1" type="jar" />-->
+<!--	 		<artifact name="cxf-rt-management-2.4.6-redhat-1" type="jar" />-->
+<!--	 		<artifact name="cxf-rt-transports-common-2.4.6-redhat-1" type="jar" /> &#45;&#45; NO //nessuna versione nuova-->
+<!--	 		<artifact name="cxf-rt-transports-http-2.4.6-redhat-1" type="jar" />-->
+<!--	 		<artifact name="cxf-rt-transports-jms-2.4.6-redhat-1" type="jar" />-->
+<!--	 		<artifact name="cxf-rt-transports-local-2.4.6-redhat-1" type="jar" />-->
+<!--	 		<artifact name="cxf-rt-ws-addr-2.4.6-redhat-1" type="jar" />-->
+<!--	 		<artifact name="cxf-rt-ws-policy-2.4.6-redhat-1" type="jar" />-->
+<!--	 		<artifact name="cxf-rt-ws-rm-2.4.6-redhat-1" type="jar" />-->
+<!--	 		<artifact name="cxf-rt-ws-security-2.4.6-redhat-1" type="jar" />-->
+<!--	 		<artifact name="cxf-tools-common-2.4.6-redhat-1" type="jar" />-->
+<!--	 		<artifact name="cxf-tools-java2ws-2.4.6-redhat-1" type="jar" />-->
+<!--	 		<artifact name="cxf-tools-validator-2.4.6-redhat-1" type="jar" />-->
+<!--	 		<artifact name="cxf-tools-wsdlto-core-2.4.6-redhat-1" type="jar" />-->
+<!--	 		<artifact name="cxf-tools-wsdlto-databinding-jaxb-2.4.6-redhat-1" type="jar" />-->
+<!--	 		<artifact name="cxf-tools-wsdlto-frontend-jaxws-2.4.6-redhat-1" type="jar" />-->
+<!--	 		<artifact name="cxf-xjc-boolean-2.4.0-redhat-1" type="jar" />-->
+<!--	 		<artifact name="cxf-xjc-dv-2.4.0-redhat-1" type="jar" />-->
+<!--	 		<artifact name="cxf-xjc-ts-2.4.0-redhat-1" type="jar" />-->
+
+<!--	 		<artifact name="wss4j-1.6.5-redhat-1" type="jar" /> &#45;&#45; Ci sono jar piu' recenti ma diversi pacchetti-->
+<!--	 		<artifact name="neethi-3.0.1-redhat-1" type="jar" /> &#45;&#45; niente di nuovo-->
+<!--	 		<artifact name="wsdl4j-1.6.2-redhat-1" type="jar" />-->
+<!--	 		<artifact name="xmlschema-core-2.0.2-redhat-1" type="jar" />-->
+<!--		</dependency>-->
+
+		<dependency org="apache" name="cxf" rev="3.3.2" transitive="false">
+			<artifact name="cxf-core-3.3.2" type="jar"/>
+			<artifact name="cxf-rt-bindings-coloc-3.3.2" type="jar"/>
+			<artifact name="cxf-rt-bindings-soap-3.3.2" type="jar"/>
+			<artifact name="cxf-rt-bindings-xml-3.3.2" type="jar"/>
+			<artifact name="cxf-rt-databinding-aegis-3.3.2" type="jar"/>
+			<artifact name="cxf-rt-databinding-jaxb-3.3.2" type="jar"/>
+			<artifact name="cxf-rt-frontend-jaxws-3.3.2" type="jar"/>
+			<artifact name="cxf-rt-frontend-simple-3.3.2" type="jar"/>
+			<artifact name="cxf-rt-javascript-3.3.2" type="jar"/>
+			<artifact name="cxf-rt-management-3.3.2" type="jar"/>
+			<artifact name="cxf-rt-transports-http-3.3.2" type="jar"/>
+			<artifact name="cxf-rt-transports-jms-3.3.2" type="jar"/>
+			<artifact name="cxf-rt-transports-local-3.3.2" type="jar"/>
+			<artifact name="cxf-rt-ws-addr-3.3.2" type="jar"/>
+			<artifact name="cxf-rt-ws-policy-3.3.2" type="jar"/>
+			<artifact name="cxf-rt-ws-rm-3.3.2" type="jar"/>
+			<artifact name="cxf-rt-ws-security-3.3.2" type="jar"/>
+			<artifact name="cxf-rt-wsdl-3.3.2" type="jar"/>
+			<artifact name="cxf-tools-common-3.3.2" type="jar"/>
+			<artifact name="cxf-tools-java2ws-3.3.2" type="jar"/>
+			<artifact name="cxf-tools-validator-3.3.2" type="jar"/>
+			<artifact name="cxf-tools-wsdlto-core-3.3.2" type="jar"/>
+			<artifact name="cxf-tools-wsdlto-databinding-jaxb-3.3.2" type="jar"/>
+			<artifact name="cxf-tools-wsdlto-frontend-jaxws-3.3.2" type="jar"/>
+			<artifact name="cxf-xjc-boolean-3.3.0" type="jar"/>
+			<artifact name="cxf-xjc-dv-3.3.0" type="jar"/>
+			<artifact name="cxf-xjc-ts-3.3.0" type="jar"/>
+
+			<artifact name="cxf-rt-security-3.3.2" type="jar"/>
+			<artifact name="cxf-rt-security-saml-3.3.2" type="jar"/>
+
+			<!-- provo ad escudere -->
+			<exclude name="cxf-manifest" type="jar"/>
+			<exclude name="cxf-rt-bindings-corba-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-transports-http-undertow-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-features-clustering-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-features-logging-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-features-metrics-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-features-throttling-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-frontend-jaxrs-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-frontend-js-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-transports-http-hc-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-transports-http-netty-client-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-transports-http-netty-server-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-transports-http-jetty-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-transports-udp-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-transports-websocket-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-ws-eventing-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-ws-mex-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-ws-transfer-3.3.2" type="jar"/>
+			<exclude name="cxf-services-sts-core-3.3.2" type="jar"/>
+			<exclude name="cxf-services-ws-discovery-api-3.3.2" type="jar"/>
+			<exclude name="cxf-services-ws-discovery-service-3.3.2" type="jar"/>
+			<exclude name="cxf-services-wsn-api-3.3.2" type="jar"/>
+			<exclude name="cxf-services-wsn-core-3.3.2" type="jar"/>
+			<exclude name="cxf-tools-corba-3.3.2" type="jar"/>
+			<exclude name="cxf-tools-misctools-3.3.2" type="jar"/>
+			<exclude name="cxf-tools-wadlto-jaxrs-3.3.2" type="jar"/>
+			<exclude name="cxf-tools-wsdlto-frontend-javascript-3.3.2" type="jar"/>
+			<exclude name="cxf-xjc-bug671-3.3.0" type="jar"/>
+			<exclude name="cxf-xjc-javadoc-3.3.0" type="jar"/>
+			<exclude name="cxf-xjc-runtime-3.3.0" type="jar"/>
+
+			<exclude name="cxf-rt-rs-client-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-rs-extension-providers-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-rs-extension-search-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-rs-http-sci-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-rs-json-basic-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-rs-mp-client-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-rs-security-cors-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-rs-security-http-signature-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-rs-security-jose-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-rs-security-jose-jaxrs-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-rs-security-oauth-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-rs-security-oauth2-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-rs-security-oauth2-saml-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-rs-security-sso-oidc-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-rs-security-sso-saml-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-rs-security-xml-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-rs-service-description-3.3.2" type="jar"/>
+			<exclude name="cxf-rt-rs-sse-3.3.2" type="jar"/>
+		</dependency>
+
+		<dependency org="others" name="stax2-api" rev="3.1.4" transitive="false" />
+
+		<dependency org="others" name="jasypt" rev="1.9.1" transitive="false" />
+
+		<dependency org="apache" name="wss4j" rev="2.2.3" transitive="false">
+			<artifact name="wss4j-bindings-2.2.3" type="jar"/>
+			<artifact name="wss4j-policy-2.2.3" type="jar"/>
+			<artifact name="wss4j-ws-security-common-2.2.3" type="jar"/>
+			<artifact name="wss4j-ws-security-dom-2.2.3" type="jar"/>
+			<artifact name="wss4j-ws-security-policy-stax-2.2.3" type="jar"/>
+			<artifact name="wss4j-ws-security-stax-2.2.3" type="jar"/>
+		</dependency>
+
+		<!--
+		SECURITY CXF DEPENDENCIES
+		NOTA: CXF 2.2.5 dipende da xmlsec-1.4.3, che pero' ha un baco per BEA WL
+		      bisogna utilizzare xmlsec-1.3.0 nel caso di WS-Security X.509 Token Profiles
+		-->
+        <dependency org="sun" name="saaj" rev="1.3" >
+            <artifact name="saaj-api-1.3" type="jar" />
+        </dependency>
+        <dependency org="sun" name="saaj" rev="1.3.2" />
+
+        <!--  <dependency org="others" name="xmlsec" rev="1.3.0" />  -->
+        
+        <!--<dependency org="others" name="xmlsec" rev="1.5.1" />-->
+	    <dependency org="sun" name="jaxp-ri" rev="1.4" /> 
+
+<!--		<dependency org="alfresco" name="wss4j" rev="1.6.6" />-->
+
+<!--         <dependency org="apache" name="xalan" rev="2.7.1" > -->
+<!--             <artifact name="xalan-2.7.1" type="jar" /> -->
+<!--         </dependency> -->
+<!-- 		<dependency org="apache" name="xml-serializer" rev="2.7.1" > -->
+<!-- 			<artifact name="serializer-2.7.1" type="jar" /> -->
+<!-- 		</dependency> -->
+
+		<!-- <dependency org="bouncycastle" name="bcprov-jdk15" rev="145" >
+			<artifact name="bcprov-jdk15-145" type="jar" />
+		</dependency> -->
+
+		<!-- Dipendenze di test -->
+		<dependency org="apache" name="commons-dbcp" rev="1.2.2"/>
+		<dependency org="apache" name="commons-pool" rev="1.5.2"/>
+		
+		<dependency org="others" name="cglib-nodep" rev="2.1_3"/>
+		
+		<dependency org="apache" name="pdfbox" rev="2.0.2" />
+		
+		<dependency org="others" name="hibernate" rev="3.2.0.ga" >
+			<exclude org="dom4j"/>
+		</dependency>
+
+		<!--  iride  -->
+		<dependency org="csipiemonte" name="iridev2" rev="2.0.0">
+			<artifact name="iridev2-pep-intf-2.0.0" type="jar" />
+		</dependency>
+		<dependency org="csipiemonte" name="csi" rev="1.2.2">
+			<artifact name="csi-apachesoap-1.2.2" type="jar"/>
+			<artifact name="csi-core-1.2.2" type="jar"/>
+			<artifact name="csi-ejb-1.2.2" type="jar"/>
+			<artifact name="csi-rmi-1.2.2" type="jar"/>
+			<artifact name="csi-stadapter-1.2.2" type="jar"/>
+			<artifact name="csi-tools-1.2.2" type="jar"/>
+		</dependency>
+		<!-- Dipendenza apache axis per iride -->
+		<dependency org="apache" name="axis" rev="1.2" />
+		
+		<!-- <dependency org="others" name="hibernate-commons" rev="4.0.2.Final" /> -->
+		
+		<dependency org="others" name="dom4j" rev="1.6.1" />
+
+		<dependency org="others" name="asm" rev="3.1"/>
+<!--
+		<dependency org="postgresql" name="postgresql-jdbc" rev="9.0-801.jdbc3"/>
+-->
+		<dependency org="postgresql" name="postgresql-jdbc" rev="42.2.6" />
+		<dependency org="others" name="antlr" rev="2.7.7" />
+
+		<!-- CONFLICT RESOLVERS (must be the last directive) -->
+		<conflict org="sun" module="saaj" manager="all" />
+		<conflict org="sun" module="jaxb" manager="all" />
+
+	</dependencies>
+
+</ivy-module>

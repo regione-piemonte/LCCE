@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:cxf="http://cxf.apache.org/core"
+	xmlns:http="http://cxf.apache.org/transports/http/configuration"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:soap="http://cxf.apache.org/bindings/soap"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+   http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+   http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd
+   http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+    http://www.springframework.org/schema/aop     
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<!-- import cxf resources -->
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<!--<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" /> 
+		CON CXF 3 non serve importarla manualmente -->
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+	<!-- abstractLoggingInterceptor that will enable pretty printing of messages -->
+	<bean id="abstractLoggingInterceptor" abstract="true">
+		<property name="prettyLogging" value="true" />
+	</bean>
+
+	<!-- logging interceptors that will log all received/sent messages -->
+	<bean id="loggingInInterceptor"
+		class="org.apache.cxf.interceptor.LoggingInInterceptor"
+		parent="abstractLoggingInterceptor">
+	</bean>
+	<bean id="loggingOutInterceptor"
+		class="org.apache.cxf.interceptor.LoggingOutInterceptor"
+		parent="abstractLoggingInterceptor">
+	</bean>
+
+	<bean id="logDao"
+		class="it.csi.dma.puawa.integration.log.impl.LogDaoImpl" />
+
+	<bean id="ruoliUtenteClient"
+		class="it.csi.dma.puawa.integration.ruoliUtente.client.RuoliUtenteServiceClient">
+		<property name="ruoliUtenteService"
+			ref="ruoliUtenteServiceClient" />
+	</bean>
+	<bean id="ruoliUtenteServiceClient"
+		factory-bean="ruoliUtenteServiceClientFactory" factory-method="create" />
+	<bean id="ruoliUtenteServiceClientFactory"
+		class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass"
+			value="it.csi.dma.puawa.integration.ruoliUtente.client.RuoliUtenteService" />
+		<property name="address" value="@ruoliUtenteServiceUrl@" />
+		<property name="bindingId"
+			value="http://www.w3.org/2003/05/soap/bindings/HTTP/" />
+		<property name="outInterceptors">
+			<list>
+				<!-- <ref bean="wss4jOut" /> -->
+				<ref bean="saajOut" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="collocazioniClient"
+		class="it.csi.dma.puawa.integration.collocazioni.client.CollocazioniServiceClient">
+		<property name="collocazioniService"
+			ref="collocazioniServiceClient" />
+	</bean>
+	<bean id="collocazioniServiceClient"
+		factory-bean="collocazioniServiceClientFactory"
+		factory-method="create" />
+	<bean id="collocazioniServiceClientFactory"
+		class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass"
+			value="it.csi.dma.puawa.integration.collocazioni.client.CollocazioniService" />
+		<property name="address" value="@collocazioniServiceUrl@" />
+		<property name="bindingId"
+			value="http://www.w3.org/2003/05/soap/bindings/HTTP/" />
+		<property name="outInterceptors">
+			<list>
+				<!-- <ref bean="wss4jOut" /> -->
+				<ref bean="saajOut" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="abilitazioniClient"
+		class="it.csi.dma.puawa.integration.abilitazioni.client.AbilitazioniServiceClient">
+		<property name="abilitazioniService"
+			ref="abilitazioniServiceClient" />
+	</bean>
+	<bean id="abilitazioniServiceClient"
+		factory-bean="abilitazioniServiceClientFactory"
+		factory-method="create" />
+	<bean id="abilitazioniServiceClientFactory"
+		class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass"
+			value="it.csi.dma.puawa.integration.abilitazioni.client.AbilitazioneService" />
+		<property name="address" value="@abilitazioniServiceUrl@" />
+		<property name="bindingId"
+			value="http://www.w3.org/2003/05/soap/bindings/HTTP/" />
+		<property name="outInterceptors">
+			<list>
+				<!-- <ref bean="wss4jOut" /> -->
+				<ref bean="saajOut" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="authentication2Client"
+		class="it.csi.dma.puawa.integration.authentication2.client.Authentication2ServiceClient">
+		<property name="authentication2Service"
+			ref="authentication2ServiceClient" />
+	</bean>
+	<bean id="authentication2ServiceClient"
+		factory-bean="authentication2ServiceClientFactory"
+		factory-method="create" />
+	<bean id="authentication2ServiceClientFactory"
+		class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass"
+			value="it.csi.dma.puawa.integration.authentication2.client.Authentication2Service" />
+		<property name="address" value="@authentication2ServiceUrl@" />
+		<property name="bindingId"
+			value="http://www.w3.org/2003/05/soap/bindings/HTTP/" />
+		<property name="outInterceptors">
+			<list>
+				<!-- <ref bean="wss4jOut" /> -->
+				<ref bean="saajOut" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="reportOperazioniConsensiClient"
+		class="it.csi.dma.puawa.integration.reportOperazioniConsensi.client.ReportOperazioniConsensiServiceClient">
+		<property name="reportOperazioniConsensiService"
+			ref="reportOperazioniConsensiServiceClient" />
+	</bean>
+	<bean id="reportOperazioniConsensiServiceClient"
+		factory-bean="reportOperazioniConsensiServiceClientFactory"
+		factory-method="create" />
+	<bean id="reportOperazioniConsensiServiceClientFactory"
+		class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass"
+			value="it.csi.dma.puawa.integration.reportOperazioniConsensi.client.ReportOperazioniConsensiService" />
+		<property name="address"
+			value="@reportOperazioniConsensiServiceUrl@" />
+		<property name="bindingId"
+			value="http://www.w3.org/2003/05/soap/bindings/HTTP/" />
+		<property name="outInterceptors">
+			<list>
+				<!-- <ref bean="wss4jOut" /> -->
+				<ref bean="saajOut" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="reportRefertiScaricatiClient"
+		class="it.csi.dma.puawa.integration.reportRefertiScaricati.client.ReportRefertiScaricatiServiceClient">
+		<property name="reportRefertiScaricatiService"
+			ref="reportRefertiScaricatiServiceClient" />
+	</bean>
+	<bean id="reportRefertiScaricatiServiceClient"
+		factory-bean="reportRefertiScaricatiServiceClientFactory"
+		factory-method="create" />
+	<bean id="reportRefertiScaricatiServiceClientFactory"
+		class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass"
+			value="it.csi.dma.puawa.integration.reportRefertiScaricati.client.ReportRefertiScaricatiService" />
+		<property name="address"
+	value="@reportRefertiScaricatiServiceUrl@" />
+		<property name="bindingId"
+			value="http://www.w3.org/2003/05/soap/bindings/HTTP/" />
+		<property name="outInterceptors">
+			<list>
+				<!-- <ref bean="wss4jOut" /> -->
+				<ref bean="saajOut" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="notificheCittASRClient"
+		class="it.csi.dma.puawa.integration.notificheCittASR.client.NotificheCittASRServiceClient">
+		<property name="notificheCittASRService" ref="notificheCittASRServiceClient"/>
+	</bean>
+	<bean id="notificheCittASRServiceClient"
+		factory-bean="notificheCittASRServiceClientFactory"
+		factory-method="create" />
+	<bean id="notificheCittASRServiceClientFactory"
+		class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass"
+			value="it.csi.dma.puawa.integration.notificheCittASR.client.NotificheCittASRService" />
+		<property name="address"
+	value="@notificheCittASRServiceUrl@" />
+		<property name="bindingId"
+			value="http://www.w3.org/2003/05/soap/bindings/HTTP/" />
+		<property name="outInterceptors">
+			<list>
+				<!-- <ref bean="wss4jOut" /> -->
+				<ref bean="saajOut" />
+			</list>
+		</property>
+	</bean>
+	
+
+	<bean id="urlUtils" class="it.csi.dma.puawa.util.UrlUtils">
+		<property name="logoutUrl" value="@logoutUrl@" />
+		<property name="fseUrl" value="@fseUrl@" />
+		<property name="rolUrl" value="@rolUrl@" />
+	</bean>
+
+	<!-- auth section -->
+
+	<bean id="saajOut"
+		class="org.apache.cxf.binding.soap.saaj.SAAJOutInterceptor" />
+
+	<!-- bean's definition -->
+
+	<cxf:bus>
+		<cxf:inInterceptors>
+			<ref bean="loggingInInterceptor" />
+			<!--<ref bean="logInbound" /> -->
+		</cxf:inInterceptors>
+
+		<cxf:outInterceptors>
+			<ref bean="loggingOutInterceptor" />
+			<!--<ref bean="logOutbound" /> -->
+		</cxf:outInterceptors>
+
+		<cxf:inFaultInterceptors>
+			<ref bean="loggingInInterceptor" />
+			<!--<ref bean="logInbound" /> -->
+		</cxf:inFaultInterceptors>
+
+		<cxf:outFaultInterceptors>
+			<ref bean="loggingOutInterceptor" />
+			<!--<ref bean="logOutbound" /> -->
+		</cxf:outFaultInterceptors>
+	</cxf:bus>
+
+</beans>

@@ -1,0 +1,26 @@
+# DEFAULT CACHE REGION
+
+jcs.default=DC
+jcs.default.cacheattributes=org.apache.jcs.engine.CompositeCacheAttributes
+jcs.default.cacheattributes.MaxObjects=1000
+jcs.default.cacheattributes.MemoryCacheName=org.apache.jcs.engine.memory.lru.LRUMemoryCache
+
+# PRE-DEFINED CACHE REGIONS
+
+jcs.region.dmaCache=DC
+jcs.region.dmaCache.cacheattributes=org.apache.jcs.engine.CompositeCacheAttributes
+jcs.region.dmaCache.cacheattributes.MaxObjects=10000
+jcs.region.dmaCache.cacheattributes.MemoryCacheName=org.apache.jcs.engine.memory.lru.LRUMemoryCache
+jcs.region.dmaCache.cacheattributes.UseMemoryShrinker=true
+jcs.region.dmaCache.cacheattributes.MaxMemoryIdleTimeSeconds=3600
+jcs.region.dmaCache.cacheattributes.ShrinkerIntervalSeconds=60
+jcs.region.dmaCache.cacheattributes.MaxSpoolPerRun=500
+jcs.region.dmaCache.elementattributes=org.apache.jcs.engine.ElementAttributes
+jcs.region.dmaCache.elementattributes.IsEternal=false
+
+
+# AVAILABLE AUXILIARY CACHES
+jcs.auxiliary.DC=org.apache.jcs.auxiliary.disk.indexed.IndexedDiskCacheFactory
+jcs.auxiliary.DC.attributes=org.apache.jcs.auxiliary.disk.indexed.IndexedDiskCacheAttributes
+jcs.auxiliary.DC.attributes.DiskPath=${jboss.server.data.dir}/cc
+jcs.auxiliary.DC.attributes.maxKeySize=100000

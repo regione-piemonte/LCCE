@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://notificheasr.dma.csi.it/NotificheCittASR/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="NotificheCittASR" targetNamespace="http://notificheasr.dma.csi.it/NotificheCittASR/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://notificheasr.dma.csi.it/NotificheCittASR/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://notificheasr.dma.csi.it/NotificheCittASR/">
+  <xs:element name="NotificaMessaggiRequest" type="tns:NotificaRequest"/>
+  <xs:element name="NotificaMessaggiResponse" type="tns:NotificaResponse"/>
+  <xs:complexType name="NotificaRequest">
+    <xs:sequence>
+      <xs:element name="codiceAzienda" type="xs:string"/>
+      <xs:element minOccurs="0" name="codiceFiscaleRichiedente" type="xs:string"/>
+      <xs:element name="codiceFiscaleAssistito" type="xs:string"/>
+      <xs:element name="messaggioPush" type="tns:pushMessageType"/>
+      <xs:element name="messaggioEmail" type="tns:emailMessageType"/>
+      <xs:element name="messaggioSms" type="tns:smsMessageType"/>
+      <xs:element name="messaggioSito" type="tns:mexMessageType"/>
+      <xs:element minOccurs="0" name="parametriAggiuntivi" type="tns:parametriAggiuntiviType"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="pushMessageType">
+    <xs:sequence>
+      <xs:element name="titolo" type="xs:string"/>
+      <xs:element name="testo" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="emailMessageType">
+    <xs:sequence>
+      <xs:element name="oggetto" type="xs:string"/>
+      <xs:element name="testo" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="smsMessageType">
+    <xs:sequence>
+      <xs:element name="contenuto" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="mexMessageType">
+    <xs:sequence>
+      <xs:element name="titolo" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="parametriAggiuntiviType">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="parametro" type="tns:parametroType"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="parametroType">
+    <xs:sequence>
+      <xs:element name="codice" type="xs:string"/>
+      <xs:element name="valore" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="NotificaResponse">
+    <xs:sequence>
+      <xs:element name="esito" type="xs:string"/>
+      <xs:element minOccurs="0" name="elencoErrori" type="tns:erroriArrayType"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="erroriArrayType">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="errore" type="tns:erroreType"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="erroreType">
+    <xs:sequence>
+      <xs:element name="codEsito" type="xs:string"/>
+      <xs:element name="esito" type="xs:string"/>
+      <xs:element name="tipoErrore" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="notificaMessaggiRequest" nillable="true" type="tns:NotificaRequest"/>
+  <xs:element name="notificaMessaggiResponse" nillable="true" type="tns:NotificaResponse"/>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="notificaMessaggiResponse">
+    <wsdl:part element="tns:notificaMessaggiResponse" name="notificaMessaggiResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="notificaMessaggi">
+    <wsdl:part element="tns:notificaMessaggiRequest" name="notificaMessaggiRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="NotificheCittASR">
+    <wsdl:operation name="notificaMessaggi">
+      <wsdl:input message="tns:notificaMessaggi" name="notificaMessaggi">
+    </wsdl:input>
+      <wsdl:output message="tns:notificaMessaggiResponse" name="notificaMessaggiResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="NotificheCittASRSoapBinding" type="tns:NotificheCittASR">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="notificaMessaggi">
+      <soap12:operation soapAction="http://notificheasr.dma.csi.it/NotificheCittASR/notifica" style="document"/>
+      <wsdl:input name="notificaMessaggi">
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="notificaMessaggiResponse">
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="NotificheCittASR">
+    <wsdl:port binding="tns:NotificheCittASRSoapBinding" name="NotificheCittASR">
+      <soap12:address location="https://xxx/NotificheCittASR"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

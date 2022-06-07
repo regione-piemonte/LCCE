@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE datasources
+  PUBLIC "-//JBoss//DTD JBOSS JCA Config 1.5//EN"
+  "http://www.jboss.org/j2ee/dtd/jboss-ds_1_5.dtd">
+    
+<datasources>
+ <local-tx-datasource>
+  <jndi-name>dmaccDatasource</jndi-name>
+  <connection-url>jdbc:postgresql://pgsql3.csi.it:5433/PGPRD03</connection-url>
+  <driver-class>org.postgresql.Driver</driver-class>
+  <user-name>dma_cc_rw</user-name>
+  <password>gpfvk17j</password>
+  <min-pool-size>1</min-pool-size>
+  <max-pool-size>11</max-pool-size>
+  <background-validation>false</background-validation>
+  <validate-on-match>true</validate-on-match>
+  <new-connection-sql>set search_path to dma_cc,public;</new-connection-sql>
+  <valid-connection-checker-class-name>org.jboss.resource.adapter.jdbc.vendor.PostgreSQLValidConnectionChecker</valid-connection-checker-class-name>
+  <prefill>true</prefill>
+  <metadata>
+   <type-mapping>PostgreSQL</type-mapping>
+  </metadata>
+ </local-tx-datasource>
+</datasources>

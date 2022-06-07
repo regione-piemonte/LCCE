@@ -1,0 +1,62 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       	http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<context:component-scan
+		base-package="it.csi.dma.dmaloginccebl" />
+	
+	<!-- Activates various annotations to be detected in bean classes e.g: @Autowired -->
+	<context:annotation-config />
+	
+	<bean id="entityManagerFactory" 
+			class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+			p:packagesToScan="it.csi.dma.dmaloginccebl.business.dao.dto"
+            p:dataSource-ref="dataSource"
+			>
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="generateDdl" value="true" />
+				<property name="showSql" value="true" />
+			</bean>
+		</property>
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+				<prop key="hibernate.hbm2ddl.auto">validate</prop>
+ 				<!-- <prop key="hibernate.default_schema">lcce</prop>
+				<prop key="hibernate.id.new_generator_mappings">false</prop> -->
+ 		</props>
+		</property> 
+	</bean>
+
+ 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="@dataSource.url@"/>
+        <property name="username" value="@dataSource.username@"/>
+        <property name="password" value="@dataSource.password@"/>
+    </bean>
+    
+    <!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+=======
+>>>>>>> 7f7c909 LoginCCE: Modifiche ApplicationContext
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://tst-isan-vdb06.isan.csi.it:5432/DBPTDMA"/>
+        <property name="username" value="dmacc"/>
+        <property name="password" value="mypass01"/>
+    </bean> -->
+    
+	<!-- Transactions -->
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<!-- enable the configuration of transactional behavior based on annotations -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+</beans>

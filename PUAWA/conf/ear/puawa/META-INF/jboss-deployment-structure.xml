@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.2"> 
+	<deployment> <dependencies> <module name="org.jboss.ws.cxf.jbossws-cxf-client" 
+	services="import" /> <module name="org.apache.cxf.main" /> <module name="org.apache.cxf.impl"> 
+	<imports> <include path="META-INF" /> <include path="META-INF/cxf" /> </imports> 
+	</module> <module name="org.springframework.spring"> <imports> <include path="META-INF"/> 
+	</imports> </module> </dependencies> </deployment> </jboss-deployment-structure> -->
+<jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.2">
+	<ear-subdeployments-isolated>false</ear-subdeployments-isolated>
+	<!-- deployment> <exclude-subsystems> <subsystem name="webservices" /> </exclude-subsystems> 
+		</deployment -->
+	<sub-deployment name="@web-uri@">
+		<exclusions>
+			<module name="net.sf.cglib" />
+		</exclusions>
+		<exclude-subsystems>
+			<subsystem name="webservices" />
+		</exclude-subsystems>
+	</sub-deployment>
+</jboss-deployment-structure>

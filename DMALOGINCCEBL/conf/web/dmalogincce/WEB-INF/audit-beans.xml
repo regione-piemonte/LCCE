@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="auditLowDaoIncrementer"
+		class="org.springframework.jdbc.support.incrementer.PostgreSQLSequenceMaxValueIncrementer">
+		<constructor-arg>
+			<ref bean="myDataSource" />
+		</constructor-arg>
+		<constructor-arg>
+			<value>SEQ_DMACC_T_LOG_AUDIT</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="auditLowDao" class="it.csi.dma.dmadd.audit.dao.impl.AuditLowDaoImpl">
+		<property name="jdbcTemplate" ref="namedJdbcTemplate" />
+		<property name="incrementer" ref="auditLowDaoIncrementer" />
+		<property name="tableName" value="DMACC_T_LOG_AUDIT" />
+	</bean>
+	
+	<bean id="auditLowDaoIncrementerCM" class="org.springframework.jdbc.support.incrementer.PostgreSQLSequenceMaxValueIncrementer">
+    <constructor-arg>
+      <ref bean="cmDataSource" />
+    </constructor-arg>
+    <constructor-arg>
+      <value>SEQ_DMACM_T_LOG_AUDIT</value>
+    </constructor-arg>
+  </bean>
+
+<bean id="auditLowDaoIncrementerWA" class="org.springframework.jdbc.support.incrementer.PostgreSQLSequenceMaxValueIncrementer">
+    <constructor-arg>
+      <ref bean="waDataSource" />
+    </constructor-arg>
+    <constructor-arg>
+      <value>SEQ_DMAWA_T_LOG_AUDIT</value>
+    </constructor-arg>
+  </bean>
+  
+  <bean id="auditLowDaoCM" class="it.csi.dma.dmadd.audit.dao.impl.AuditLowDaoImpl">
+    <property name="jdbcTemplate" ref="namedJdbcTemplateCM" />
+    <property name="incrementer" ref="auditLowDaoIncrementerCM" />
+    <property name="tableName" value="DMACM_T_LOG_AUDIT" />
+  </bean>
+  <bean id="catalogoLogLowDaoCM" class="it.csi.dma.dmadd.audit.dao.impl.CatalogoLogDaoImpl">
+    <property name="jdbcTemplate" ref="namedJdbcTemplateCM" />
+    <property name="tableName" value="DMACM_D_CATALOGO_LOG" />
+  </bean>
+  <bean id="regimeLowDaoCM" class="it.csi.dma.dmadd.audit.dao.impl.RegimeLowDaoImpl">
+		<property name="jdbcTemplate" ref="namedJdbcTemplateCM" />
+		<property name="tableName" value="DMACM_D_REGIME_OPERATIVITA" />
+	</bean>
+	
+	<bean id="auditLowDaoWA" class="it.csi.dma.dmadd.audit.dao.impl.AuditLowDaoImpl">
+    <property name="jdbcTemplate" ref="namedJdbcTemplateWA" />
+    <property name="incrementer" ref="auditLowDaoIncrementerWA" />
+    <property name="tableName" value="DMAWA_T_LOG_AUDIT" />
+  </bean>
+	<bean id="catalogoLogAuditLowDaoWA" class="it.csi.dma.dmadd.audit.dao.impl.CatalogoLogAuditDaoImpl">
+		<property name="jdbcTemplate" ref="namedJdbcTemplateWA" />
+		<property name="tableName" value="DMAWA_D_CATALOGO_LOG_AUDIT" />
+	</bean>
+	<bean id="catalogoLogLowDaoWA" class="it.csi.dma.dmadd.audit.dao.impl.CatalogoLogDaoImpl">
+    <property name="jdbcTemplate" ref="namedJdbcTemplateWA" />
+    <property name="tableName" value="DMAWA_D_CATALOGO_LOG" />
+  </bean>
+  <bean id="regimeLowDaoWA" class="it.csi.dma.dmadd.audit.dao.impl.RegimeLowDaoImpl">
+		<property name="jdbcTemplate" ref="namedJdbcTemplateWA" />
+		<property name="tableName" value="DMAWA_D_REGIME_OPERATIVITA" />
+	</bean>
+	
+	<bean id="logLowDaoIncrementer"
+		class="org.springframework.jdbc.support.incrementer.PostgreSQLSequenceMaxValueIncrementer">
+		<constructor-arg>
+			<ref bean="myDataSource" />
+		</constructor-arg>
+		<constructor-arg>
+			<value>SEQ_DMACC_T_LOG</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="logLowDao" class="it.csi.dma.dmadd.audit.dao.impl.LogLowDaoImpl">
+		<property name="jdbcTemplate" ref="namedJdbcTemplate" />
+		<property name="incrementer" ref="logLowDaoIncrementer" />
+		<property name="tableName" value="DMACC_T_LOG" />
+	</bean>
+
+	<bean id="catalogoLogAuditLowDao" class="it.csi.dma.dmadd.audit.dao.impl.CatalogoLogAuditDaoImpl">
+		<property name="jdbcTemplate" ref="namedJdbcTemplate" />
+		<property name="tableName" value="DMACC_D_CATALOGO_LOG_AUDIT" />
+	</bean>
+	
+	<bean id="catalogoLogAuditLowDaoCM" class="it.csi.dma.dmadd.audit.dao.impl.CatalogoLogAuditDaoImpl">
+		<property name="jdbcTemplate" ref="namedJdbcTemplateCM" />
+		<property name="tableName" value="DMACM_D_CATALOGO_LOG_AUDIT" />
+	</bean>
+	
+	<bean id="catalogoLogLowDao" class="it.csi.dma.dmadd.audit.dao.impl.CatalogoLogDaoImpl">
+		<property name="jdbcTemplate" ref="namedJdbcTemplate" />
+		<property name="tableName" value="DMACC_D_CATALOGO_LOG" />
+	</bean>
+
+	<bean id="audit" class="it.csi.dma.dmadd.audit.AuditAndLog">
+		<property name="catalogoLogDao" ref="catalogoLogLowDao" />
+		<property name="catalogoLogAuditDao" ref="catalogoLogAuditLowDao" />
+		<property name="logDao" ref="logLowDao" />
+		<property name="auditDao" ref="auditLowDao" />
+		<property name="codLogStart" value="CC_LOG_001" />
+		<property name="codLogEnd" value="CC_LOG_002" />
+		<property name="configurazioneLightDao" ref="configurazioneLightDao" />
+		<property name="regimeLowDao" ref="regimeAuditLowDao" />
+		<property name="auditExtDao" ref="dmaLogExtensionDao" />
+		<property name="codGenericError" value="CC_ER_000" />
+	</bean>
+
+	<bean id="errorLogWrapper" class="it.csi.dma.dmadd.integration.ErrorLogWrapper">
+		<property name="catalogoDao" ref="catalogoLogLowDao" />
+	</bean>
+	
+	<bean id="regimeAuditLowDao" class="it.csi.dma.dmadd.audit.dao.impl.RegimeLowDaoImpl">
+		<property name="jdbcTemplate" ref="namedJdbcTemplate" />
+		<property name="tableName" value="DMACC_D_REGIME_OPERATIVITA" />
+	</bean>
+	
+	<bean id="dmaLogExtensionDao"
+		class="it.csi.dma.dmadd.audit.extension.business.dao.DmaLogExtensionDao">
+		<property name="template" ref="templateWOLog" />
+		<property name="incrementer" ref="logLowDaoIncrementer" />
+		<property name="tableName" value="DMACL_T_LOG" />
+		<property name="catalogoSistemiTable" value="DMACL_D_CATALOGO_SISTEMI" />
+	</bean>
+	
+  	<bean id="utenteAuditLowDao" class="it.csi.dma.dmadd.audit.dao.impl.UtenteLowDaoImpl">
+    	<property name="jdbcTemplate" ref="namedJdbcTemplate" />
+    	<property name="incrementer" ref="utenteLowDaoIncrementer" />
+    	<property name="tableName" value="DMACC_T_UTENTE" />
+  	</bean>
+  	
+	<bean id="ruoloAuditDao" class="it.csi.dma.dmadd.audit.dao.impl.RuoloLowDaoImpl">
+    	<property name="jdbcTemplate" ref="namedJdbcTemplate" />
+    	<property name="tableName" value="DMACC_D_RUOLO" />
+    	
+  	</bean>
+
+	
+	
+</beans>	

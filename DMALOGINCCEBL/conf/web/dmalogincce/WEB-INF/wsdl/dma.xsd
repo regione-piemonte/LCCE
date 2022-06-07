@@ -1,0 +1,268 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://dma.csi.it/v1.0" 
+	attributeFormDefault="unqualified"
+	elementFormDefault="unqualified" 
+	targetNamespace="http://dma.csi.it/v1.0">
+	<xs:complexType name="richiedente">
+		<xs:sequence>
+			<xs:element minOccurs="0" name="applicazione"
+				type="tns:applicazioneRichiedente" />
+			<xs:element minOccurs="0" name="codiceAziendaSanitaria"
+				type="xs:string" />
+			<xs:element minOccurs="0" name="codiceFiscale" type="xs:string" />
+			<xs:element minOccurs="0" name="numeroTransazione" type="xs:string" />
+			<xs:element minOccurs="0" name="regime" type="tns:regimeDMA" />
+			<xs:element minOccurs="0" name="ruolo" type="tns:ruoloDMA" />
+			<xs:element minOccurs="0" name="tokenOperazione" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="applicazioneRichiedente">
+		<xs:complexContent>
+			<xs:extension base="tns:codifica">
+				<xs:sequence />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType abstract="true" name="codifica">
+		<xs:sequence>
+			<xs:element minOccurs="0" name="codice" type="xs:string" />
+			<xs:element minOccurs="0" name="descrizione" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="regimeDMA">
+		<xs:complexContent>
+			<xs:extension base="tns:codifica">
+				<xs:sequence />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ruoloDMA">
+		<xs:complexContent>
+			<xs:extension base="tns:codifica">
+				<xs:sequence />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="paziente">
+		<xs:sequence>
+			<xs:element minOccurs="0" name="codiceFiscale" type="xs:string" />
+			<xs:element minOccurs="0" name="cognome" type="xs:string" />
+			<xs:element minOccurs="0" name="dataDiNascita" type="xs:dateTime" />
+			<xs:element minOccurs="0" name="idAura" type="xs:string" />
+			<xs:element minOccurs="0" name="luogoDiNascita" type="tns:luogoDiNascita" />
+			<xs:element minOccurs="0" name="nome" type="xs:string" />
+			<xs:element minOccurs="0" name="sesso" type="tns:sesso" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="luogoDiNascita">
+		<xs:complexContent>
+			<xs:extension base="tns:codifica">
+				<xs:sequence />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="periodo">
+		<xs:sequence>
+			<xs:element minOccurs="0" name="dataFine" type="xs:dateTime" />
+			<xs:element minOccurs="0" name="dataInizio" type="xs:dateTime" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType abstract="true" name="serviceResponse">
+		<xs:sequence>
+			<xs:element minOccurs="0" name="errore" type="tns:errore" />
+			<xs:element minOccurs="0" name="esito" type="tns:esito" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="errore">
+		<xs:complexContent>
+			<xs:extension base="tns:codifica">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="contesto" type="xs:string" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="esito">
+		<xs:sequence>
+			<xs:element minOccurs="0" name="risultato" type="tns:risultato" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="componenteLocaleRisposta">
+		<xs:complexContent>
+			<xs:extension base="tns:componenteLocale">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="errore" type="tns:errore" />
+					<xs:element minOccurs="0" name="stato"
+						type="tns:componenteLocaleRispostaStato" />
+					<xs:element name="tempoMaxAttesaCLInSec" type="xs:long" />
+					<xs:element name="tempoMaxRestituzioneDatiInSec" type="xs:long" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="componenteLocale">
+		<xs:complexContent>
+			<xs:extension base="tns:codifica">
+				<xs:sequence />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="episodio">
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" minOccurs="0"
+				name="consensoPerRuoli" nillable="true" type="tns:consensoPerRuolo" />
+			<xs:element minOccurs="0" name="dataFine" type="xs:dateTime" />
+			<xs:element minOccurs="0" name="dataInizio" type="xs:dateTime" />
+			<xs:element minOccurs="0" name="idComponenteLocaleOspiteEpisodio"
+				type="xs:string" />
+			<xs:element minOccurs="0" name="idEpisodio" type="xs:string" />
+			<xs:element minOccurs="0" name="luogoAccettazione" type="tns:luogo" />
+			<xs:element minOccurs="0" name="luogoDimissione" type="tns:luogo" />
+			<xs:element maxOccurs="unbounded" minOccurs="0"
+				name="riferimentiDocumenti" nillable="true" type="tns:riferimentoDocumento" />
+			<xs:element minOccurs="0" name="stato" type="tns:episodioStato" />
+			<xs:element minOccurs="0" name="tipo" type="tns:tipoEpisodio" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="consensoPerRuolo">
+		<xs:sequence>
+			<xs:element name="conferimentoConsenso" type="xs:boolean" />
+			<xs:element minOccurs="0" name="ruoloDMA" type="tns:ruoloDMA" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="luogo">
+		<xs:sequence />
+	</xs:complexType>
+	<xs:complexType name="riferimentoDocumento">
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" minOccurs="0"
+				name="consensoPerRuoli" nillable="true" type="tns:consensoPerRuolo" />
+			<xs:element minOccurs="0" name="dataValidazione" type="xs:dateTime" />
+			<xs:element name="firmatoDigitalmente" type="xs:boolean" />
+			<xs:element minOccurs="0" name="idComponenteLocaleOspiteDocumento"
+				type="xs:string" />
+			<xs:element minOccurs="0" name="idDocumento" type="xs:string" />
+			<xs:element minOccurs="0" name="luogoProduzioneDocumento"
+				type="tns:luogoProduzioneDocumento" />
+			<xs:element minOccurs="0" name="medicoValidante" type="tns:medico" />
+			<xs:element minOccurs="0" name="medicoVisita" type="tns:medico" />
+			<xs:element maxOccurs="unbounded" minOccurs="0"
+				name="prestazioniAssociate" nillable="true" type="tns:prestazione" />
+			<xs:element minOccurs="0" name="tipoDocumento" type="tns:tipoDocumento" />
+			<xs:element minOccurs="0" name="tipoFileDocumento" type="tns:tipoFileDocumento" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="luogoProduzioneDocumento">
+		<xs:complexContent>
+			<xs:extension base="tns:codifica">
+				<xs:sequence />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="medico">
+		<xs:complexContent>
+			<xs:extension base="tns:codifica">
+				<xs:sequence />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="prestazione">
+		<xs:complexContent>
+			<xs:extension base="tns:codifica">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="descrizioneEstesa" type="xs:string" />
+					<xs:element minOccurs="0" name="disciplina" type="tns:disciplina" />
+					<xs:element maxOccurs="unbounded" minOccurs="0"
+						name="valoriPrestazione" nillable="true" type="tns:valorePrestazione" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="disciplina">
+		<xs:complexContent>
+			<xs:extension base="tns:codifica">
+				<xs:sequence />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="valorePrestazione">
+		<xs:sequence>
+			<xs:element name="quantita" type="xs:double" />
+			<xs:element minOccurs="0" name="range" type="tns:range" />
+			<xs:element minOccurs="0" name="unitaDiMisura" type="xs:string" />
+			<xs:element name="valore" type="xs:double" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="range">
+		<xs:sequence>
+			<xs:element name="maxVal" type="xs:double" />
+			<xs:element name="minVal" type="xs:double" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tipoDocumento">
+		<xs:complexContent>
+			<xs:extension base="tns:codifica">
+				<xs:sequence />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="tipoFileDocumento">
+		<xs:complexContent>
+			<xs:extension base="tns:codifica">
+				<xs:sequence />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="tipoEpisodio">
+		<xs:complexContent>
+			<xs:extension base="tns:codifica">
+				<xs:sequence />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="consenso">
+		<xs:sequence>
+			<xs:element name="consensoAllaCostituzioneDMA" type="xs:boolean" />
+			<xs:element name="consensoAllaVisualizzazioneEsenzioni"
+				type="xs:boolean" />
+			<xs:element name="derogaEmergenza" type="xs:boolean" />
+			<xs:element minOccurs="0" name="emailPaziente" type="xs:string" />
+			<xs:element minOccurs="0" name="modalitaDiAlimentazione"
+				type="tns:modalitaDiAlimentazione" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="sesso">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="m" />
+			<xs:enumeration value="f" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="risultato">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="successo" />
+			<xs:enumeration value="fallimento" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="componenteLocaleRispostaStato">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="timeout" />
+			<xs:enumeration value="errore" />
+			<xs:enumeration value="inElaborazione" />
+			<xs:enumeration value="restituitoDati" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="episodioStato">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="InCorso" />
+			<xs:enumeration value="Concluso" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="modalitaDiAlimentazione">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="visibile" />
+			<xs:enumeration value="oscurato" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

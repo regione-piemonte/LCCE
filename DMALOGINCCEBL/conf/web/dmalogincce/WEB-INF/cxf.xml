@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:cxf="http://cxf.apache.org/core"
+	xmlns:http="http://cxf.apache.org/transports/http/configuration"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:soap="http://cxf.apache.org/bindings/soap"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+   http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+   http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd
+   http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+    http://www.springframework.org/schema/aop     
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<!-- import cxf resources -->
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<!--<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" /> 
+		CON CXF 3 non serve importarla manualmente -->
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+	<!-- cxf inteceptors -->
+	<!--<bean id="logInbound" class="it.csi.dma.dmaloginccebl.cxf.interceptor.LoggingInInterceptor"> 
+		<property name="logname" value="dmaloginccebl" /> </bean> <bean id="logOutbound" 
+		class="it.csi.dma.dmaloginccebl.cxf.interceptor.LoggingOutInterceptor"> <property 
+		name="logname" value="dmaloginccebl" /> </bean> -->
+	<!-- abstractLoggingInterceptor that will enable pretty printing of messages -->
+	<bean id="abstractLoggingInterceptor" abstract="true">
+		<property name="prettyLogging" value="true" />
+	</bean>
+
+	<!-- logging interceptors that will log all received/sent messages -->
+	<bean id="loggingInInterceptor"
+		class="org.apache.cxf.interceptor.LoggingInInterceptor"
+		parent="abstractLoggingInterceptor">
+	</bean>
+	<bean id="loggingOutInterceptor"
+		class="org.apache.cxf.interceptor.LoggingOutInterceptor"
+		parent="abstractLoggingInterceptor">
+	</bean>
+
+	<!-- bean's definition -->
+	<bean id="VerifyLoginConditionsClient"
+		class="it.csi.dma.dmaloginccebl.client.verifyLoginConditions.VerifyLoginConditionsClient">
+		<property name="verifyLoginConditionsService"
+			ref="verifyLoginConditionsServiceClient" />
+	</bean>
+
+	<bean id="VerifyLoginConditions2Client"
+		class="it.csi.dma.dmaloginccebl.client.verifyLoginConditions2.VerifyLoginConditions2Client">
+		<property name="verifyLoginConditionsService"
+			ref="verifyLoginConditions2ServiceClient" />
+	</bean>
+
+
+	<bean id="iride2ServiceImpl"
+		class="it.csi.dma.dmaloginccebl.iride.service.Iride2ServiceImpl">
+		<property name="address" value="@irideServiceUrl@" />
+	</bean>
+
+	<jaxws:endpoint id="authentication"
+		implementor="#authenticationService" address="/AuthenticationService">
+		<jaxws:binding>
+			<soap:soapBinding version="1.2" mtomEnabled="true" />
+		</jaxws:binding>
+
+		<!-- Applicazione interceptor per sicurezza SSL Certificate COMMENTATA 
+			PER DEPLOY IN TEST-CONN
+			tolta 09 07 2021 - forse non conforme alle specifiche 
+		<jaxws:outInterceptors>
+			<ref bean="TimestampSignEncrypt_Response" />
+		</jaxws:outInterceptors>
+		<jaxws:inInterceptors>
+			<ref bean="TimestampSignEncrypt_Request" />
+			<bean
+				class="org.apache.cxf.ws.security.wss4j.CryptoCoverageChecker" />
+		</jaxws:inInterceptors>
+		<jaxws:properties>
+			<entry key="ws-security.is-bsp-compliant" value="false" />
+		</jaxws:properties>
+		-->
+		
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="authentication2"
+		implementor="#authentication2Service"
+		address="/Authentication2Service">
+		<jaxws:binding>
+			<soap:soapBinding version="1.2" mtomEnabled="true" />
+		</jaxws:binding>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="tokenInformation"
+		implementor="#tokenInformationService"
+		address="/TokenInformationService">
+		<jaxws:binding>
+			<soap:soapBinding version="1.2" mtomEnabled="true" />
+		</jaxws:binding>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="ruoliUtente"
+		implementor="#ruoliUtenteService" address="/RuoliUtenteService">
+		<jaxws:binding>
+			<soap:soapBinding version="1.2" mtomEnabled="true" />
+		</jaxws:binding>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="collocazioni"
+		implementor="#collocazioniService" address="/CollocazioniService">
+		<jaxws:binding>
+			<soap:soapBinding version="1.2" mtomEnabled="true" />
+		</jaxws:binding>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="abilitazione"
+		implementor="#abilitazioneService" address="/AbilitazioneService">
+		<jaxws:binding>
+			<soap:soapBinding version="1.2" mtomEnabled="true" />
+		</jaxws:binding>
+	</jaxws:endpoint>
+	
+	<jaxws:endpoint id="farmacia"
+		implementor="#farmaciaService" address="/FarmaciaService">
+		<jaxws:binding>
+			<soap:soapBinding version="1.2" mtomEnabled="true" />
+		</jaxws:binding>
+		<jaxws:handlers>
+			<bean class="it.csi.dma.dmaloginccebl.util.WSSESecurityUnderstand" />
+		</jaxws:handlers>
+	</jaxws:endpoint>
+
+	<!-- auth section -->
+	<bean id="saajOut"
+		class="org.apache.cxf.binding.soap.saaj.SAAJOutInterceptor" />
+
+	<bean id="customInterceptor"
+		class="it.csi.dma.dmaloginccebl.util.CustomInterceptor" />
+
+	<bean id="customInterceptorOut"
+		class="it.csi.dma.dmaloginccebl.util.CustomInterceptorOut" />
+
+	<bean id="wss4jOutPasswordCallBack"
+		class="it.csi.dma.dmaloginccebl.util.ServicePasswordCallback">
+		<property name="password" value="dmauser" />
+	</bean>
+
+	<!-- client bean per i WS -->
+	<bean id="wss4jOut"
+		class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+		<constructor-arg>
+			<map>
+				<entry key="action" value="UsernameToken" />
+				<entry key="user" value="dmauser" />
+				<entry key="passwordType" value="PasswordText" />
+				<entry key="passwordCallbackRef">
+					<ref bean="wss4jOutPasswordCallBack" />
+				</entry>
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<bean id="verifyLoginConditionsServiceClient"
+		factory-bean="verifyLoginConditionsServiceClientFactory"
+		factory-method="create" />
+
+	<bean id="verifyLoginConditionsServiceClientFactory"
+		class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass"
+			value="it.csi.dma.dmaloginccebl.client.verifyLoginConditions.VerifyLoginConditionsService" />
+		<property name="bindingId"
+			value="http://www.w3.org/2003/05/soap/bindings/HTTP/" />
+		<property name="outInterceptors">
+			<list>
+				<!-- <ref bean="wss4jOut" /> -->
+				<ref bean="saajOut" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="verifyLoginConditions2ServiceClient"
+		  factory-bean="verifyLoginConditions2ServiceClientFactory"
+		  factory-method="create" />
+
+	<bean id="verifyLoginConditions2ServiceClientFactory"
+		  class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass"
+				  value="it.csi.dma.dmaloginccebl.client.verifyLoginConditions2.VerifyLoginConditions2Service" />
+		<property name="bindingId"
+				  value="http://www.w3.org/2003/05/soap/bindings/HTTP/" />
+		<property name="outInterceptors">
+			<list>
+				<!-- <ref bean="wss4jOut" /> -->
+				<ref bean="saajOut" />
+			</list>
+		</property>
+	</bean>
+
+	<cxf:bus>
+		<cxf:inInterceptors>
+			<ref bean="loggingInInterceptor" />
+			<!--<ref bean="logInbound" /> -->
+		</cxf:inInterceptors>
+
+		<cxf:outInterceptors>
+			<ref bean="loggingOutInterceptor" />
+			<!--<ref bean="logOutbound" /> -->
+		</cxf:outInterceptors>
+
+		<cxf:inFaultInterceptors>
+			<ref bean="loggingInInterceptor" />
+			<!--<ref bean="logInbound" /> -->
+		</cxf:inFaultInterceptors>
+
+		<cxf:outFaultInterceptors>
+			<ref bean="loggingOutInterceptor" />
+			<!--<ref bean="logOutbound" /> -->
+		</cxf:outFaultInterceptors>
+	</cxf:bus>
+
+	<bean id="ServiceTrustStorePasswordCallback"
+		class="it.csi.dma.dmaloginccebl.util.ServicePasswordCallback">
+		<property name="password" value="@trustStoreAuthPassword@" />
+	</bean>
+
+	<bean id="TimestampSignEncrypt_Request"
+		class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+		<constructor-arg>
+			<map>
+				<entry key="action" value="Timestamp Signature Encrypt" />
+				<entry key="signaturePropFile"
+					value="/WEB-INF/resources/authenticationServiceTrustStore.properties" />
+				<entry key="decryptionPropFile"
+					value="/WEB-INF/resources/authenticationServiceTrustStore.properties" />
+				<entry key="passwordCallbackRef">
+					<ref bean="ServiceTrustStorePasswordCallback" />
+				</entry>
+				<entry key="encryptionKeyTransportAlgorithm"
+					value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p" />
+				<entry key="signatureAlgorithm"
+					value="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<!-- WSS4JOutInterceptor for encoding and signing the SOAP response. -->
+	<bean id="TimestampSignEncrypt_Response"
+		class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+		<constructor-arg>
+			<map>
+				<entry key="action" value="Timestamp Signature Encrypt" />
+				<entry key="user" value="@trustStoreAuthAlias@" />
+				<entry key="signaturePropFile"
+					value="/WEB-INF/resources/authenticationServiceTrustStore.properties" />
+				<entry key="encryptionPropFile"
+					value="/WEB-INF/resources/authenticationServiceTrustStore.properties" />
+				<entry key="encryptionUser" value="useReqSigCert" />
+				<entry key="passwordCallbackRef">
+					<ref bean="ServiceTrustStorePasswordCallback" />
+				</entry>
+				<entry key="signatureParts"
+					value="{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd}Timestamp;{Element}{http://www.w3.org/2003/05/soap-envelope}Body" />
+				<entry key="encryptionParts"
+					value="{Element}{http://www.w3.org/2000/09/xmldsig#}Signature;{Content}{http://www.w3.org/2003/05/soap-envelope}Body" />
+				<entry key="encryptionSymAlgorithm"
+					value="http://www.w3.org/2001/04/xmlenc#tripledes-cbc" />
+				<entry key="encryptionKeyTransportAlgorithm"
+					value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p" />
+				<entry key="signatureAlgorithm"
+					value="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+			</map>
+		</constructor-arg>
+	</bean>
+
+</beans>

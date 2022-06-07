@@ -1,0 +1,474 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="ConsensoService" targetNamespace="http://dmacc.csi.it/" xmlns:ns1="http://cxf.apache.org/bindings/xformat" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="http://dmacc.csi.it/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://dmacc.csi.it/" xmlns:ns1="http://dma.csi.it/" xmlns:tns="http://dmacc.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:import namespace="http://dma.csi.it/" />
+<xs:complexType name="registraErroreSuConsenso">
+<xs:sequence>
+<xs:element minOccurs="0" ref="ns1:paziente" />
+<xs:element minOccurs="0" ref="ns1:richiedente" />
+<xs:element minOccurs="0" ref="ns1:componenteLocale" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="serviceResponse">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="codifiche" nillable="true" type="ns1:codifica" />
+<xs:element maxOccurs="unbounded" minOccurs="0" name="errori" nillable="true" type="ns1:errore" />
+<xs:element minOccurs="0" name="esito" type="ns1:risultatoCodice" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="registraErroreSuConsensoResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence />
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="setConsensoMatrice">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" ref="ns1:matrici" />
+<xs:element minOccurs="0" ref="ns1:paziente" />
+<xs:element minOccurs="0" ref="ns1:richiedente" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setConsensoMatriceResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence />
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="getConsensoDMA">
+<xs:sequence>
+<xs:element minOccurs="0" name="paziente" type="ns1:paziente" />
+<xs:element minOccurs="0" name="richiedente" type="ns1:richiedente" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getConsensoDMAResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="consensoDMA" type="ns1:siNo" />
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="setConsensoDMA">
+<xs:sequence>
+<xs:element minOccurs="0" ref="ns1:paziente" />
+<xs:element minOccurs="0" ref="ns1:richiedente" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setConsensoDMAResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence />
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="registraErroreSuConsenso" nillable="true" type="tns:registraErroreSuConsenso" />
+<xs:element name="registraErroreSuConsensoResponse" nillable="true" type="tns:registraErroreSuConsensoResponse" />
+<xs:element name="setConsensoMatrice" nillable="true" type="tns:setConsensoMatrice" />
+<xs:element name="setConsensoMatriceResponse" nillable="true" type="tns:setConsensoMatriceResponse" />
+<xs:element name="getConsensoDMA" nillable="true" type="tns:getConsensoDMA" />
+<xs:element name="getConsensoDMAResponse" nillable="true" type="tns:getConsensoDMAResponse" />
+<xs:element name="setConsensoDMA" nillable="true" type="tns:setConsensoDMA" />
+<xs:element name="setConsensoDMAResponse" nillable="true" type="tns:setConsensoDMAResponse" />
+</xs:schema>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://dma.csi.it/" version="1.0" xmlns:tns="http://dma.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:element name="componenteLocale" type="tns:componenteLocale" />
+<xs:element name="matrici" type="tns:consensoMatrice" />
+<xs:element name="paziente" type="tns:paziente" />
+<xs:element name="richiedente" type="tns:richiedente" />
+<xs:complexType name="paziente">
+<xs:sequence>
+<xs:element minOccurs="0" name="codiceFiscale" type="xs:string" />
+<xs:element minOccurs="0" name="cognome" type="xs:string" />
+<xs:element minOccurs="0" name="comuneDiNascita" type="tns:comuneDiNascita" />
+<xs:element minOccurs="0" name="consenso" type="tns:consenso" />
+<xs:element minOccurs="0" name="dataDiNascita" type="xs:dateTime" />
+<xs:element minOccurs="0" name="idAura" type="xs:long" />
+<xs:element minOccurs="0" name="idIrec" type="xs:long" />
+<xs:element minOccurs="0" name="indirizzoEmail" type="xs:string" />
+<xs:element minOccurs="0" name="mailPerAccessoDMA" type="tns:siNo" />
+<xs:element minOccurs="0" name="nome" type="xs:string" />
+<xs:element minOccurs="0" name="sesso" type="tns:sesso" />
+<xs:element minOccurs="0" name="statoDiNascita" type="tns:statoDiNascita" />
+<xs:element minOccurs="0" name="telefono" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="comuneDiNascita">
+<xs:complexContent>
+<xs:extension base="tns:codifica">
+<xs:sequence />
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="codifica">
+<xs:sequence>
+<xs:element minOccurs="0" name="codice" type="xs:string" />
+<xs:element minOccurs="0" name="descrizione" type="xs:string" />
+<xs:element minOccurs="0" name="riferimento" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="disciplina">
+<xs:complexContent>
+<xs:extension base="tns:codifica">
+<xs:sequence />
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="modalitaDiAlimentazione">
+<xs:complexContent>
+<xs:extension base="tns:codifica">
+<xs:sequence />
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="applicazioneRichiedente">
+<xs:complexContent>
+<xs:extension base="tns:codifica">
+<xs:sequence />
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="tipoEpisodio">
+<xs:complexContent>
+<xs:extension base="tns:codifica">
+<xs:sequence />
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="aziendaSanitaria">
+<xs:complexContent>
+<xs:extension base="tns:codifica">
+<xs:sequence />
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="prestazione">
+<xs:complexContent>
+<xs:extension base="tns:codifica">
+<xs:sequence>
+<xs:element minOccurs="0" name="descrizioneEstesa" type="xs:string" />
+<xs:element minOccurs="0" name="disciplina" type="tns:disciplina" />
+<xs:element minOccurs="0" name="valoriPrestazione" type="tns:valoriPrestazione" />
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="valoriPrestazione">
+<xs:sequence>
+<xs:element minOccurs="0" name="quantita" type="xs:string" />
+<xs:element minOccurs="0" name="range" type="xs:string" />
+<xs:element minOccurs="0" name="unitaDiMisura" type="xs:string" />
+<xs:element minOccurs="0" name="valore" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="tipoDocumento">
+<xs:complexContent>
+<xs:extension base="tns:codifica">
+<xs:sequence />
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="unitaOperativaSanitaria">
+<xs:complexContent>
+<xs:extension base="tns:codifica">
+<xs:sequence />
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="strutturaSanitaria">
+<xs:complexContent>
+<xs:extension base="tns:codifica">
+<xs:sequence />
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="errore">
+<xs:complexContent>
+<xs:extension base="tns:codifica">
+<xs:sequence />
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="componenteLocale">
+<xs:complexContent>
+<xs:extension base="tns:codifica">
+<xs:sequence>
+<xs:element minOccurs="0" name="aziendaSanitaria" type="tns:aziendaSanitaria" />
+<xs:element minOccurs="0" name="componenteLocaleTipo" type="tns:componenteLocaleTipo" />
+<xs:element maxOccurs="unbounded" minOccurs="0" name="servizi" nillable="true" type="tns:componenteLocaleServizio" />
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="componenteLocaleTipo">
+<xs:complexContent>
+<xs:extension base="tns:codifica">
+<xs:sequence />
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="componenteLocaleServizio">
+<xs:complexContent>
+<xs:extension base="tns:codifica">
+<xs:sequence>
+<xs:element minOccurs="0" name="urlServizio" type="xs:string" />
+<xs:element maxOccurs="unbounded" minOccurs="0" name="operazioni" nillable="true" type="tns:componenteLocaleOperazione" />
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="componenteLocaleOperazione">
+<xs:complexContent>
+<xs:extension base="tns:codifica">
+<xs:sequence>
+<xs:element name="TimeoutMaxElaborazione" type="xs:long" />
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="regimeDMA">
+<xs:complexContent>
+<xs:extension base="tns:codifica">
+<xs:sequence />
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="componenteLocaleRispostaStato">
+<xs:complexContent>
+<xs:extension base="tns:codifica">
+<xs:sequence />
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="tipoFileDocumento">
+<xs:complexContent>
+<xs:extension base="tns:codifica">
+<xs:sequence />
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="statoDiNascita">
+<xs:complexContent>
+<xs:extension base="tns:codifica">
+<xs:sequence />
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="ruoloDMA">
+<xs:complexContent>
+<xs:extension base="tns:codifica">
+<xs:sequence>
+<xs:element minOccurs="0" name="aziendaSanitaria" type="tns:aziendaSanitaria" />
+<xs:element minOccurs="0" name="profilo" type="tns:profilo" />
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="profilo">
+<xs:complexContent>
+<xs:extension base="tns:codifica">
+<xs:sequence />
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="episodioStato">
+<xs:complexContent>
+<xs:extension base="tns:codifica">
+<xs:sequence />
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="consenso">
+<xs:sequence>
+<xs:element minOccurs="0" name="consensoAllaCostituzioneDMA" type="tns:siNo" />
+<xs:element minOccurs="0" name="dataDiValidazione" type="xs:dateTime" />
+<xs:element minOccurs="0" name="derogaEmergenza" type="tns:siNo" />
+<xs:element minOccurs="0" name="modalitaDiAlimentazione" type="tns:modalitaDiAlimentazione" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="richiedente">
+<xs:sequence>
+<xs:element minOccurs="0" name="applicazione" type="tns:applicazioneRichiedente" />
+<xs:element minOccurs="0" name="aziendaSanitaria" type="tns:aziendaSanitaria" />
+<xs:element minOccurs="0" name="codiceFiscale" type="xs:string" />
+<xs:element minOccurs="0" name="numeroTransazione" type="xs:string" />
+<xs:element minOccurs="0" name="regime" type="tns:regimeDMA" />
+<xs:element minOccurs="0" name="ruolo" type="tns:ruoloDMA" />
+<xs:element minOccurs="0" name="tokenOperazione" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="consensoMatrice">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="consensoPerRuoli" nillable="true" type="tns:consensoPerRuolo" />
+<xs:element minOccurs="0" name="id1" type="xs:string" />
+<xs:element minOccurs="0" name="id2" type="xs:string" />
+<xs:element minOccurs="0" name="id3" type="xs:string" />
+<xs:element minOccurs="0" name="id4" type="xs:string" />
+<xs:element minOccurs="0" name="id5" type="xs:string" />
+<xs:element minOccurs="0" name="tipoDiDato" type="tns:consensoMatriceTipoDato" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="consensoPerRuolo">
+<xs:sequence>
+<xs:element minOccurs="0" name="conferimentoConsenso" type="tns:siNo" />
+<xs:element minOccurs="0" name="ruoloDMA" type="tns:ruoloDMA" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="consensoMatriceTipoDato">
+<xs:complexContent>
+<xs:extension base="tns:codifica">
+<xs:sequence />
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="ArrayOfpazientepaziente">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="paziente" nillable="true" type="tns:paziente" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="componenteLocaleRisposta">
+<xs:complexContent>
+<xs:extension base="tns:componenteLocale">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="errori" nillable="true" type="tns:errore" />
+<xs:element minOccurs="0" name="stato" type="tns:componenteLocaleRispostaStato" />
+<xs:element name="tempoMaxAttesaCLInSec" type="xs:long" />
+<xs:element name="tempoMaxRestituzioneDatiInSec" type="xs:long" />
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="ArrayOfcodificacodifica">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="codifica" nillable="true" type="tns:codifica" />
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="siNo">
+<xs:restriction base="xs:string">
+<xs:enumeration value="SI" />
+<xs:enumeration value="NO" />
+<xs:enumeration value="UNDEFINED_VALUE" />
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="sesso">
+<xs:restriction base="xs:string">
+<xs:enumeration value="M" />
+<xs:enumeration value="F" />
+<xs:enumeration value="UNDEFINED_VALUE" />
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="risultatoCodice">
+<xs:restriction base="xs:string">
+<xs:enumeration value="SUCCESSO" />
+<xs:enumeration value="FALLIMENTO" />
+<xs:enumeration value="UNDEFINED_VALUE" />
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="setConsensoMatrice">
+    <wsdl:part element="tns:setConsensoMatrice" name="setConsensoMatrice">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setConsensoDMAResponse">
+    <wsdl:part element="tns:setConsensoDMAResponse" name="setConsensoDMAResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="registraErroreSuConsenso">
+    <wsdl:part element="tns:registraErroreSuConsenso" name="registraErroreSuConsenso">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="registraErroreSuConsensoResponse">
+    <wsdl:part element="tns:registraErroreSuConsensoResponse" name="registraErroreSuConsensoResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setConsensoDMA">
+    <wsdl:part element="tns:setConsensoDMA" name="setConsensoDMA">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getConsensoDMA">
+    <wsdl:part element="tns:getConsensoDMA" name="getConsensoDMA">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setConsensoMatriceResponse">
+    <wsdl:part element="tns:setConsensoMatriceResponse" name="setConsensoMatriceResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getConsensoDMAResponse">
+    <wsdl:part element="tns:getConsensoDMAResponse" name="getConsensoDMAResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ConsensoService">
+    <wsdl:operation name="registraErroreSuConsenso">
+      <wsdl:input message="tns:registraErroreSuConsenso" name="registraErroreSuConsenso">
+    </wsdl:input>
+      <wsdl:output message="tns:registraErroreSuConsensoResponse" name="registraErroreSuConsensoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setConsensoMatrice">
+      <wsdl:input message="tns:setConsensoMatrice" name="setConsensoMatrice">
+    </wsdl:input>
+      <wsdl:output message="tns:setConsensoMatriceResponse" name="setConsensoMatriceResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getConsensoDMA">
+      <wsdl:input message="tns:getConsensoDMA" name="getConsensoDMA">
+    </wsdl:input>
+      <wsdl:output message="tns:getConsensoDMAResponse" name="getConsensoDMAResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setConsensoDMA">
+      <wsdl:input message="tns:setConsensoDMA" name="setConsensoDMA">
+    </wsdl:input>
+      <wsdl:output message="tns:setConsensoDMAResponse" name="setConsensoDMAResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ConsensoServiceSoapBinding" type="tns:ConsensoService">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="registraErroreSuConsenso">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="registraErroreSuConsenso">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="registraErroreSuConsensoResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getConsensoDMA">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="getConsensoDMA">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getConsensoDMAResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setConsensoMatrice">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="setConsensoMatrice">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="setConsensoMatriceResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setConsensoDMA">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="setConsensoDMA">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="setConsensoDMAResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ConsensoService">
+    <wsdl:port binding="tns:ConsensoServiceSoapBinding" name="ConsensoServicePort">
+      <soap:address location="http://localhost:8080/dmacc/ConsensoService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
