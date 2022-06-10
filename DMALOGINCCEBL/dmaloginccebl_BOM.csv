@@ -1,0 +1,72 @@
+name@version *,license *,copyrights *,end-of-support,dependencies,language,repository,email,URL
+antlr-2.7.7.jar,"BSD", - ,-,-,Java,-,-,-
+aopalliance-2.1.jar,"Public Domain", - ,-,-,Java,-,-,-
+cglib-nodep-2.1_3.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+commons-beanutils-1.8.3.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+commons-codec-1.7.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+commons-collections-3.2.1.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+commons-digester-2.0.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+commons-io-2.2.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+commons-lang-2.6.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+commons.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+concurrent-1.3.4.jar,"Public Domain",Sun Microsoystems,-,-,Java,-,-,-
+asm-3.1.jar,"BSD", - ,-,-,Java,-,-,-
+axis-1.2.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+bcpkix-jdk15on-155.jar,"BouncyCastle License", - ,-,-,Java,-,-,-
+bcprov-jdk15on-155.jar,"BouncyCastle License", - ,-,-,Java,-,-,-
+com.lowagie.text-2.1.7.jar,"EPL-1.0", - ,-,-,Java,-,-,-
+commons-beanutils-bean-collections-1.8.3.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+commons-beanutils-core-1.8.3.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+commons-dbcp-1.2.2.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+commons-discovery-0.5.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+commons-logging-1.1.1.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+commons-pool-1.5.2.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+cxf-core-3.3.2.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+cxf-rt-databinding-aegis-3.3.2.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+cxf-xjc-boolean-3.3.0.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+cxf-xjc-dv-3.3.0.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+cxf-xjc-ts-3.3.0.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+freemarker-2.3.8.jar,"BSD-style", - ,-,-,Java,-,-,http://freemarker.org/docs/app_license.html
+geronimo-javamail_1.4_spec-1.6.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+iridev2-pep-intf-2.0.0.jar,"Apache-2.0; MIT (Rilasciata da CSI Piemonte su richiesta)",CSI-Piemonte,-,-,Java,-,-,-
+j2ee-1.3.jar,"Libreria Java di Base", - ,-,-,Java,-,-,-
+jackson-core-asl-1.9.11.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+jackson-core-asl-1.9.12.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+jackson-mapper-asl-1.9.12.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+jackson-xc-1.9.12.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+jasypt-1.9.1.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+javax.persistence-api-2.2.jar,"EPL-1.0; EDL-1.0 (BSD-3-Clause)", - ,-,-,Java,-,-,-
+jaxb-api-2.1.jar,"CDDL-1.0", - ,-,-,Java,-,-,-
+jaxb-impl-2.1.12.jar,"CDDL-1.0; GPL-2.0 w/ CPE", - ,-,-,Java,-,-,-
+jaxp-1.1.jar,"Libreria Java di Base", - ,-,-,Java,-,-,-
+jaxrpc-api-1.1.jar,"CDDL-1.0", - ,-,-,Java,-,-,-
+jcert-1.0.3.jar,"Libreria Java di Base", - ,-,-,Java,-,-,-
+jcs-1.3.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+jms-1.0.2b.jar,"Libreria Java di Base", - ,-,-,Java,-,-,-
+jndi-1.2.1.jar,"Libreria Java di Base", - ,-,-,Java,-,-,-
+jnet-1.0.3.jar,"Libreria Java di Base", - ,-,-,Java,-,-,-
+jsse-1.0.3.jar,"Libreria Java di Base", - ,-,-,Java,-,-,-
+jstl-1.0.jar,"CDDL-1.0; GPL-2.0", - ,-,-,Java,-,-,-
+mina-core-2.0.16.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+neethi-3.0.2.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+ognl-2.6.10.jar,"The OpenSymphony Software License 1.1; BSD",Copyright © 2001-2004 The OpenSymphony Group. All rights reserved.,-,-,Java,-,-,-
+pdfbox-2.0.2.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+postgresql-42.2.6.jar,"BSD-2-Clause", - ,-,-,Java,-,-,-
+soap-2.3.1.jar,"Libreria Java di Base", - ,-,-,Java,-,-,-
+stax2-api-3.1.4.jar,"BSD-2-Clause", - ,-,-,Java,-,-,-
+undertow-core-1.4.20.Final.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+woodstox-core-asl-4.4.1.jar,"Apache-2.0",Codehouse,-,-,Java,-,-,-
+wsdl4j-1.6.3.jar,"CPL-1.0", - ,-,-,Java,-,-,-
+wss4j-policy-2.2.3.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+xmlschema-core-2.0.3.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+xmlsec-2.1.4.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+dmalogincce.war,"Apache-2.0; MIT (Rilasciata da CSI Piemonte su richiesta)",CSI-Piemonte,-,-,Java,-,-,-
+dom4j-1.6.1.jar,"BSD", - ,-,-,Java,-,-,-
+hibernate-3.2.0.ga.jar,"LGPL-2.1", - ,-,-,Java,-,-,-
+jaxp-ri-1.4.jar,"CCDL-1.0; GPL-2.0-or-later", - ,-,-,Java,-,-,-
+jboss-common-4.0.2.jar,"LGPL-2.1", - ,-,-,Java,-,-,-
+spring-core-3.1.1.RELEASE.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+spring-oxm-3.1.1.RELEASE.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+spring-tx-3.1.1.RELEASE.jar,"Apache-2.0", - ,-,-,Java,-,-,-
+
+
