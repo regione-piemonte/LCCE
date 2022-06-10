@@ -1,0 +1,233 @@
+//main: main.scss
+
+//  Boostrap brekpoint
+/* Solo per ricordare le inclusioni scss che possiamo avere */
+// @include media-breakpoint-up(xs) { ... }
+// @include media-breakpoint-up(sm) { ... } @media (min-width: 576px)
+// @include media-breakpoint-up(md) { ... } @media (min-width: 768px)
+// @include media-breakpoint-up(lg) { ... } @media (min-width: 992px)
+// @include media-breakpoint-up(xl) { ... } @media (min-width: 1200px)
+// @include media-breakpoint-down(xs) { ... } @media (max-width: 575.98px)
+// @include media-breakpoint-down(sm) { ... } @media (max-width: 767.98px)
+// @include media-breakpoint-down(md) { ... } @media (max-width: 991.98px)
+// @include media-breakpoint-down(lg) { ... } @media (max-width: 1199.98px)
+
+
+
+//// PSEUDO classi A
+////per settare solo link, active, visited dentro a @include setLinkSelectorStyle {color:gold;}
+@mixin setLinkSelectorStyle {
+  &:link, &:active, &:visited {
+    @content;
+  }
+}
+////per settare solo hover, focus dentro a @include setLinkHoverSelectorStyle {color:gold;}
+@mixin setLinkHoverSelectorStyle {
+  &:hover, &:focus {
+    @content;
+  }
+}
+//eliminare sottolineato @include linkNoUnderline;
+  @mixin linkNoUnderline {
+    //@include linkNoUnderline;
+    &:link, &:active, &:visited {
+      text-decoration: none;
+    }
+    &:hover, &:focus {
+      text-decoration: underline;
+    }
+  }
+
+//inserire sottolineato @include linkUnderline;
+
+  @mixin linkUnderline {
+    &:link, &:active, &:visited {
+      text-decoration: underline;
+    }
+    &:hover, &:focus {
+      text-decoration: none;
+    }
+  }
+
+
+// no-gutters-col
+.no-gutters-col {
+  @extend .px-0;
+}
+
+//reset paddin e margin small
+.reset-all-space {
+  @extend .m-0;
+  @extend .p-0;
+}
+
+// animazione
+
+  %transition-standard {
+
+    -webkit-transition: all 0.6s linear;
+    -moz-transition: all 0.6s linear;
+    -ms-transition: all 0.6s linear;
+    -o-transition: all 0.6s linear;
+    transition: all 0.6s linear;
+
+  }
+
+
+// IMAGE GENERIC //
+
+// .testing3 {
+//     @include backgroundShorthandWithExternalVar('filename.png');
+// }
+$imagedir:'../images/'; // define the base path before the mixin
+
+@mixin backgroundShorthandWithExternalVar($filename,$position:0 0,$repeat: no-repeat, $color: transparent) {
+  background: $color url(#{$imagedir}#{$filename}) $repeat $position;
+}
+
+
+
+
+/* BOX SHADOW*/
+// @include box-shadow-my(0, 0, 10px, 0, rgba(155,162,166, 0.5, true));
+
+@mixin box-shadow-my($top, $left, $blur, $blur-dis, $color, $inset: false) {
+  @if $inset {
+    -webkit-box-shadow:inset $top $left $blur $blur-dis $color!important;
+    -moz-box-shadow:inset $top $left $blur $blur-dis $color!important;
+    box-shadow:inset $top $left $blur $blur-dis $color!important;
+  } @else {
+    -webkit-box-shadow: $top $left $blur $blur-dis $color!important;
+    -moz-box-shadow: $top $left $blur $blur-dis $color!important;
+    box-shadow: $top $left $blur $blur-dis $color!important;
+  }
+}
+
+%box-shadow-focus {
+  // usage @extend %box-shadow-focus
+
+  @include box-shadow-my(0, 0, 0, 3px, $gray-100, true);
+
+}
+
+
+// generic space
+
+%space-top-base-content {
+  // usage @extend %space-bottom-base-content
+  @extend .mt-5;
+  @extend .mt-md-6;
+}
+
+%space-bottom-base-content {
+  // usage @extend %space-bottom-base-content
+
+  //  @extend .mb-6;
+  @extend .mb-md-7;
+
+}
+
+
+// card definition
+
+%card-padding {
+
+  @extend .p-4;
+  @extend .p-lg-5;
+
+}
+
+%card-margin {
+
+  @extend .mb-3;
+
+}
+
+@mixin cardStyle {
+
+  min-height: $card-min-height;
+  @extend %card-padding;
+  @extend %card-margin;
+  @include box-shadow-my(5px, 5px, 6px, 1px, $cardRP);
+
+}
+
+
+// Alternate buttons //
+
+@each $color,
+$value in $theme-colors {
+  .btn-#{$color} a {
+    //          @include button-variant($value, $value);
+  }
+}
+
+@each $color,
+$value in $theme-colors {
+  .btn-outline-#{$color} a {
+    //  @include button-outline-variant($value);
+  }
+}
+
+.buttonFocus {
+
+  &:focus {
+    outline: 5px auto -webkit-focus-ring-color;
+  }
+
+}
+// Border Radius
+//@include border-radius(5px); oppure
+//  @include border-top-radius(10px);
+//  @include border-right-radius(8px);
+//  @include border-bottom-radius(10px);
+//  @include border-left-radius (6px);
+
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  border-radius: $radius;
+  background-clip: padding-box;  /* stops bg color from leaking outside the border: */
+}
+
+// Single side border-radius
+
+@mixin border-top-radius($radius) {
+  -webkit-border-top-right-radius: $radius;
+  border-top-right-radius: $radius;
+  -webkit-border-top-left-radius: $radius;
+  border-top-left-radius: $radius;
+  background-clip: padding-box;
+}
+@mixin border-right-radius($radius) {
+  -webkit-border-bottom-right-radius: $radius;
+  border-bottom-right-radius: $radius;
+  -webkit-border-top-right-radius: $radius;
+  border-top-right-radius: $radius;
+  background-clip: padding-box;
+}
+@mixin border-bottom-radius($radius) {
+  -webkit-border-bottom-right-radius: $radius;
+  border-bottom-right-radius: $radius;
+  -webkit-border-bottom-left-radius: $radius;
+  border-bottom-left-radius: $radius;
+  background-clip: padding-box;
+}
+@mixin border-left-radius($radius) {
+  -webkit-border-bottom-left-radius: $radius;
+  border-bottom-left-radius: $radius;
+  -webkit-border-top-left-radius: $radius;
+  border-top-left-radius: $radius;
+  background-clip: padding-box;
+}
+
+
+
+
+
+
+/*
+Re-usable mixin for styling radios & checkboxes,
+can also produce square and rounded toggle switches,
+assumes that an autoprefixer is in play.
+*/

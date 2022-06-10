@@ -1,0 +1,175 @@
+//main: main.scss
+
+
+/* TYPOGRAPHY */
+// calcolare i rem dai px: XXpx / 16px = XX rem
+/* VARIABLES */
+
+// Grid breakpoints
+//
+// Define the minimum dimensions at which your layout will change,
+// adapting to different screen sizes, for use in media queries.
+
+// md: 768px, // al di sotto di questo variabile spazi inferiori
+// lg: 992px  // al di sotto burger menu
+// xl: 1440px // al di sotto di questo ridimensiona il testo
+
+// usage @include media-breakpoint-up(lg) { }
+
+$grid-breakpoints: (
+xs: 0,
+sm: 576px,
+md: 768px,
+lg: 992px,
+xl: 1200px,
+xxl: 1440px
+);
+
+// Grid containers
+//
+// Define the maximum width of `.container` for different screen sizes.
+
+$container-max-widths: (
+sm: 540px,
+md: 720px,
+lg: 960px,
+xl: 1140px,
+xxl: 1380px
+);
+
+// font families
+$font-family: 'open_sans',
+Arial,
+Verdana,
+sans-serif;
+
+$font-family-base: $font-family;
+
+// font size
+// per richiamre i font responsive utilizzare @include responsive-font-size($h1-font-size);
+//valori di default per far funzionare il ridimensionamento con RFS
+$rfs-breakpoint: 1380;
+$unit-default-px: 16px; // for mixin rem/px units
+$font-size-base: 1rem; // Assumes the browser default, typically `16px`
+$font-size-standard:18px;
+$font-size-minimo:14px;
+//Titoli
+$font-size-h1: 40px;
+$font-size-h2: 30px;
+$font-size-h3: 32px;
+$font-size-h4: 23px;
+$font-size-h5: 21px;
+$font-size-h6: $font-size-standard;
+
+$p-font-size: $font-size-standard; // anche la citazione, x loro h7
+//basic
+$font-size-extra-small: $font-size-minimo;
+$font-size-small: 16px;
+
+$font-size-extra-medium: 21px;
+$font-size-medium: 23px;
+
+$font-size-large: 70px;
+$font-size-extra-large: 120px;
+// icone download
+$icon-font-size: $font-size-h4;
+
+
+// font weight
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$font-weight-base: $font-weight-normal;
+
+
+//theme-colors
+
+//Add to map
+//To add a new color to $theme-colors,
+$color-app: #0381de;//colore del banner
+$color-app-menu: #005ca9;//colore del banner
+$color-bk-page:#f0f3f8;//sfondo pagine
+$color-border-menu-page:#c1c1c3;//sfondo pagine
+$Color-grey: #e5e5e5;
+$color-grey-tab:#e2e3e7;
+$color-grey-linkTab:#58595d;
+
+$color-link: $color-app-menu;
+
+$color-border-line: #d5d5d5;
+$grigio-riga-table: $color-border-line;
+
+
+$color-bar-highlighted: #0066cc;
+$color-border-input:#343d3c;
+$color-label: #343d3c;
+$color-focus-input: #0066cc;
+///colori paginazione
+$pagination-color: black;
+$pagination-hover-bg: $color-app-menu;
+$pagination-active-color: white;
+$pagination-active-bg: $color-app-menu;
+$pagination-hover-color: white;
+
+//per richiamarli theme-color("footer-color");
+$theme-colors: (
+  "footer-color": #213366,
+  "primary-color": #005ca9,
+  "bullet-color": #213366,
+  "sf-color": #eee,
+  "success": #348439,
+  "warning": #df001e,
+  "ruolo": #005ca9,
+  "regime": #ef8317,
+  "mmg": #79d8f8
+);
+
+//Remove from map
+//To remove colors from $theme-colors, or any other map, use map-remove:
+//$theme-colors: map-remove($theme-colors, "success", "info", "danger");
+
+// Spacing
+//
+// Control the default styling of most Bootstrap elements by modifying these
+// variables. Mostly focused on spacing.
+// You can add more entries to the $spacers map, should you need more variation.
+
+// stylelint-disable
+$spacer: 1rem !default;
+$spacers: () !default;
+$spacers: map-merge((
+0: 0,
+1: ($spacer * .375),    // 6px
+2: ($spacer * .75),     // 12px
+3: $spacer,             // 16px
+4: ($spacer * 1.125),   // 18px
+5: ($spacer * 1.25),    // 20px
+6: ($spacer * 1.875),   // 30px
+7: ($spacer * 2.5),     // 40px
+8: ($spacer * 3.125),   // 50px
+9: ($spacer * 3.75),    // 60px
+10: ($spacer * 5.625),  // 90px
+11: ($spacer * 4.375),  // 70px
+12: ($spacer * 5.625)   // 90px
+), $spacers);
+$space-default:2rem;
+
+//card-box
+$card-box-padding-y: $spacer * 1.375;
+$card-box-padding-x: $spacer * 0.75;
+
+////message
+$alert-padding-y: $spacer * 1.375;
+$alert-padding-x: $spacer * 1.375;
+$alert-margin-bottom: $spacer * 1.875;
+$alert-border-width:  1px;
+$alert-border-radius: .275rem;
+$bkg-color-error:#f1dddd;
+$border-color-error:#de3a33;
+$bkg-color-success:#DFF0D9;
+$border-color-success:#5CB875;
+$bkg-color-info: #dbeef7;
+$border-color-info:#00b4e8;
+$bkg-color-warning: #Fdf9e5;
+$border-color-warning: #Ffef6b;

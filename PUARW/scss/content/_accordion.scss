@@ -1,0 +1,108 @@
+//main: ../main.scss
+//ACCORDION
+  .accordion {
+
+    .card {
+
+      //@extend .mb-5;
+
+      border:0;
+      background-color:transparent;
+      border-radius:0;
+
+      .card-header {
+
+        border-radius:0;
+        border:0;
+        @extend .p-0;
+        @extend .m-0;
+
+        @for $index from 1 through 6 {
+          h#{$index}{
+
+          @extend .p-0;
+          @extend .m-0;
+          @extend .mb-md-0;
+          width: 100%;
+          text-align: left;
+          font-size: 1rem;
+
+          button {
+
+              @extend .px-6;
+              @extend .py-2;
+              @extend .m-0;
+              width:100%;
+              border:1px solid $gray-300;
+              background-color: $gray-100;
+              text-align: left;
+              color:$black;
+              &.btn-link.btn{border-radius:0;
+              &.collapsed{color:$color-app;}
+
+              }
+
+
+              &:hover, &:focus {
+                text-decoration:none;
+                color:$black;
+              }
+
+              @extend .buttonFocus;
+
+              &[aria-expanded="true"],
+              &[aria-expanded="false"] {
+
+                @extend .d-flex;
+                @extend .align-items-center;
+
+                &:after {
+                  @extend .ml-auto;
+                  font-size: 2.3rem;
+                  line-height: 1rem;
+                  @extend .fas;
+                }
+
+              }
+
+              &[aria-expanded="true"] {
+
+                border:1px solid theme-color("primary-color");
+                background-color: theme-color("primary-color");
+                color:$white;
+
+                &:after {
+
+                  content: "\f106";
+
+
+                }
+
+
+              }
+
+              &[aria-expanded="false"] {
+
+                &:after {
+                  content:"\f107";	//@extend .fa-angle-down;
+                }
+
+              }
+
+          }
+
+          }
+        }
+
+      }
+
+      .card-body {
+
+        //border:1px solid $gray-300;
+
+
+      }
+
+    }
+
+  } //.accordion

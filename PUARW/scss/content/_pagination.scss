@@ -1,0 +1,24 @@
+//main: ../main.scss
+
+.pagination {
+
+.page-link {
+  color: $pagination-color!important;
+
+
+  &:hover {
+    color: $white!important;
+    background-color: $pagination-hover-bg;
+
+  }
+}
+
+.page-item {
+
+  &.active .page-link {
+    @extend .bold;
+    color:$white!important;
+    border: 1px solid #dee2e6;
+  }
+}
+}

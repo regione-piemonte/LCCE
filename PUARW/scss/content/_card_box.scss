@@ -1,0 +1,102 @@
+//main: ../main.scss
+
+  .card-box{
+    // usage @extend %card-box
+    padding: $card-box-padding-y $card-box-padding-x;
+    margin-bottom: $alert-margin-bottom;
+
+    @include responsive-font-size($font-size-base);
+    @include border-radius($alert-border-radius);
+    border-radius: .25rem;
+    color:$black!important;
+
+
+    position: relative;
+    min-height: 12.5rem;
+    text-align: center;
+    @extend .bold;
+
+    &:after{
+      position: absolute;
+      	left: 0px;
+      	content: '';
+        width: 100%;
+
+        height: 100%;
+
+        top: 0;
+
+        border: 1px solid #ccc;
+        border-left-width:4px;
+        border-left-style: solid;
+    }
+
+
+      &.card-box-white {
+        padding: 2.4rem;
+
+        position: relative;
+        min-height: 3.5rem;
+        text-align: left;
+        margin-bottom: 0;
+        @extend .normal;
+        &:after{
+          border-left-width:1px;
+          border-left-style: solid;
+          z-index: -1;
+        }
+      }
+    background-color:$white;
+    @include box-shadow-my(0, .5rem, 1rem, 0px, rgba(0,0,0,.15), false);
+
+      .card-box-image{
+        display: block;
+        text-align: center;
+        min-height:4.5rem;
+
+        img{
+          width:70px;
+        }
+      }
+  /*  &:hover, &.active{
+      border-width: .45rem;
+      background-color: #eac183;
+    }*/
+
+    &.card-box-white:hover{
+      border-width: 1px;
+      background-color: $white;
+    }
+  }
+
+  //
+  // Alternate buttons
+  //
+  @mixin card-box-variant($border, $hover-background: lighten($border, 42%)) {
+    &:after{border-left-color:$border;}
+
+    &:focus,
+    &.focus,
+    &:hover,
+    &.hover,
+    &.active {
+
+      background-color:$hover-background;
+
+    }
+    &:focus:after,
+    &.focus:after,
+    &:hover:after,
+    &.hover:after,
+    &.active:after {
+
+      border: 4px solid $border;
+      //background-color:$hover-background;
+
+    }
+}
+  @each $color, $value in $theme-colors {
+    .card-box-#{$color} {
+      @include card-box-variant($value);
+    }
+  }

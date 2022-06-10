@@ -1,0 +1,31 @@
+//main: ../main.scss
+  .modal-dialog {
+
+    max-width: 60vw!important;
+
+    .modal-footer, .modal-header{
+
+      border:none;
+    }
+
+    .modal-header{
+        @include responsive-font-size($font-size-standard);
+    }
+
+    p.note{
+
+      @extend .mt-5;
+    }
+
+    .close{
+
+      font-size:3.5rem;
+      color: $color-link;
+    }
+  }
+#modalfontifse .modal-dialog{max-width: 90vw!important;
+table.fontiFSE{
+
+  @include responsive-font-size($font-size-minimo);
+}
+}

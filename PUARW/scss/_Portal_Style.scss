@@ -1,0 +1,417 @@
+//main: main.scss
+
+#header.header {
+
+  background-color:$color-app;
+
+  .ico_svg{
+    width:auto;
+     height:38px;
+  }
+  .content-dropdown{
+    .ico_svg{
+      width:auto;
+       height:35px;
+    }
+    .dropdown-item-sx{
+      white-space: normal;
+    }
+  }
+
+  a {
+
+    @include setLinkSelectorStyle {
+
+      color:$white;
+
+    }
+
+    @include setLinkHoverSelectorStyle {
+
+      color:$white;
+
+    }
+
+  }
+
+  .sp_navbar {
+
+    &.sp_views1 {
+
+      @include media-breakpoint-up(lg) {
+
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#006cb4+0,006cb4+50,0381d6+51,0381d6+100&1+0,1+50,0.5+51,0+100 */
+        background: -moz-linear-gradient(left, rgba(0,108,180,1) 0%, rgba(0,108,180,1) 50%, rgba(3,129,214,0.5) 51%, rgba(3,129,214,0) 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(left, rgba(0,108,180,1) 0%,rgba(0,108,180,1) 50%,rgba(3,129,214,0.5) 51%,rgba(3,129,214,0) 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to right, rgba(0,108,180,1) 0%,rgba(0,108,180,1) 50%,rgba(3,129,214,0.5) 51%,rgba(3,129,214,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#006cb4', endColorstr='#000381d6',GradientType=1 ); /* IE6-9 */
+
+      }
+
+      .sp_row {
+
+        background-color:$color-app;
+
+      }
+
+    }
+
+    &.sp_views2 {
+
+      background-color:$white;
+      border-bottom:1px solid $color-border-menu-page;
+      @include box-shadow-my(0, 6px, 15px, 0, $color-border-menu-page);
+
+      .navbar  {
+
+        @extend .p-0;
+
+      }
+
+    }
+
+  }
+
+  .sp_container {
+
+    .sp_row {
+
+      .navbar-header {
+
+        background-color:$color-app;
+
+        .d-brand-dsk {
+
+          @extend .d-none;
+          @extend .d-lg-inline-block;
+
+        }
+
+        .d-brand-mo {
+
+          @extend .d-lg-none;
+
+        }
+
+      }
+
+      #utilities {
+
+        background-color:$color-app;
+
+        #dropdownMenuLink {
+
+          @include responsive-font-size(20px);
+
+          @include setLinkHoverSelectorStyle {
+
+             text-decoration: none;
+
+          }
+
+          &:after{
+            @include media-breakpoint-down(md) {
+
+            display: none;
+            }
+            // background: transparent url("../im/icone/ico_freccia_bianca.svg") no-repeat fixed center;
+          }
+        }
+
+      }
+
+      .dropdown-menu {
+
+        .dropdown-title{
+
+          @include responsive-font-size($font-size-standard);
+        }
+
+        @include box-shadow-my(0, .5rem, 1rem, 0px, rgba(0,0,0,.15), false);
+
+        a {
+
+          @include responsive-font-size($font-size-base);
+          @include setLinkSelectorStyle {
+
+            color:$black;
+
+          }
+
+          @include setLinkHoverSelectorStyle {
+
+            color:$black;
+
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+/******** sp portale ******/
+
+  .navbar-brand-portal { // è dentro a navbar-header
+
+    background: #006cb4 url(../im/logo_SP.png) no-repeat center center;
+    width: 47px;
+    height: 49px;
+    display: inline-block;
+
+  }
+
+
+/****** STRUTTURA FLEX PER ALLINEARE VERTICALMENTE *****/
+
+#header {
+
+  .sp_container {
+
+    @extend .container;
+
+    .sp_row {
+
+      @extend .row;
+      @extend .align-items-center;
+      @extend .no-gutters;
+
+      .navbar-header {
+
+        @extend .col-6;
+        @extend .align-items-center;
+        @extend .justify-content-start;
+        @extend .d-flex;
+        @extend .pl-0;
+
+        .navbar-brand-portal {
+
+          @extend .d-none;
+          @extend .d-lg-inline-block;
+
+        }
+
+        .navbar-brand {
+
+          @extend .px-2;
+          @extend .m-0;
+          @include responsive-font-size(26px);
+          @extend .bold;
+        }
+
+      } //navbar-header
+
+      #utilities {
+
+        @extend .col-5;
+        @extend .col-lg-6;
+  			@extend .d-flex;
+  			@extend .align-items-center;
+  			@extend .justify-content-end;
+
+        .txt { // testi a fianco a icona
+
+          @extend .sr-only;
+
+        }
+
+        .contact, .help {
+
+          @extend .mr-4;
+
+        }
+
+  			.user-dropdown {
+
+          .user {
+
+            @include responsive-font-size($font-size-base);
+            @extend .d-none;
+            @extend .d-xl-inline-block;
+
+            &.titolo-dropdown {
+
+              @extend .d-inline-block;
+              @extend .d-xl-none;
+
+            }
+
+          }
+
+          .user-line {
+
+            @extend .d-block;
+            @extend .d-lg-none;
+
+          }
+
+  				.dropdown-menu {
+
+      			min-width: 400px !important;
+
+  					@include media-breakpoint-down(sm) {
+
+      				min-width: 300px !important;
+
+  					}
+
+            .dropdown-item{
+
+              padding: 0.25rem 0.5rem;
+
+                &.dropdown-items-item{
+
+                  @extend .d-flex;
+                  @extend .align-items-center;
+
+                  .dropdown-item-dx{
+
+                    @extend .ml-auto;
+                    @extend .pl-4;
+                    @extend.bold;
+
+                    a{
+
+                      @include setLinkSelectorStyle {
+
+                        text-decoration:underline;
+                      }
+
+                      @include setLinkHoverSelectorStyle {
+
+                        text-decoration:none;
+                      }
+                    }
+
+                  }
+                }
+            }
+  				}
+
+  			}
+
+  			.footer-dropdown {
+
+  				@extend .d-flex;
+  				@extend .align-items-end;
+  				@extend .flex-row;
+
+  				.dropdown-item {
+
+  					&:last-child {
+
+  						text-align: right;
+
+  					}
+
+  				}
+
+  			}
+
+      } //utilities
+
+      .navbar-toggler {
+
+        @extend .col-1;
+        @extend .d-lg-none;
+        z-index: 10000000;
+
+        .navbar-toggler-icon {
+
+          left:0;
+          background-color: $white;
+          // @extend %transition-standard;
+          width:40px!important;
+           height:3px;
+          &:before, &:after {
+
+            background-color: $white;
+            width:40px!important;
+             height:3px;
+
+          }
+
+        }
+
+        // &.active {
+        //
+        //   .navbar-toggler-icon {
+        //
+        //     left:auto;
+        //     right: 0;
+        //     background-color: $black;
+        //
+        //     &:before, &:after {
+        //
+        //       background-color: $black;
+        //
+        //     }
+        //
+        //   }
+        //
+        // }
+
+      } //navbar-toggler
+
+    } //sp_row
+
+  } //sp_container
+
+}
+
+/*** icone ***/
+
+  .icon-help {
+
+  	@extend .fa;
+  	@extend .fa-question-circle;
+  	@extend .fa-lg;
+
+  }
+
+  .icon-contact {
+
+  	@extend .fa;
+  	@extend .fa-at;
+  	@extend .fa-lg;
+
+  }
+
+	.icon-out {
+
+		@extend .fa;
+		@extend .fa-sign-out-alt;
+
+	}
+
+	.icon-user {
+
+		@extend .fa;
+		@extend .fa-user-circle;
+		@extend .fa-lg;
+
+	}
+
+/**   menu mobile **/
+
+.bsnav-mobile {
+
+  .navbar {
+
+    justify-content: flex-start;
+    @extend .p-0;
+    margin-top: 45px;
+
+    .navbar-mobile {
+
+      @extend .d-block;
+
+    }
+
+  }
+
+}

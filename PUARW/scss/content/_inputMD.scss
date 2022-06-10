@@ -1,0 +1,366 @@
+//main: ../main.scss
+
+//serve il js di sacripante....
+body input:focus, body a:focus, body :focus,
+body textarea:focus {
+  box-shadow: 0px 0px 0px #000!important;
+  -webkit-box-shadow: 0px 0px 0px #000!important;
+  -moz-box-shadow: 0px 0px 0px #000!important;
+  -o-box-shadow: 0px 0px 0px #000!important;
+}
+
+
+$invalid-form: #d32f2f;;
+
+/* form starting stylings ------------------------------- */
+.group, .select {
+
+  position:relative;
+  margin-bottom:45px;
+
+  &.textareaG{
+
+    margin-top: 0rem;
+
+  }
+
+}
+
+textarea{padding: 20px 2px 10px 0px;}
+
+
+/* BOTTOM BARS ================================= */
+.bar 	{
+  position:relative;
+  display:block;
+  &:before, &:after 	{
+    content:'';
+    height:2px;
+    width:0;
+    bottom:1px;
+    position:absolute;
+    background:$color-bar-highlighted;
+    transition:0.2s ease all;
+    -moz-transition:0.2s ease all;
+    -webkit-transition:0.2s ease all;
+  }
+}
+.bar:before {
+  left:50%;
+}
+.bar:after {
+  right:50%;
+}
+
+/* HIGHLIGHTER ================================== */
+.highlight {
+  position:absolute;
+  height:60%;
+  width:100px;
+  top:25%;
+  left:0;
+  pointer-events:none;
+  opacity:0.5;
+
+}
+
+
+
+/*input:required:invalid:focus ~ label, input:required:invalid ~ label{
+color:red;
+}*/
+/* active state  e valido*/
+input[type='text'],
+input[type="email"],
+input[type="tel"],
+textarea{
+
+  font-size:18px;
+  padding:10px 10px 10px 5px;
+  display:block;
+  width:100%;
+  border:none;
+  border-bottom:1px solid $color-border-input;
+  background-color:transparent;
+  &.error{
+
+    border-color:$invalid-form;
+  }
+  &:focus{
+
+    outline:none;
+
+    & ~ .bar:before,
+    & ~ .bar:after{
+
+      width:50%;
+    }
+    /* active state */
+    & ~ .highlight{
+
+      -webkit-animation:inputHighlighter 0.3s ease;
+      -moz-animation:inputHighlighter 0.3s ease;
+      animation:inputHighlighter 0.3s ease;
+
+    }
+
+  }
+
+  /* LABEL ======================================= */
+  & ~ label, &:required ~ label  {
+
+    color:$color-label;
+    @include responsive-font-size($font-size-standard);
+    font-weight:normal;
+    position:absolute;
+    pointer-events:none;
+    left:5px;
+    top:10px;
+    transition:0.2s ease all;
+    -moz-transition:0.2s ease all;
+    -webkit-transition:0.2s ease all;
+
+    &.error{
+
+      color:$invalid-form;
+      top: 100%;
+      @include responsive-font-size($font-size-minimo);
+
+    }
+  }
+
+  &:focus ~ label,
+  &.full.valid  ~ label {
+
+    top:-20px;
+    @include responsive-font-size($font-size-minimo);
+    color:$color-focus-input;
+
+  }
+
+  &.full.valid  ~ label {
+
+    color:$black;
+
+  }
+
+  &.error ~ label{
+
+    color:$black;
+
+  }
+
+
+
+  //controllo INPUT
+  // When input is...
+  //   1. NOT empty
+  //   2. NOT in focus
+  //   3. NOT valid
+  /*  &:invalid:not(:focus) {
+  background: pink;
+  & ~ label {
+  top:-20px;
+  color:red;
+}
+}
+// When that invalid input becomes in focus (and also still isn't empty)
+&:invalid:focus {
+// Show the more robust requirement instructions below.
+& ~ .requirements {
+max-height: 200px;
+padding: 0 30px 20px 50px;
+}
+}*/
+}
+
+
+textarea ~ label {
+
+  top:-3px;
+}
+
+
+/* ANIMATIONS ================ */
+@-webkit-keyframes inputHighlighter {
+
+  from { background:$color-bar-highlighted; }
+  to 	{ width:0; background:transparent; }
+}
+@-moz-keyframes inputHighlighter {
+
+  from { background:$color-bar-highlighted; }
+  to 	{ width:0; background:transparent; }
+}
+@keyframes inputHighlighter {
+
+  from { background:$color-bar-highlighted; }
+  to 	{ width:0; background:transparent; }
+}
+
+
+/*****gestione errore *******************/
+
+
+/***** SELECT *******************/
+
+.select {
+
+  position: relative;
+  width:100%;
+
+  &:after {
+
+    position: absolute;
+    top: 18px;
+    right: 10px;
+    /* Styling the down arrow */
+    width: 0;
+    height: 0;
+    padding: 0;
+    content: '';
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid rgba(0, 0, 0, 0.12);
+    pointer-events: none;
+
+  }
+
+}
+
+.select-text {
+
+  position: relative;
+  font-family: inherit;
+  background-color: transparent;
+  width: 100%;
+  padding: 10px 10px 10px 0;
+  font-size: 18px;
+  border-radius: 0;
+  border: none;
+  border-bottom: 1px solid $color-border-input;
+
+  &.error{
+
+    border-color:$invalid-form;
+
+  }
+
+  & ~ label.error{
+
+    color:$invalid-form;
+    top: 100%;
+    @include responsive-font-size($font-size-minimo);
+
+  }
+
+  &:focus {
+
+    outline: none;
+    border-bottom: 1px solid $color-border-input;
+
+    /* active state */
+    & ~ .select-label {
+
+      @include responsive-font-size($font-size-minimo);
+      color:$color-focus-input;
+      top: -20px;
+      transition: 0.2s ease all;
+
+    }
+
+    /* active state */
+    & ~ .select-bar:before,
+    & ~ .select-bar:after {
+
+      width: 50%;
+    }
+
+  }
+
+  &.valid {
+
+    & ~ .select-label {
+
+      @include responsive-font-size($font-size-minimo);
+      color:$black;
+      top: -20px;
+      transition: 0.2s ease all;
+
+    }
+
+  }
+}
+
+/* Remove focus */
+
+/* Use custom arrow */
+.select .select-text {
+
+  appearance: none;
+  -webkit-appearance:none
+}
+
+
+
+/* LABEL ======================================= */
+.select-label {
+
+  color:$color-label;
+  @include responsive-font-size($font-size-standard);
+  font-size: 18px;
+  font-weight: normal;
+  position: absolute;
+  pointer-events: none;
+  left: 0;
+  top: 10px;
+  transition: 0.2s ease all;
+}
+
+
+/* BOTTOM BARS ================================= */
+.select-bar {
+
+  position: relative;
+  display: block;
+  width: 100%;
+
+  &:before, &:after {
+
+    content: '';
+    height: 2px;
+    width: 0;
+    bottom: 0px;
+    position: absolute;
+    background: #2F80ED;
+    transition: 0.2s ease all;
+
+  }
+}
+
+
+
+.select-bar:before {
+
+  left: 50%;
+}
+
+.select-bar:after {
+
+  right: 50%;
+}
+
+
+
+
+/* HIGHLIGHTER ================================== */
+.select-highlight {
+
+  position: absolute;
+  height: 60%;
+  width: 100px;
+  top: 25%;
+  left: 0;
+  pointer-events: none;
+  opacity: 0.5;
+}

@@ -1,0 +1,193 @@
+//main: ../main.scss
+//
+// Base styles
+//
+
+.alert {
+  position: relative;
+  padding: $alert-padding-y $alert-padding-x;
+  margin-bottom: $alert-margin-bottom;
+  border: $alert-border-width solid transparent;
+  @include border-radius($alert-border-radius);
+  border-left-width: .45rem;
+  border-radius: .25rem;
+/*  &.alert-info{
+    background-color:$alert-background-info;
+    border-color:$alert-border-info;
+
+  }
+
+  &.alert-danger{
+    background-color:$alert-background-danger;
+    border-color:$alert-border-danger;
+
+  }
+
+  &.alert-warning{
+    background-color:$alert-background-warning;
+    border-color:$alert-border-warning;
+
+  }
+
+  &.alert-success{
+    background-color:$alert-background-success;
+    border-color:$alert-border-success;
+
+  }
+  */
+}
+
+
+.alert {
+
+  border-radius:0;// override boostrap
+  border:0;
+  overflow:hidden;
+  display:inherit;
+  @extend .mr-0;
+  @extend .d-flex;
+  @extend .align-items-center;
+  @extend .flex-column;
+  width: 100%;
+  @include responsive-font-size($font-size-base);
+  // @extend .u-padding-r-all;
+
+  &.alert-danger,
+  &.alert-success,
+  &.alert-info,
+  &.alert-warning {
+
+    color:$black!important;
+    border-left-style: solid;
+    border-left-width:9px;
+    padding-left: 7rem!important;
+    position: relative;
+    min-height: 9rem;
+    padding-top:$space-default;
+
+    a{
+
+      text-decoration: underline;
+      color:theme-color("footer-color");
+      @include responsive-font-size($font-size-minimo);
+    }
+    p {
+
+      @extend .mr-0;
+      @extend .ml-0;
+      width: 100%;
+
+      &:last-of-type {
+
+        @extend .mb-0;
+
+      }
+
+    }
+
+    &:before {
+
+      @extend .fas;
+      color: $black!important;
+      position:absolute;
+      left: $space-default;
+      top: $space-default;
+      font-size: 2rem;
+
+    }
+
+  }
+
+  &.alert-danger {
+
+    background-color: $bkg-color-error;
+    border-left-color:$border-color-error;
+
+    &:before {
+
+      @extend .fa-exclamation-circle;
+
+    }
+
+  }/* //alert */
+
+  &.alert-success {
+
+    background-color: $bkg-color-success;
+    border-left-color:$border-color-success;
+
+    &:before {
+
+      @extend .fa-check-circle;
+
+    }
+
+  }/* //alert */
+
+  &.alert-info {
+
+    background-color: $bkg-color-info;
+    border-left-color:$border-color-info;
+
+    &:before {
+
+      @extend .fa-info-circle;
+
+    }
+
+  }/* //alert */
+
+  &.alert-warning {
+
+    background-color: $bkg-color-warning;
+    border-left-color:$border-color-warning;
+
+    &:before {
+
+      @extend .fa-exclamation-triangle;
+
+    }
+
+  }/* //alert */
+
+  &.alert-primary {
+
+      background-color:$bkg-color-info;
+
+    p {
+
+      line-height: 1.8em!important;
+
+      em {
+
+
+      }
+
+    }
+
+  }
+
+  .close {
+    line-height:1rem;
+    @extend .px-0;
+  }
+
+  .p-button-close{
+button{
+    margin-top: -25px;
+    margin-right: -20px !important;
+    color: $color-app-menu;
+    opacity: 1;
+    font-size:3rem
+  }
+}
+  .p-text-close{
+    button{
+    @include responsive-font-size($font-size-minimo);
+    color: $color-app-menu;
+        opacity: 1;
+  }
+  }
+
+
+}

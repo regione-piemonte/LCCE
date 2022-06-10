@@ -1,0 +1,601 @@
+//main: main.scss
+.body-content{
+  min-height: calc(100vh - 126px);
+}
+
+
+body{background-color:$color-bk-page;
+  a, a:link, a:active, a:visited{
+    color:$color-app-menu;
+  }
+  a:focus, a:hover{
+    color:$color-app-menu;
+    text-decoration: underline;
+  }
+    a:focus{
+      border:0;
+    }
+}
+.app-view{
+
+  @extend .mt-8;
+
+}
+
+.app-view-risultati{
+  width:100%;
+}
+.app-container {
+  @extend .container;
+
+  .app-row {
+
+    @extend .row;
+    @extend .mb-6;
+
+    .app-content-firstcolumn{
+
+      @extend .col-12;
+      @extend .col-lg-3;
+      @include media-breakpoint-up(lg) {
+        border-right:1px solid $color-border-line;
+      }
+
+
+    }
+
+    .app-content-secondcolumn{
+
+      @extend .col-12;
+      @extend .col-lg-9;
+    }
+  }
+}
+
+
+///card
+.card-box-body{
+
+  .form-check{
+
+    @extend .pb-5;
+  }
+}
+
+
+// Titoli
+.app-view-home{
+
+  h1{
+
+    @include responsive-font-size($font-size-standard);
+    @extend .py-4;
+  }
+}
+h1.title_prepagination, h2.title_prepagination{
+
+  @include responsive-font-size($font-size-standard);
+}
+h1.ricerca_paziente, h2.title_mmg, h1.title_mmg  {
+
+  @include responsive-font-size($font-size-standard);
+  @extend .row-center;
+  color: theme-color("primary-color");
+
+  .ico_svg{
+
+    height:50px;
+  }
+  span{
+
+    display: block;
+    @extend .row-center;
+  }
+}
+
+
+h2.title_mmg, h1.title_mmg  {
+  @include responsive-font-size($font-size-standard);
+  text-align: left;
+  .ico_svg{
+
+    height:50px;
+  }
+}
+//noyte
+small.note{
+  @extend .d-block;
+  text-align: left;
+  width:100%;
+}
+
+//input
+.button-button-tab{
+
+  text-align:right;
+
+  @extend .mb-5;
+
+
+}
+.mt-line-none{
+
+  margin-top:6.3rem;
+}
+//input group btn-calendar
+.input-group.date{
+
+  input[type=text]{
+
+    flex: 1 1 auto;
+    width: 1%;
+    display: flex;
+  }
+
+  .btn-calendar{
+
+    border:0;
+    background-color: $color-border-line;
+  }
+  .input-group-append{
+
+    display: flex;
+    border:0;
+  }
+}
+
+
+// ordinamento tabelle
+/** Ordinamento tabelle server-side **/
+table.table{
+  @include responsive-font-size($font-size-minimo);
+  thead, tbody{
+    th, td{vertical-align: middle;}
+  }
+  thead{
+
+    tr{
+      border: 1px solid #cfcfcf;
+      background-color: #eee;
+      th{
+        min-height:40px;
+        border-top:none;
+        vertical-align: top;
+        border-bottom: 2px solid #cfcfcf;
+      }
+      td{border:0;}
+    }
+  }
+  tbody{
+    tr{
+      border-top: 1px solid #aaa;
+      border-bottom: 1px solid #aaa;
+      background-color:$white;
+
+      a{
+        color:$black;
+      }
+    }
+  }
+  &.table-hover tbody tr:hover{
+    background-color:#eee;
+  }
+  //th.vis_dettaglio{padding:0.}
+  .toggle_plus{
+    background: url('../im/icone/ico_piu.svg') no-repeat center 0;
+    background-size: 40px;
+    display: block;
+    height:45px;
+    width:45px;
+    &[aria-expanded=true]{
+      background: url('../im/icone/ico_meno.svg') no-repeat center 0;
+      background-size: 40px auto;
+    }
+  }
+
+  .toggle_plus_lis{
+    background: url('../im/icone/ico_referto lis_chiuso.svg') no-repeat center 0;
+    background-size: 37px  auto;
+    display: block;
+    height:40px;
+    width:100%;
+    &[aria-expanded=true]{
+      background: url('../im/icone/ico_referto lis_aperto.svg') no-repeat center 0;
+      background-size: 37px auto;
+    }
+  }
+
+  .toggle_plus:hover, .toggle_plus:focus,
+  .toggle_plus_lis:hover, .toggle_plus_lis:focus{
+    text-decoration: none;
+    &[aria-expanded=true]{
+      text-decoration: none;
+    }
+  }
+
+  .ico_referti{
+    background: url('../im/icone/ico_referto.svg') no-repeat center 0;
+    background-size: 37px  auto;
+    display: block;
+    height:40px;
+    width:40px;
+  }
+}
+.col-margin-auto{
+  margin-left:auto;
+  margin-right:auto;
+}
+.evidenza_fonte table{
+
+  thead tr{
+    background-color: #eee;
+    th{
+      border-bottom:1px;
+    }
+  }
+
+  border: 1px solid #ceced0;
+
+}
+
+/*tabella ordinamento statica (gestito poi lato server)*/
+table.table-sortable{
+  th, td{
+    padding: 0.45rem;
+    vertical-align:middle;
+
+  }
+  th{vertical-align: top;min-height: 40px;}
+}
+table thead tr th div.sortable {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+}
+
+table thead tr th span.headerTxt {
+  padding-right:1px;
+  width:75%;
+  display: inline-block}
+  table thead tr th {padding-right:2px;}
+
+  table thead tr th a:link.header,
+  table thead tr th a:active.header,
+  table thead tr th a:visited.header,
+  table thead tr th a:hover.header,
+  table thead tr th a.header {
+
+    background: url(../im/bg.svg) no-repeat center right;
+    cursor: pointer;
+    width:21%;
+    height:15px;
+    float:right;
+  }
+  table thead tr th a:link.headerSortUp,
+  table thead tr th a:active.headerSortUp,
+  table thead tr th a:visited.headerSortUp,
+  table thead tr th a:hover.headerSortUp,
+  table thead tr th a.headerSortUp {
+    background-image: url(../im/asc.svg);
+  }
+  table thead tr th a:link.headerSortDown,
+
+  table thead tr th a:active.headerSortDown,
+  table thead tr th a:visited.headerSortDown,
+  table thead tr th a:hover.headerSortDown,
+  table thead tr th a.headerSortDown {
+    background-image: url(../im/desc.svg);
+  }
+
+  //paginazione
+  .pagination{
+
+    .page-link{
+      background-color:transparent;
+    }
+
+    .page-item.active{
+      background-color:theme-color("primary-color");
+    }
+
+    .page-item.disabled{
+
+      a{
+
+        background-color:#f0f3f8;
+      }
+
+    }
+  }
+
+
+  //button
+  .btn-ricerca-assistito, .btn-filtri{
+
+    &:focus{
+
+      box-shadow: inset 0 0 0 3px #f0f3f8 !important;
+    }
+
+    background: url('../im/icone/ico_ricerca_paziente_da_selezionare.svg') no-repeat center 0;
+    display: block;
+    background-size: 50px;
+    padding-top:55px;
+
+    &[aria-expanded=true]{
+      background: url('../im/icone/ico_ricerca_paziente_selezionato.svg') no-repeat center 0;
+      background-size: 50px;
+    }
+  }
+
+.btn-filtri{
+    background: url('../im/icone/ico_filtri_da_selezionare.svg') no-repeat center 0;
+    background-size: 60px;
+    &[aria-expanded=true]{
+      background: url('../im/icone/ico_filtri_selezionato.svg') no-repeat center 0;
+      background-size: 60px;
+    }
+}
+
+  //table a div
+  .sub_table{
+
+    border: 1px solid #ceced0;
+    .row {
+      margin:0;
+      border-bottom: 1px solid #ceced0;
+      &.rowlistheader{
+        border-bottom: 1px solid #ceced0;
+        background-color: #eee;
+        padding:0.25rem;
+        @extend .bold;
+      }
+
+
+      > [class*="col-"]{
+
+        @extend .align-self-center;
+        padding:0.35rem;
+      }
+    }
+
+    .accordion-body{
+
+      background-color:#e5eef7;
+      .table_with_img{
+        text-align: center;
+      }
+    }
+    .table_with_img{
+      text-align: center;
+    }
+    .table_with_img_ok{
+      text-align: left;
+      img{height:27px;width:auto;padding-left:5px;}
+    }
+    .sub_table_with_img{
+      text-align: right;
+      padding-right:5px;
+      img{height:37px;}
+
+
+    }
+  }
+
+
+  .table_with_img{
+    img{height:37px;width:auto;}
+  }
+
+
+  ///referti
+  .app-view-referti{
+    @include responsive-font-size($font-size-base);
+    h1{margin-bottom:30px;}
+    h2{@include responsive-font-size($font-size-standard);}
+    .sub_table {
+      margin-bottom:30px;
+    }
+  }
+
+  /// home fs
+
+  .card-medicocurante{
+    img{width:50px;height:auto;}
+    @include media-breakpoint-down(sm) {
+      margin-top: 2.5rem;
+    }
+  }
+
+  .card-segnalazioni{
+    img{width:50px;height:auto;}
+    @include media-breakpoint-down(sm) {
+      margin-top: 2.5rem;
+    }
+  }
+  .card-assistito{
+    @extend .row;
+    img{width:50px;height:auto;}
+  }
+  .card-body-int{
+    margin-top:20px;
+    @include responsive-font-size($font-size-minimo);
+  }
+
+.box-icon-ssn{
+  background-color: $color-app;
+  
+  .box-icon-ssn-card{
+    background-color:$white;
+    margin-bottom:10px;
+    border:4px solid $color-app;
+    @include box-shadow-my(0, .5rem, 1rem, 0px, rgba(0,0,0,.15), false);
+    .col-img{
+      img{width:50px;height:auto;}
+      text-align: center;
+      background-color: $color-bk-page;
+    }
+    &.active, &:hover{
+      border:4px solid #014d95;
+    }
+
+  }
+
+}
+.box-icon-ssn, .box-icon-assistito{
+  padding: $card-box-padding-y $card-box-padding-x;
+  margin-bottom: $alert-margin-bottom;
+  border: 1px solid #ccc;
+  @include border-radius($alert-border-radius);
+  border-radius: .25rem;
+  @include box-shadow-my(0, .5rem, 1rem, 0px, rgba(0,0,0,.15), false);
+  .row{
+    margin:0;
+
+    > [class^="col-"]{
+
+      padding:0.75rem;
+      @include responsive-font-size($font-size-base);
+      @extend .bold;
+    }
+    .col-8{
+      display:flex;
+      align-items: center;
+    }
+  }
+  h1{
+    @include responsive-font-size($font-size-standard);
+    color:$white;
+  }
+  @include responsive-font-size($font-size-base);
+  a{color:$black!important;}
+
+  
+  .report-link{
+    color:#fff!important;
+  }
+  
+  
+
+}
+
+.box-icon-assistito{
+  background-color: #014d95;
+  .box-icon-assistito-card{
+    background-color:$white;
+    margin-bottom:10px;
+    border:4px solid #014d95;
+      @include box-shadow-my(0, .5rem, 1rem, 0px, rgba(0,0,0,.15), false);
+    .col-img{
+      img{width:50px;height:auto;}
+      text-align: center;
+      background-color: $color-bk-page;
+    }
+    &.active, &:hover{
+      border:4px solid $color-app;
+    }
+
+  }
+
+}
+///misurazioni
+.card-misurazioni{
+  .form-box-input{
+    padding: 0 !important;
+    text-align: center;
+    input.form-check-input{
+      position:inherit;
+      margin-left:0!important;
+    }
+    .conth-img{
+      img{
+        height:40px;
+        width:auto;
+      }
+      label{
+          @include responsive-font-size($font-size-minimo);
+      }
+    }
+
+  }
+
+  .tab-content{
+
+    min-height: 11rem;
+  }
+
+  .row-inline-mis{
+      @include responsive-font-size($font-size-minimo);
+      padding-top: 1.25rem !important;
+  }
+}
+/***** override card-box misurazioni*/
+.card-box.card-box-white.card-misurazioni:after{
+  position: inherit;
+    left: -100000000px;
+    content: '';
+    width: 100%;
+
+    height: 100%;
+
+    top: -1000000000px;
+
+    border: none;
+    border-left-width:none;
+    border-left-style: solid;
+    background-color:transparent;
+
+}
+
+.col-form-label{
+  padding-top:0!important;
+}
+
+h1.title_mmg, h2.title_mmg , h1.titolo_modale {
+  color:$black!important;
+  @include responsive-font-size($font-size-standard);
+}
+
+.card-box-mmg{
+  text-align:left;
+  @include responsive-font-size($font-size-base);
+  dd{font-weight:300!important;}
+
+}
+
+
+//fonti collegate
+table.fontiFSE span.hidden_si {
+    background: url("../im/icone/ico_check.svg") no-repeat scroll center center transparent;
+    width:4%;
+    display: inline-block;
+    font-size: 0.01em;
+    padding: 25px 20px 25px 20px;
+    text-align: center;
+}
+table.fontiFSE span.hidden_no {
+    font-size: 0.01em;
+    padding: 20px 20px 20px 20px;
+    text-align: center;
+}
+.piedipagina{
+  @include responsive-font-size($font-size-minimo);
+}
+
+/****linea divisoria ***/
+hr.divider{
+  border-top: 1px solid #aaa;
+}
+
+.filtri .tab-content .tab-pane.fade.active.show::after, .card-box-notifiche:after{
+
+  content:"";
+  width:1px;
+  height:1px;
+}
+.title-list{
+    @include responsive-font-size($font-size-standard);
+}
+.list-inline{
+  dt,dd{display: inline-block}
+}
