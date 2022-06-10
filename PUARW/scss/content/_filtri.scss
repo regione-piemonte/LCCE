@@ -1,0 +1,99 @@
+//main: ../main.scss
+.filtri{
+
+  .nav-filtri{
+
+    width: 100%;
+    justify-content: center;
+
+    .nav-item{
+
+      .nav-link{
+
+        @include responsive-font-size($font-size-standard);
+
+        &:focus{
+
+          box-shadow: inset 0 0 0 3px #f0f3f8 !important;
+        }
+
+
+        display: block;
+        background-size: 60px!important;
+        padding-top:55px;
+
+
+        &.nav-link-filtri{
+
+          background: url('../im/icone/ico_filtri_da_selezionare.svg') no-repeat center 0;
+
+          &.active.show,
+          &:hover{
+            background: url('../im/icone/ico_filtri_selezionato.svg') no-repeat center 0;
+
+          }
+        }
+
+        &.nav-link-fonti{
+
+          background: url('../im/icone/ico_fonti_da_selezionare.svg') no-repeat center 0;
+
+          &.active.show,
+          &:hover{
+            background: url('../im/icone/ico_fonti_selezionato.svg') no-repeat center 0;
+
+          }
+
+        }
+
+
+      }
+
+    }
+
+  }
+  .tab-content{
+    border:none;
+    background-color: transparent;
+    padding:0;
+    min-height:auto;
+    box-shadow: 0 0 0 0 !important;
+
+    .tab-pane{
+      display: none;
+      &.fade.active.show{
+        @extend .card-box;
+        @extend .card-box-white;
+
+      }
+
+      &.active.show{
+        display: block;
+      }
+    }
+  }
+
+
+  .form-group{
+    label{
+      @include responsive-font-size($font-size-minimo);
+
+    }
+  }
+
+  .filtri_daselezionare{
+
+
+    li{
+
+      list-style-type: none;
+      display: inline-block;
+      background: url('../im/icone/ico_fonte.svg') no-repeat 0 0;
+      padding-left:32px;
+      margin-right: 30px;
+      margin-bottom: 30px;
+      font-weight: 300;
+      @include responsive-font-size($font-size-base);
+    }
+  }
+}

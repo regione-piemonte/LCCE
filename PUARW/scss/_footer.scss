@@ -1,0 +1,74 @@
+//main: main.scss
+#footer.ps_footer{
+  @extend .mt-7;
+  background-color: theme-color("footer-color");
+  color:$white;
+  .lay-conth{
+    @extend .container;
+
+    .lay-row{
+      @extend .row;
+      @extend .align-items-center;
+
+
+      .ps_first-footer{
+        @extend .col-12;
+        @extend .col-md-4;
+        @include responsive-font-size(11px);
+        p{margin:0;}
+        @include media-breakpoint-down(md) {
+          text-align: center;
+        }
+      }
+
+      .ps_menu-footer{
+        @extend .col-12;
+        @extend .col-md-6;
+          @include media-breakpoint-down(md) {
+            text-align: center;
+          }
+        .b-menu-footer-link{
+          @include media-breakpoint-down(md) {
+            margin:2.25rem 0;
+            padding:0;
+          }
+          li{
+            @extend .d-md-inline-block;
+            list-style-type: none;
+            @include media-breakpoint-down(md) {
+              margin-bottom:1.258rem;
+            }
+
+            a{
+              @include responsive-font-size(20px);
+              @include setLinkSelectorStyle{color:$white;}
+              @include media-breakpoint-up(lg) {
+              &:after{
+                content:" - ";
+              }
+            }
+            }
+            &:last-child{
+              a{
+                &:after{
+                  content:" ";
+                }
+              }
+            }
+          }
+
+        }
+      }
+      .ps_last-footer{
+        @extend .col-12;
+        @extend .col-md-2;
+        text-align:right;
+        @include media-breakpoint-down(md) {
+          text-align: center;
+        }
+      }
+
+    }
+  }
+
+}

@@ -1,0 +1,131 @@
+// compileExpanded: ../css/$1.css
+
+// import files
+// import to font awesome
+@import "../lib/fontawesome-5.2.0/scss/v4-shims.scss";
+@import "../lib/fontawesome-5.2.0/scss/fontawesome.scss";
+@import "../lib/fontawesome-5.2.0/scss/solid.scss";
+@import "../lib/fontawesome-5.2.0/scss/regular.scss";
+@import "../lib/fontawesome-5.2.0/scss/brands.scss";
+//rfs (Responsive Font Size)
+@import "../lib/rfs-master/scss/rfs.scss";
+//// my definition
+@import "variable";
+@import "utility";
+
+//bootstrap
+
+// Include parts of Bootstrap
+@import "../lib/bootstrap-4.0.0/scss/functions";
+@import "../lib/bootstrap-4.0.0/scss/variables";
+@import "../lib/bootstrap-4.0.0/scss/mixins";
+
+// Optional
+@import "../lib/bootstrap-4.0.0/scss/reboot";
+@import "../lib/bootstrap-4.0.0/scss/type";
+@import "../lib/bootstrap-4.0.0/scss/images";
+@import "../lib/bootstrap-4.0.0/scss/code";
+@import "../lib/bootstrap-4.0.0/scss/grid";
+@import "../lib/bootstrap-4.0.0/scss/tables";
+
+@import "../lib/bootstrap-4.0.0/scss/nav";
+@import "../lib/bootstrap-4.0.0/scss/navbar";
+@import "../lib/bootstrap-4.0.0/scss/dropdown";
+@import "../lib/bootstrap-4.0.0/scss/utilities";
+@import "../lib/bootstrap-4.0.0/scss/close";
+
+@import "../lib/bootstrap-4.0.0/scss/forms";
+@import "../lib/bootstrap-4.0.0/scss/buttons";
+@import "../lib/bootstrap-4.0.0/scss/transitions";
+@import "../lib/bootstrap-4.0.0/scss/utilities";
+@import "../lib/bootstrap-4.0.0/scss/close";
+@import "../lib/bootstrap-4.0.0/scss/pagination";
+@import "../lib/bootstrap-4.0.0/scss/modal";
+@import "../lib/bootstrap-4.0.0/scss/card";
+@import "../lib/bootstrap-4.0.0/scss/input-group";
+@import "../lib/bootstrap-4.0.0/scss/custom-forms";
+/*@import "../lib/bootstrap-4.0.0/scss/";
+*/
+@import "../lib/bootstrap-4.0.0/scss/root";
+
+
+@import "mixin";
+
+@import "footer";
+@import "Portal_Style"; // stili per il portale N.B. tutte le classi o gli id o variabili o mixin del portale avranno un suffisso pari a ps_
+@import "menu";
+////CONTENT
+@import "content/info-pagination";
+@import "content/message";
+@import "content/modal";
+@import "content/accordion";
+@import "content/navsecondary";
+@import "content/card_box";
+@import "content/tab";
+@import "content/filtri";
+@import "content/pagination";
+//@import "content/inputMD";
+@import "content/button";
+
+@import "application_style"; // stili personalizzati per l'applicativo
+
+/* GENERAL STYLES
+--------------------------------------------------*/
+
+  body {
+    @extend .mb-0;
+    @include responsive-font-size($font-size-base);
+    font-family: $font-family-base;
+
+    input:focus,
+    a:focus {
+      @extend %box-shadow-focus;
+      //outline: auto 0px -webkit-focus-ring-color;
+      border-radius:0!important;
+    }
+
+  	a:focus {
+      @extend %box-shadow-focus;
+      border-radius:0!important;
+      outline: 0!important;
+  	}
+
+    .btn {
+
+      border-radius:0;
+
+    }
+
+    .alert {
+      position: inherit;
+    }
+
+  }
+
+
+/*
+@import "";
+@import "";
+@import "";
+
+@import "button-group";
+@import "input-group";
+@import "custom-forms";
+
+@import "card";
+@import "breadcrumb";
+
+@import "badge";
+@import "jumbotron";
+@import "alert";
+@import "progress";
+@import "media";
+@import "list-group";
+
+@import "";
+@import "tooltip";
+@import "popover";
+@import "carousel";
+
+@import "print";
+*/

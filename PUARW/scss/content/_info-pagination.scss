@@ -1,0 +1,8 @@
+//main: ../main.scss
+
+.info-pagination{
+  @include responsive-font-size($font-size-base);
+  .info-pagination-col2{
+    text-align: right;
+  }
+}

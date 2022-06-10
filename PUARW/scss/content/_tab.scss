@@ -1,0 +1,31 @@
+//main: ../main.scss
+.view-tab{
+
+  @extend .my-5;
+}
+.nav.nav-tabs{
+  background-color:$color-grey-tab;
+  li.nav-item{
+    width: 50%;
+    text-align: center;
+
+    .nav-link{
+      padding:1rem;
+      @include responsive-font-size($font-size-base);
+      @extend .bold;
+      color:$color-grey-linkTab;
+      &.active{
+        color:$color-app-menu;
+      }
+    }
+  }
+
+}
+.tab-content{
+  border:1px solid #dee2e6;
+  border-top:none;
+  background-color:$white;
+  padding:1rem;
+  min-height: 21rem;
+  @include box-shadow-my(10px, 10px, 16px, 0px, #ccc, false);
+}

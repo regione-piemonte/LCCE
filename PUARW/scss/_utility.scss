@@ -1,0 +1,45 @@
+//main: main.scss
+
+// qua dentro si dovrebbero inserire i titoli di default, le caratteristiche riutilizzabili nell'applicativo
+
+h1, .h1 { @include responsive-font-size($font-size-h1); @extend .bold; }
+h2, .h2 { @include responsive-font-size($font-size-h2); @extend .bold;}
+h3, .h3 { @include responsive-font-size($font-size-h3); @extend .bold;}
+h4, .h4 { @include responsive-font-size($font-size-h4); @extend .bold;}
+h5, .h5 { @include responsive-font-size($font-size-h5); }
+h6, .h6 { @include responsive-font-size($font-size-h6); }
+
+//Pesi dei testi
+.light {
+  font-weight:$font-weight-light!important;
+}
+.normal {
+  font-weight:$font-weight-normal!important;
+}
+.semibold {
+  font-weight:$font-weight-semibold!important;
+}
+.bold {
+  font-weight:$font-weight-bold!important;
+}
+
+
+.row-center{
+  text-align: center;
+}
+
+.border-right{
+  border-right:1px solid $color-border-line
+}
+
+
+//overflow
+.div-overflow{
+  width:100%;
+  overflow:auto;
+}
+
+/****errore form***/
+.form-control.error{
+border-color: #de3a33;
+}

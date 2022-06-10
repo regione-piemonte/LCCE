@@ -1,0 +1,154 @@
+//main: main.scss
+#header {
+
+  .navbar-expand-lg {
+
+    flex-basis: 100%;
+
+    @include media-breakpoint-down(md) {
+
+    z-index: 0;
+    }
+    nav {
+
+      width:100%;
+      .navbar-collapse{flex-basis: 20%!important;}
+      .navbar-nav .nav-link{
+        @extend .py-0;
+      }
+
+    }
+
+  }
+
+}
+
+.info_user_blockP{
+  display: block;
+  margin-top: 10px;
+  padding-right: 15px;
+}
+  @include media-breakpoint-down(md) {
+.content-col-dx{
+  width: 100%;
+}
+}
+
+
+
+// fuori da header per farlo prendere anche quando dentro a offcavans
+#fse-primary-navigation{
+  @extend .justify-content-between;
+  //flex-basis: 100%;
+
+
+
+    @include media-breakpoint-down(md) {
+
+      width: 100%;
+    }
+
+  .navbar-nav{
+
+    background-color:$white;
+
+    .nav-item{
+
+        /*border-bottom:0.35rem solid $white;*/
+        @include media-breakpoint-up(lg) {
+        padding:15px 15px;
+      }
+
+       &.active a{
+
+        border-bottom:2px solid $color-app-menu;
+      }
+
+      a.nav-link{
+
+        @include responsive-font-size($font-size-minimo);
+        @extend .bold;
+
+          @include setLinkSelectorStyle{
+
+            color:$color-app-menu;
+          }
+        @include setLinkHoverSelectorStyle  {
+          color:$color-app-menu;
+
+        }
+        &:hover{
+
+          border-bottom:2px solid $color-app-menu;
+        }
+        @include media-breakpoint-down(md) {
+        display: block;}
+        @include media-breakpoint-up(lg) {
+        text-align: center;
+
+      }
+
+        span.menu-image{
+
+          display: block;
+
+            @include media-breakpoint-down(md) {
+              display: inline-block;
+            }
+          img{
+            height:40px;
+            width:auto;
+          }
+        }
+      }
+    }
+
+  }
+
+
+
+  .navbar-nav-dx{
+
+    @include responsive-font-size($font-size-minimo);
+    @extend .bold;
+
+    @include media-breakpoint-down(md) {
+      border-top:1px solid $color-border-line;
+      margin-top:10px;
+    }
+    a.nav-link{
+      @include setLinkSelectorStyle{
+      color:$color-app-menu;
+      }
+      @include setLinkHoverSelectorStyle  {
+        color:$color-app-menu;
+      }
+      text-align: center;
+      &:hover, &.active{
+
+        border-bottom:2px solid $color-app-menu;
+      }
+        @include media-breakpoint-down(md) {
+          /*padding:15px;*/
+          text-align: left;
+        }
+      span.menu-image{
+        display: block;
+
+          @include media-breakpoint-down(md) {
+
+            display: inline-block;
+
+          }
+
+          img{
+            width:auto;
+            height:40px;
+          }
+      }
+    }
+  }
+  .navbar-header-menu{
+    background-color:#0381d6;
+  }
+}

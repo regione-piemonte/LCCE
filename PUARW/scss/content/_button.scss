@@ -1,0 +1,129 @@
+//main: ../main.scss
+// Base styles
+//
+html body{
+  .btn {
+    min-width:12.5rem;
+    @extend .bold;
+    @include border-radius(5px);
+
+    &.btn-primary{
+      color:$white!important;
+      &:focus,
+      &.focus {
+        background-color: theme-color("primary-color");
+        border:1px solid #f3c716;
+        color:$white!important;
+      }
+
+      &:hover,
+      &.hover {
+        background-color: #114172;
+      }
+
+      &:active,
+      &.active {
+        background-color: #14233a;
+      }
+
+      // Disabled comes first so active can properly restyle
+      &.disabled,
+      &:disabled {
+        background-color: #c9c8c8;
+      }
+    }
+
+    &.btn-outline-primary{
+      border-width: 2px;
+      &:focus,
+      &.focus {
+        border-color:theme-color("primary-color");
+      }
+
+      &:hover,
+      &.hover {
+        border-color: #114172;
+        background-color:transparent;
+        color:theme-color("primary-color");
+      }
+
+      &:active,
+      &.active {
+        border-color: #14233a;
+        background-color:transparent;
+        color:theme-color("primary-color");
+      }
+
+      // Disabled comes first so active can properly restyle
+      &.disabled,
+      &:disabled {
+        border-color: #c9c8c8;
+        background-color:transparent;
+      }
+    }
+
+    &.btn-success{
+      &:focus,
+      &.focus {
+        background-color: #f3c716;
+      }
+
+      &:hover,
+      &.hover {
+        background-color: #2a6c2e;
+
+      }
+
+      &:active,
+      &.active {
+
+
+      }
+
+      // Disabled comes first so active can properly restyle
+      &.disabled,
+      &:disabled {
+        background-color: #c9c8c8;
+
+      }
+    }
+
+    &.btn-warning{
+      &:focus,
+      &.focus {
+        background-color: #f3c716;
+      }
+
+      &:hover,
+      &.hover {
+        background-color: #c20e19;
+
+      }
+
+      &:active,
+      &.active {
+
+      }
+
+      // Disabled comes first so active can properly restyle
+      &.disabled,
+      &:disabled {
+        background-color: #c9c8c8;
+      }
+    }
+
+  }
+
+}
+
+.button-row{
+
+  @extend .my-6;
+
+}
+
+
+.btn-calendar::before {
+  @extend .fa;
+  content: "\f133";
+}
