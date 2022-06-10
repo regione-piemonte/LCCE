@@ -1,0 +1,12 @@
+name@version *,license *,copyrights *,end-of-support,dependencies,language,repository,email,URL
+bootstrap 4.0.0,"MIT License
+", - , - , - ,, - , - , - 
+fitodac/bsnav,"MIT License
+", - , - , - ,, - , - , - 
+font/openSans,Apache-2.0, - , - , - ,, - , - , - 
+Titillium Web,Open Font License., - , - , - ,, - , - , - 
+Font Awesome Free 5.2.0,Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License, - , - , - ,, - , - , - 
+rfs-master,"MIT License
+", - , - , - ,, - , - , - 
+jquery 3.2.1,"MIT License
+", - , - , - ,, - , - , - 
