@@ -138,9 +138,11 @@ public class Authentication2ServiceImpl implements Authentication2Service {
 
                 VerifyLoginConditions2Request verifyLoginConditions2Request = getVerifyLoginConditionsRequest(parameters);
                 VerifyLoginConditions2Response verifyLoginConditions2Response = null;
+
+                ServiziRichiamatiXmlDto serviziRichiamatiXmlDto = logGeneralDao.getServiziRichiamatiXmlDto(logGeneralDaoBean,null,null,credenzialiServiziDto.getServiziDto(),null);
                 try{
                     verifyLoginConditions2Response =
-                            verifyLoginConditions2Client.verifyLoginConditions2(verifyLoginConditions2Request, validateGetAuthentication2Response.getApplicazioneRichiestaDto(), credenzialiServiziDto);
+                            verifyLoginConditions2Client.verifyLoginConditions2(verifyLoginConditions2Request, validateGetAuthentication2Response.getApplicazioneRichiestaDto(), credenzialiServiziDto, serviziRichiamatiXmlDto);
                 }catch (Exception e){
                     e.printStackTrace();
                     log.error("Errore chiamata verifyLoginConditions2", e);
@@ -149,9 +151,8 @@ public class Authentication2ServiceImpl implements Authentication2Service {
                     return new GetAuthentication2Response(validateGetAuthentication2Response.getListaErrori(), RisultatoCodice.FALLIMENTO);
                 }finally {
                     //Bisogna salvare XML_IN e XML_OUT della chiamata nella tabella lcce.auth_l_xml_servizi_richiamati
-                    logGeneralDao.registraXmlServiziRichiamati(logGeneralDaoBean, Utils.xmlMessageFromObject(verifyLoginConditions2Request),
-                            Utils.xmlMessageFromObject(verifyLoginConditions2Response), credenzialiServiziDto.getServiziDto(),
-                            verifyLoginConditions2Response != null ? verifyLoginConditions2Response.getEsito().getValue() : null);
+                	serviziRichiamatiXmlDto.setEsito((verifyLoginConditions2Response != null && verifyLoginConditions2Response.getEsito() != null) ? verifyLoginConditions2Response.getEsito().getValue() : null);
+                	logGeneralDao.registraXmlServiziRichiamati(serviziRichiamatiXmlDto);
                 }
 
                 //Se esito negativo si prendono direttamente gli errori tornati dal servizio si scrivono nella messaggi errore
@@ -207,15 +208,13 @@ public class Authentication2ServiceImpl implements Authentication2Service {
                     RisultatoCodice.FALLIMENTO);
         } finally {
             /* LOG END */
-            String xmlOut = Utils.xmlMessageFromObject(response);
 
             if(response!=null) {
             	  response.setErrore(validateGetAuthentication2Response.getListaErrori());
             }
-
-
+            
             logGeneralDao.logEnd(logGeneralDaoBean, abilitazioneDto,
-                    response, tokenAutenticazione, xmlOut, GETAUTHENTICATION, response.getEsito().getValue());
+                    response, tokenAutenticazione, null, GETAUTHENTICATION, response!=null?response.getEsito().getValue():null);
 
         }
 
@@ -359,7 +358,7 @@ public class Authentication2ServiceImpl implements Authentication2Service {
 		MessaggiDto messaggiDto = createMessaggiDto(authenticationService, richiedente);
 
 		//Creo MessaggiXmlDto
-		MessaggiXmlDto messaggiXmlDto = createMessaggiXmlDto(getAuthenticationRequest);
+		MessaggiXmlDto messaggiXmlDto = createMessaggiXmlDto(wsContext);
 
 		return new LogGeneralDaoBean(logDto, logAuditDto, messaggiDto, messaggiXmlDto, null);
 	}
@@ -397,10 +396,9 @@ public class Authentication2ServiceImpl implements Authentication2Service {
 		return messaggiDto;
 	}
 	
-	private MessaggiXmlDto createMessaggiXmlDto(GetAuthentication2Request getAuthenticationRequest) {
+	private MessaggiXmlDto createMessaggiXmlDto(WebServiceContext wsContext) {
 		MessaggiXmlDto messaggiXmlDto = new MessaggiXmlDto();
-		String xmlIn = Utils.xmlMessageFromObject(getAuthenticationRequest);
-		messaggiXmlDto.setXmlIn(xmlIn != null ? xmlIn.getBytes() : null);
+		messaggiXmlDto.setId(Utils.getLXmlMessaggiIdFromInterceptor(wsContext));
 		return messaggiXmlDto;
 	}
 }

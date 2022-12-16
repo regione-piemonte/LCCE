@@ -26,6 +26,8 @@ import it.csi.dma.dmaloginccebl.util.Utils;
 @Component
 public class TokenInformationServiceValidator extends BaseServiceValidator{
 
+
+
 	@Autowired
 	ServiziLowDao serviziLowDao;
 	
@@ -39,6 +41,7 @@ public class TokenInformationServiceValidator extends BaseServiceValidator{
     ConfigurazioneLowDao configurazioneLowDao;
     
     private final String TIME_TOK = "TIME_TOK";
+	private static final String SESSION_TIME_TOK = "SESSION_TIME_TOK";
     
     public List<Errore> validateApplicazione(GetTokenInformationRequest getTokenInformationRequest, LogGeneralDaoBean logGeneralDaoBean, List<Errore> errori) {
     	
@@ -120,23 +123,49 @@ public class TokenInformationServiceValidator extends BaseServiceValidator{
 	
 	public List<Errore> verifyValiditaTemporaleToken(LogGeneralDaoBean logGeneralDaoBean,
 			LoginDataDto loginDataDto, List<Errore> errori) throws Exception {
-		
-		long inizioValiditaInMills = loginDataDto.getDataRichiestaToken().getTime();
-		long timeTok = 0;
+		long timeTok = 0;		
+		long sessionTimeTok = 0;
 		
 		ConfigurazioneDto configurazioneDto = getConfigurazioneTimeToken();
-		 
-		if(configurazioneDto != null) {
+		if (configurazioneDto != null) {
 			timeTok = Utils.toLong(configurazioneDto.getValore());
 		}
-		
-		long intervalloValidita = (Utils.sysdate().getTime()-inizioValiditaInMills)/1000;
-		
-		long timeOut = intervalloValidita-timeTok;
-		
-		if(timeOut >0) {
-			errori.add(logGeneralDao.logErrore(logGeneralDaoBean.getLogDto(), CatalogoLog.TOKEN_ERRATO_SCADUTO.getValue()));
-    	}
+		configurazioneDto = getConfigurazioneSessionTimeToken();
+		if (configurazioneDto != null) {
+			sessionTimeTok = Utils.toLong(configurazioneDto.getValore());
+		}
+			
+		log.info(
+				"[TokenInformationServiceValidator::verifyValiditaTemporaleToken] (loginDataDto.getDataUtilizzoToken() == null):: "
+						+ (loginDataDto.getDataUtilizzoToken() == null));
+		if (loginDataDto.getDataUtilizzoToken() == null) {
+			// primo utilizzo
+			long inizioValiditaInMills = loginDataDto.getDataRichiestaToken().getTime();
+
+			long intervalloValidita = (Utils.sysdate().getTime() - inizioValiditaInMills) / 1000;
+			long timeOut = intervalloValidita - timeTok;
+			if (timeOut > 0) {
+				errori.add(logGeneralDao.logErrore(logGeneralDaoBean.getLogDto(),
+						CatalogoLog.TOKEN_ERRATO_SCADUTO.getValue()));
+			}
+
+		} else {
+			// token già utilizzato
+			long ultimoUtilizzo = loginDataDto.getDataUtilizzoToken().getTime();
+			long dataRichiestaToken = loginDataDto.getDataRichiestaToken().getTime();
+
+			long intervUltimoUtilizzo = (Utils.sysdate().getTime() - ultimoUtilizzo) / 1000;
+			long intervDataRichiestaToken = (Utils.sysdate().getTime() - dataRichiestaToken) / 1000;
+
+			long timeOut = intervUltimoUtilizzo - timeTok;
+			long timeOutSess = intervDataRichiestaToken - sessionTimeTok;
+
+			if (timeOut > 0 || timeOutSess > 0) {
+				errori.add(logGeneralDao.logErrore(logGeneralDaoBean.getLogDto(),
+						CatalogoLog.TOKEN_ERRATO_SCADUTO.getValue()));
+			}
+
+		}
 		
 		return errori;
 	}
@@ -150,4 +179,12 @@ public class TokenInformationServiceValidator extends BaseServiceValidator{
 	   return configurazioneDto;
 	}
 
+	private ConfigurazioneDto getConfigurazioneSessionTimeToken() throws Exception {
+		ConfigurazioneDto configurazioneDto = new ConfigurazioneDto();
+		
+		configurazioneDto.setChiave(SESSION_TIME_TOK);
+		configurazioneDto = Utils.getFirstRecord(configurazioneLowDao.findByFilter(configurazioneDto));
+		
+	   return configurazioneDto;
+	}
 }

@@ -137,16 +137,16 @@ public class TokenInformationServiceImpl implements TokenInformationService {
         	}
         		
     		//5. VERIFICA TOKEN NON UTILIZZATO
-        	errori = tokenInformationServiceValidator.verifyUtilizzoToken(getTokenInformationRequest, logGeneralDaoBean, errori, loginDataDto);
-        	if (checkErrori(errori)) {
-        		return response=new GetTokenInformationResponse(errori, RisultatoCodice.FALLIMENTO);
-        	}
+//        	errori = tokenInformationServiceValidator.verifyUtilizzoToken(getTokenInformationRequest, logGeneralDaoBean, errori, loginDataDto);
+//        	if (checkErrori(errori)) {
+//        		return response=new GetTokenInformationResponse(errori, RisultatoCodice.FALLIMENTO);
+//        	}
     		
     		//6. VERIFICA CONGRUENZA IP IN INPUT CON IP IN ARCHIVIO (salvato da getAuthentication)
-        	errori = tokenInformationServiceValidator.verifyIp(getTokenInformationRequest, logGeneralDaoBean, errori, loginDataDto);
-        	if (checkErrori(errori)) {
-        		return response=new GetTokenInformationResponse(errori, RisultatoCodice.FALLIMENTO);
-        	}
+//        	errori = tokenInformationServiceValidator.verifyIp(getTokenInformationRequest, logGeneralDaoBean, errori, loginDataDto);
+//        	if (checkErrori(errori)) {
+//        		return response=new GetTokenInformationResponse(errori, RisultatoCodice.FALLIMENTO);
+//        	}
     		
     		//7. VERIFICA APPLICAZIONE RICHIESTA
     		abilitazioneDto = getAbilitazione(loginDataDto, abilitazioneDto);
@@ -212,8 +212,7 @@ public class TokenInformationServiceImpl implements TokenInformationService {
         	errori.add(logGeneralDao.logErrore(logGeneralDaoBean.getLogDto(), CatalogoLog.ERRORE_INTERNO.getValue()));
             response = new GetTokenInformationResponse(errori, RisultatoCodice.FALLIMENTO);
         } finally {
-            String xmlOut = Utils.xmlMessageFromObject(response);
-            logGeneralDao.logEnd(logGeneralDaoBean, abilitazioneDto, response, getTokenInformationRequest.getToken(), xmlOut, GETTOKENINFORMATION, response.getEsito().getValue());
+            logGeneralDao.logEnd(logGeneralDaoBean, abilitazioneDto, response, getTokenInformationRequest.getToken(), null, GETTOKENINFORMATION, response.getEsito().getValue());
         }
         return response;
     }
@@ -373,8 +372,7 @@ public class TokenInformationServiceImpl implements TokenInformationService {
 	private MessaggiXmlDto createMessaggiXmlDtoForTokenInformation(GetTokenInformationRequest getTokenInformationRequest) {
 		
 		MessaggiXmlDto messaggiXmlDto = new MessaggiXmlDto();
-		String xmlIn = Utils.xmlMessageFromObject(getTokenInformationRequest);
-		messaggiXmlDto.setXmlIn(xmlIn != null ? xmlIn.toString().getBytes() : null);
+		messaggiXmlDto.setId(Utils.getLXmlMessaggiIdFromInterceptor(wsContext));
 		
 		return messaggiXmlDto;
 	}

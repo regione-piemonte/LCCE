@@ -90,9 +90,9 @@ public class LogGeneralDaoImpl implements LogGeneralDao{
 		
 		MessaggiXmlDto messaggiXmlDto = logGeneralDaoBean.getMessaggiXmlDto();
 		messaggiXmlDto.setMessaggiDto(logGeneralDaoBean.getMessaggiDto());
-		logGeneralDaoBean.setMessaggiXmlDto(messaggiXmlLowDao.insert(messaggiXmlDto)); //TODO creare nuova insert/update per cifrare gli xml
+		messaggiXmlLowDao.updateIdMessaggio(messaggiXmlDto);
 	}
-
+	
 	@Override
 	public void logEnd(LogGeneralDaoBean logGeneralDaoBean, AbilitazioneDto abilitazioneDto,
 					   ServiceResponse response, String token, String xmlOut, Object... params) {
@@ -104,10 +104,6 @@ public class LogGeneralDaoImpl implements LogGeneralDao{
 
 		LogDto logDto = getLogDto(logGeneralDaoBean, messaggiDto);
 		logDao.log(logDto, CatalogoLog.LOG_END.getValue(), params);
-
-		MessaggiXmlDto messaggiXmlDto = getMessaggiXmlDtoLogEnd(logGeneralDaoBean, xmlOut);
-
-		messaggiXmlLowDao.update(messaggiXmlDto);
 
 		if (response.getErrori() != null) {
 			for (Errore errore : response.getErrori()) {
@@ -169,16 +165,26 @@ public class LogGeneralDaoImpl implements LogGeneralDao{
 		ServiziRichiamatiXmlDto serviziRichiamatiXmlDto = getServiziRichiamatiXmlDto(logGeneralDaoBean, xmlIn, xmlOut,
 				serviziDto, esito);
 
+		registraXmlServiziRichiamati(serviziRichiamatiXmlDto);
+	}
+
+	/**
+	 * @param serviziRichiamatiXmlDto
+	 */
+	@Override
+	public void registraXmlServiziRichiamati(ServiziRichiamatiXmlDto serviziRichiamatiXmlDto) {
 		serviziRichiamatiXmlLowDao.insert(serviziRichiamatiXmlDto);
 	}
 
-	private ServiziRichiamatiXmlDto getServiziRichiamatiXmlDto(LogGeneralDaoBean logGeneralDaoBean, String xmlIn, String xmlOut,
+
+	@Override
+	public ServiziRichiamatiXmlDto getServiziRichiamatiXmlDto(LogGeneralDaoBean logGeneralDaoBean, String xmlIn, String xmlOut,
 															  	 ServiziDto serviziDto, String esito) {
 		ServiziRichiamatiXmlDto serviziRichiamatiXmlDto = new ServiziRichiamatiXmlDto();
 		serviziRichiamatiXmlDto.setDataChiamata(Utils.sysdate());
 		serviziRichiamatiXmlDto.setMessaggiDto(logGeneralDaoBean.getMessaggiDto());
 		serviziRichiamatiXmlDto.setServiziDto(serviziDto);
-		serviziRichiamatiXmlDto.setXmlIn(xmlIn.getBytes());
+		serviziRichiamatiXmlDto.setXmlIn(xmlIn != null ? xmlIn.getBytes() : null);
 		serviziRichiamatiXmlDto.setDataRisposta(Utils.sysdate());
 		serviziRichiamatiXmlDto.setEsito(esito);
 		serviziRichiamatiXmlDto.setXmlOut(xmlOut != null ? xmlOut.getBytes() : null);
@@ -189,13 +195,6 @@ public class LogGeneralDaoImpl implements LogGeneralDao{
 		LogDto logDto = logGeneralDaoBean.getLogDto();
 		logDto.setMessaggiDto(messaggiDto);
 		return logDto;
-	}
-
-	private MessaggiXmlDto getMessaggiXmlDtoLogEnd(LogGeneralDaoBean logGeneralDaoBean, String xmlOut) {
-		MessaggiXmlDto messaggiXmlDto = logGeneralDaoBean.getMessaggiXmlDto();
-		messaggiXmlDto.setXmlOut(xmlOut != null ? xmlOut.getBytes() : null);
-		messaggiXmlDto.setDataAggiornamento(Utils.sysdate());
-		return messaggiXmlDto;
 	}
 
 	private MessaggiDto getMessaggiDtoLogEnd(LogGeneralDaoBean logGeneralDaoBean, AbilitazioneDto abilitazioneDto, String esito, String token) {

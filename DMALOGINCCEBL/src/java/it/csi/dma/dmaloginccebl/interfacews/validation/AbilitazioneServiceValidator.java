@@ -200,11 +200,11 @@ public class AbilitazioneServiceValidator extends BaseServiceValidator{
             //Errore collocazione non presente
             errori.add(logGeneralDao.logErrore(logGeneralDaoBean.getLogDto(), CatalogoLog.CODICE_COLLOCAZIONE_OBBLIGATORIO.getValue()));
         }else{
-            //Controllo codifica ruolo
-            collocazioneDto = new CollocazioneDto();
-            collocazioneDto.setColCodice(codiceCollocazione);
-            collocazioneDto.setColCodAzienda(codiceAzienda);
-            collocazioneDto = Utils.getFirstRecord(collocazioneLowDao.findByFilter(collocazioneDto));
+            // Controllo codifica ruolo
+            // collocazioneDto = new CollocazioneDto();
+            // collocazioneDto.setColCodice(codiceCollocazione);
+            // collocazioneDto.setColCodAzienda(codiceAzienda);
+            collocazioneDto = Utils.getFirstRecord(collocazioneLowDao.findByFilterAndDF(codiceCollocazione, codiceAzienda));
             if(collocazioneDto == null){
                 //Se non trovato vuol dire che non e' una codifica presente nel DB
                 errori.add(logGeneralDao.logErrore(logGeneralDaoBean.getLogDto(), CatalogoLog.COLLOCAZIONE_ERRATA.getValue()));

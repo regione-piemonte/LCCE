@@ -12,6 +12,7 @@ import it.csi.dma.dmaloginccebl.integration.LogGeneralDaoBean;
 import it.csi.dma.dmaloginccebl.interfacews.authentication.Credenziali;
 import it.csi.dma.dmaloginccebl.interfacews.authentication.GetAuthenticationRequest;
 import it.csi.dma.dmaloginccebl.interfacews.authentication.Richiedente;
+import it.csi.dma.dmaloginccebl.interfacews.authenticationconshibboleth.GetAuthenticationConShibbolethRequest;
 import it.csi.dma.dmaloginccebl.interfacews.msg.Errore;
 import it.csi.dma.dmaloginccebl.interfacews.msg.ParametriLogin;
 import it.csi.dma.dmaloginccebl.iride.data.Identita;
@@ -198,4 +199,61 @@ public class AuthenticationServiceValidator extends BaseServiceValidator{
         //Verifica password
         verificaCampoObbligatorio(logGeneralDaoBean, errori, credenziali.getPassword(), CatalogoLog.PASSWORD_OBBLIGATORIO);
     }
+
+	public List<Errore> validate(GetAuthenticationConShibbolethRequest getAuthenticationRequest,
+			LogGeneralDaoBean logGeneralDaoBean, List<Errore> errori) {
+		it.csi.dma.dmaloginccebl.interfacews.authenticationconshibboleth.Richiedente richiedente = getAuthenticationRequest
+				.getRichiedente();
+
+		if (richiedente != null) {
+			// Verifica credenziali
+			String cfmedico = richiedente.getCodiceFiscaleMedico();
+			if (cfmedico == null || cfmedico.isEmpty()) {
+				// Errore credenziali non presenti
+				errori.add(logGeneralDao.logErrore(logGeneralDaoBean.getLogDto(),
+						CatalogoLog.CAMPO_OBBLIGATORIO.getValue()));
+			}
+			// Verifica ipClient
+			verificaCampoObbligatorio(logGeneralDaoBean, errori, richiedente.getIpClient(),
+					CatalogoLog.IPCLIENT_OBBLIGATORIO);
+			// Verifica applicazione (SOLO OBBLIGATORIETA')
+			verificaCampoObbligatorio(logGeneralDaoBean, errori, richiedente.getApplicazione(),
+					CatalogoLog.APPLICAZIONE_OBBLIGATORIO);
+		} else {
+			// Errore richiedente non presente
+			errori.add(logGeneralDao.logErrore(logGeneralDaoBean.getLogDto(),
+					CatalogoLog.RICHIEDENTE_OBBLIGATORIO.getValue()));
+		}
+		// Verifica codiceFiscalePaziente
+		verificaCampoObbligatorio(logGeneralDaoBean, errori, getAuthenticationRequest.getCodiceFiscaleAssistito(),
+				CatalogoLog.COD_FISC_PAZIENTE);
+
+		return errori;
+	}
+
+	public ApplicazioneDto verificaApplicazione(LogGeneralDaoBean logGeneralDaoBean, List<Errore> errori,
+			it.csi.dma.dmaloginccebl.interfacews.authenticationconshibboleth.Richiedente richiedente) {
+
+		ApplicazioneDto applicazioneDto = new ApplicazioneDto();
+
+		applicazioneDto = Utils
+				.getFirstRecord(applicazioneLowDao.findByCodice(applicazioneDto, richiedente.getApplicazione()));
+
+		if (applicazioneDto == null) {
+			errori.add(logGeneralDao.logErrore(logGeneralDaoBean.getLogDto(),
+					CatalogoLog.ABILITAZIONE_NON_VALIDA.getValue()));
+		}
+		return applicazioneDto;
+	}
+
+	public UtenteDto verificaCodiceFiscaleMedico(LogGeneralDaoBean logGeneralDaoBean, List<Errore> errori,
+			it.csi.dma.dmaloginccebl.interfacews.authenticationconshibboleth.Richiedente richiedente) throws Exception {
+        UtenteDto utenteDto = new UtenteDto();
+        utenteDto.setCodiceFiscale(richiedente.getCodiceFiscaleMedico());
+        utenteDto = Utils.getFirstRecord(utenteLowDao.findByFilter(utenteDto));
+        if(utenteDto == null){
+            errori.add(logGeneralDao.logErrore(logGeneralDaoBean.getLogDto(), CatalogoLog.UTENTE_ERRATO.getValue()));
+        }
+        return utenteDto;
+	}
 }

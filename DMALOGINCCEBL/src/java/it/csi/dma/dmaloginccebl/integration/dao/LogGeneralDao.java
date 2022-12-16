@@ -13,6 +13,7 @@ import it.csi.dma.dmaloginccebl.business.dao.dto.LogDto;
 import it.csi.dma.dmaloginccebl.business.dao.dto.MessaggiDto;
 import it.csi.dma.dmaloginccebl.business.dao.dto.RuoloDto;
 import it.csi.dma.dmaloginccebl.business.dao.dto.ServiziDto;
+import it.csi.dma.dmaloginccebl.business.dao.dto.ServiziRichiamatiXmlDto;
 import it.csi.dma.dmaloginccebl.business.dao.dto.UtenteDto;
 import it.csi.dma.dmaloginccebl.integration.LogGeneralDaoBean;
 import it.csi.dma.dmaloginccebl.interfacews.msg.Errore;
@@ -37,5 +38,10 @@ public interface LogGeneralDao {
 	void logXml(MessaggiDto messaggiDto, String xmlIn, String xmlOut);
 	
 	CatalogoLogAuditDto getCatalogoLogAudit(String codice);
+
+	ServiziRichiamatiXmlDto getServiziRichiamatiXmlDto(LogGeneralDaoBean logGeneralDaoBean, String xmlIn, String xmlOut,
+			ServiziDto serviziDto, String esito);
+
+	void registraXmlServiziRichiamati(ServiziRichiamatiXmlDto serviziRichiamatiXmlDto);
 	
 }

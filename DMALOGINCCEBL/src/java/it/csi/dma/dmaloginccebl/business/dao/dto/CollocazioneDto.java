@@ -24,12 +24,19 @@ public class CollocazioneDto extends BaseDto {
 	@Column(name = "col_descrizione")
 	private String colDescrizione;
 	
+	
+	
 	@Column(name = "col_cod_azienda")
 	private String colCodAzienda;
 	
 	@Column(name = "col_desc_azienda")
 	private String colDescAzienda;
 	
+	@Column(name = "cod_asr_terr")
+	private String colAsrTerr;
+	
+	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "col_tipo_id", referencedColumnName = "col_tipo_id")
 	private CollocazioneTipoDto collocazioneTipoDto;
@@ -124,5 +131,11 @@ public class CollocazioneDto extends BaseDto {
 	}
 	public void setColCodAzienda(String colCodAzienda) {
 		this.colCodAzienda = colCodAzienda;
+	}
+	public String getColAsrTerr() {
+		return colAsrTerr;
+	}
+	public void setColAsrTerr(String colAsrTerr) {
+		this.colAsrTerr = colAsrTerr;
 	}
 }

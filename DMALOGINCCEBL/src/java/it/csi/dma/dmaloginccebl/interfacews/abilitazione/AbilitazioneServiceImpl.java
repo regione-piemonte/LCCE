@@ -134,8 +134,7 @@ public class AbilitazioneServiceImpl implements AbilitazioneService {
 			errori.add(logGeneralDao.logErrore(logGeneralDaoBean.getLogDto(), CatalogoLog.ERRORE_INTERNO.getValue()));
             response = new GetAbilitazioniResponse(errori, RisultatoCodice.FALLIMENTO);
 		} finally {
-			String xmlOut = Utils.xmlMessageFromObject(response);
-			logGeneralDao.logEnd(logGeneralDaoBean, null, response, null, xmlOut,
+			logGeneralDao.logEnd(logGeneralDaoBean, null, response, null, null,
 					GET_ABILITAZIONI, response.getEsito().getValue());
 		}
 		return response;
@@ -210,8 +209,7 @@ public class AbilitazioneServiceImpl implements AbilitazioneService {
 		
 		//Creo MessaggiXmlDto
 		MessaggiXmlDto messaggiXmlDto = new MessaggiXmlDto();
-		String xmlIn = Utils.xmlMessageFromObject(getAbilitazioniRequest);
-		messaggiXmlDto.setXmlIn(xmlIn != null ? xmlIn.getBytes() : null);
+		messaggiXmlDto.setId(Utils.getLXmlMessaggiIdFromInterceptor(wsContext));
 		logDto.setMessaggiDto(messaggiDto);
 
 		return new LogGeneralDaoBean(logDto, logAuditDto, messaggiDto, messaggiXmlDto, null);

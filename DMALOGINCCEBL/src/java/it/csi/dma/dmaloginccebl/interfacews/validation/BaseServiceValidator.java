@@ -44,7 +44,7 @@ import org.w3c.dom.NodeList;
 @Component
 public class BaseServiceValidator {
 
-	private org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(Constants.APPLICATION_CODE);
+	protected org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(Constants.APPLICATION_CODE);
 
 	@Autowired
     protected LogGeneralDao logGeneralDao;

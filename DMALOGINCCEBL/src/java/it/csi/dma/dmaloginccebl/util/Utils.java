@@ -40,12 +40,19 @@ import javax.xml.bind.Marshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.handler.MessageContext;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.cxf.jaxws.context.WrappedMessageContext;
+import org.apache.cxf.message.Exchange;
+import org.apache.cxf.message.Message;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import it.csi.dma.dmaloginccebl.cxf.interceptor.LogXmlInInterceptor;
 
 public class Utils {
 	
@@ -785,7 +792,8 @@ public class Utils {
 			this.value = value;
 		}
 	}
-
+	
+	@Deprecated
 	public static String xmlMessageFromObject(Object obj) {
 		String xmlString = null;
 		if (obj != null) {
@@ -845,5 +853,17 @@ public class Utils {
 		}
 		return null;
 	}
+	
+
+
+	public static Long getLXmlMessaggiIdFromInterceptor(WebServiceContext wsContext){
+		MessageContext mContext = wsContext.getMessageContext();
+		WrappedMessageContext wmc = (WrappedMessageContext) mContext;
+		Message m = wmc.getWrappedMessage();
+		Exchange ex = m.getExchange();
+		String result = (String) ex.get(LogXmlInInterceptor.AUTH_L_XML_MESSAGGI_ID);
+		 return new Long(result);
+	}
+
 	
 }

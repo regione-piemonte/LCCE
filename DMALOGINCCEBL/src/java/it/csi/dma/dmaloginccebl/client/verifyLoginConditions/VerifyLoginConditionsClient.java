@@ -6,18 +6,22 @@
 package it.csi.dma.dmaloginccebl.client.verifyLoginConditions;
 
 
-import it.csi.dma.dmaloginccebl.business.dao.dto.ApplicazioneDto;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import java.security.Security;
+import java.util.Map;
 
 import javax.xml.ws.BindingProvider;
-import java.security.Security;
+
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
+import it.csi.dma.dmaloginccebl.business.dao.dto.ApplicazioneDto;
+import it.csi.dma.dmaloginccebl.business.dao.dto.ServiziRichiamatiXmlDto;
 
 public class VerifyLoginConditionsClient {
 
     VerifyLoginConditionsService verifyLoginConditionsService;
 
 
-    public VerifyLoginConditionsResponse verifyLoginConditions(VerifyLoginConditionsRequest verifyLoginConditionsRequest, ApplicazioneDto applicazioneDto){
+    public VerifyLoginConditionsResponse verifyLoginConditions(VerifyLoginConditionsRequest verifyLoginConditionsRequest, ApplicazioneDto applicazioneDto, ServiziRichiamatiXmlDto serviziRichiamatiXmlDto){
 
 //        Security.addProvider(new BouncyCastleProvider());
 //
@@ -84,8 +88,11 @@ public class VerifyLoginConditionsClient {
         Security.addProvider(new BouncyCastleProvider());
         Security.insertProviderAt(new org.bouncycastle.jce.provider.BouncyCastleProvider(), 0);
 
+        
+        Map<String, Object> requestContext = verifyLoginConditionsPortBP.getRequestContext();
+        requestContext.put(ServiziRichiamatiXmlDto.class.getSimpleName(), serviziRichiamatiXmlDto);
+        
         return verifyLoginConditionsService.verifyLoginConditions(verifyLoginConditionsRequest);
-
     }
 
     public VerifyLoginConditionsService getVerifyLoginConditionsService() {

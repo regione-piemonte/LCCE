@@ -103,8 +103,7 @@ public class FarmaciaServiceImpl implements FarmaciaService{
 			log.error("getFarmacieAderenti", e);
 			 getFarmacieAderentiResponse.setEsito(RisultatoCodice.FALLIMENTO);
 		} finally {
-			String xmlOut = Utils.xmlMessageFromObject(getFarmacieAderentiResponse);
-			logGeneralDao.logEnd(logGeneralDaoBean, abilitazioneDto, getFarmacieAderentiResponse, null, xmlOut, "GetFarmacieAderenti", getFarmacieAderentiResponse.getEsito().getValue());
+			logGeneralDao.logEnd(logGeneralDaoBean, abilitazioneDto, getFarmacieAderentiResponse, null, null, "GetFarmacieAderenti", getFarmacieAderentiResponse.getEsito().getValue());
 		}
 		return getFarmacieAderentiResponse;
 		
@@ -185,8 +184,7 @@ public class FarmaciaServiceImpl implements FarmaciaService{
 			log.error("verificaFarmacista", e);
 			verificaFarmacistaResponse.setEsito(RisultatoCodice.FALLIMENTO);
 		} finally {
-			String xmlOut = Utils.xmlMessageFromObject(verificaFarmacistaResponse);
-			logGeneralDao.logEnd(logGeneralDaoBean, abilitazioneDto, verificaFarmacistaResponse, null, xmlOut, "verificaFarmacista", verificaFarmacistaResponse.getEsito().getValue());
+			logGeneralDao.logEnd(logGeneralDaoBean, abilitazioneDto, verificaFarmacistaResponse, null, null, "verificaFarmacista", verificaFarmacistaResponse.getEsito().getValue());
 		}
 		return verificaFarmacistaResponse;
 		
@@ -216,8 +214,7 @@ public class FarmaciaServiceImpl implements FarmaciaService{
 		
 		//Creo MessaggiXmlDto
 		MessaggiXmlDto messaggiXmlDto = new MessaggiXmlDto();
-		String xmlIn = Utils.xmlMessageFromObject(parameters);
-		messaggiXmlDto.setXmlIn(xmlIn != null ? xmlIn.toString().getBytes() : null);
+		messaggiXmlDto.setId(Utils.getLXmlMessaggiIdFromInterceptor(wsContext2));
 		logDto.setMessaggiDto(messaggiDto);
 
 		return new LogGeneralDaoBean(logDto, new LogAuditDto(), messaggiDto, messaggiXmlDto, null);
@@ -249,8 +246,7 @@ public class FarmaciaServiceImpl implements FarmaciaService{
 		
 		//Creo MessaggiXmlDto
 		MessaggiXmlDto messaggiXmlDto = new MessaggiXmlDto();
-		String xmlIn = Utils.xmlMessageFromObject(parameters);
-		messaggiXmlDto.setXmlIn(xmlIn != null ? xmlIn.toString().getBytes() : null);
+		messaggiXmlDto.setId(Utils.getLXmlMessaggiIdFromInterceptor(wsContext2));
 		logDto.setMessaggiDto(messaggiDto);
 
 		return new LogGeneralDaoBean(logDto, new LogAuditDto(), messaggiDto, messaggiXmlDto, null);

@@ -49,6 +49,19 @@ public class AbilitazioneLowDaoImpl extends EntityBaseLowDaoImpl<AbilitazioneDto
     }
 
     @Override
+    public Collection<AbilitazioneDto> findAbilitazioneAllCollocazioniByUtenteRuolo(AbilitazioneDto abilitazioneDto) {
+        StringBuilder queryString= new StringBuilder("FROM AbilitazioneDto t  WHERE t.ruoloUtenteDto.id = :idRuoloUtente " +
+                " AND ((:data > t.utenteCollocazioneDto.dataInizioValidita AND t.utenteCollocazioneDto.dataFineValidita is null) OR (:data BETWEEN t.utenteCollocazioneDto.dataInizioValidita AND t.utenteCollocazioneDto.dataFineValidita))");
+        
+        Query query = entityManager.createQuery(queryString.toString());
+        query.setParameter("idRuoloUtente", abilitazioneDto.getRuoloUtenteDto().getId());
+        query.setParameter("data", Utils.sysdate());
+
+        return query.getResultList();
+    }
+
+    
+    @Override
     public Collection<AbilitazioneDto> findAbilitazioneGetAbilitazioni(AbilitazioneDto abilitazioneDto) {
         StringBuilder queryString= new StringBuilder("FROM AbilitazioneDto t  WHERE t.ruoloUtenteDto.id = :idRuoloUtente " +
                 " AND t.utenteCollocazioneDto.id_utecol = :idUtenteCollocazione " +

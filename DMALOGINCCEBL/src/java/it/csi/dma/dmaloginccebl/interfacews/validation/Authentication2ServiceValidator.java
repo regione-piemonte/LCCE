@@ -180,7 +180,7 @@ public class Authentication2ServiceValidator extends BaseServiceValidator{
         CollocazioneDto collocazioneDto = new CollocazioneDto();
         collocazioneDto.setColCodice(codiceCollocazione);
         collocazioneDto.setColCodAzienda(codiceCollAzienda);
-        collocazioneDto = Utils.getFirstRecord(collocazioneLowDao.findByFilter(collocazioneDto));
+        collocazioneDto = Utils.getFirstRecord(collocazioneLowDao.findByFilterAndDF(codiceCollocazione,codiceCollAzienda ));
         return collocazioneDto;
     }
 

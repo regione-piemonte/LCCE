@@ -9,6 +9,7 @@ import it.csi.dma.dmaloginccebl.business.dao.AbilitazioneLowDao;
 import it.csi.dma.dmaloginccebl.business.dao.FunzionalitaLowDao;
 import it.csi.dma.dmaloginccebl.business.dao.ServiziLowDao;
 import it.csi.dma.dmaloginccebl.business.dao.TreeFunzionalitaLowDao;
+import it.csi.dma.dmaloginccebl.business.dao.UtenteCollocazioneLowDao;
 import it.csi.dma.dmaloginccebl.business.dao.dto.*;
 import it.csi.dma.dmaloginccebl.business.dao.util.CatalogoLog;
 import it.csi.dma.dmaloginccebl.business.dao.util.CatalogoLogAudit;
@@ -93,29 +94,34 @@ public class CollocazioniServiceImpl implements CollocazioniService {
 			}
 
 			// Reperimento Collocazioni
+//			---
+
+			
 			abilitazioneDto = new AbilitazioneDto();
 			abilitazioneDto.setRuoloUtenteDto(validateCollocazioniResponse.getRuoloUtenteDto());
-			Collection<AbilitazioneDto> abilitazioneDtoList = abilitazioneLowDao
-					.findByUtenteRuolo(abilitazioneDto);
+			//Collection<AbilitazioneDto> abilitazioneDtoList = abilitazioneLowDao.findByUtenteRuolo(abilitazioneDto);
+			Collection<AbilitazioneDto> abilitazioneDtoList = abilitazioneLowDao.findAbilitazioneAllCollocazioniByUtenteRuolo(abilitazioneDto);
+		
 			response = new GetCollocazioniResponse();
 			Set<Collocazione> hashSetCollocazioniResponse = new HashSet<Collocazione>();
 			if (abilitazioneDtoList != null && !abilitazioneDtoList.isEmpty()) {
 				response.setCollocazioni(new ArrayList<Collocazione>());
 				for (AbilitazioneDto abilitazione : abilitazioneDtoList) {
 					/*
-						Controlliamo che l'abilitazione abbia realmente una collocazione collegata
-						ma soprattutto controlliamo (come in getAbilitzioni) se la funzionalita'
-						collegata all'abilitazione ha un applicazione segnata altrimenti la collocazione
-						non deve essere visualizzata in output in quanto in realta' l'utente non e' abilitato
-						ad un applicazione (questo per evitare che risultino collocazioni abilitate ma non applicazioni)
-						nel caso in cui non dovesse esserci un applicazione potrebbe essere una funzionalita'
-						padre quindi cerchiamo anche i figli per vedere se troviamo almeno un'applicazione abilitata
+					 * Controlliamo che l'abilitazione abbia realmente una collocazione collegata ma
+					 * soprattutto controlliamo (come in getAbilitzioni) se la funzionalita'
+					 * collegata all'abilitazione ha un applicazione segnata altrimenti la
+					 * collocazione non deve essere visualizzata in output in quanto in realta'
+					 * l'utente non e' abilitato ad un applicazione (questo per evitare che
+					 * risultino collocazioni abilitate ma non applicazioni) nel caso in cui non
+					 * dovesse esserci un applicazione potrebbe essere una funzionalita' padre
+					 * quindi cerchiamo anche i figli per vedere se troviamo almeno un'applicazione
+					 * abilitata
 					 */
-					boolean isApplicazionePresente = false;
+//					boolean isApplicazionePresente = false;
+//					isApplicazionePresente = checkApplicazioneFunzionalita(abilitazione, isApplicazionePresente);
+//					if (isApplicazionePresente) {
 
-					isApplicazionePresente = checkApplicazioneFunzionalita(abilitazione, isApplicazionePresente);
-
-					if(isApplicazionePresente){
 						Collocazione collocazione = new Collocazione();
 						collocazione.setColCodAzienda(
 								abilitazione.getUtenteCollocazioneDto().getCollocazioneDto().getColCodAzienda());
@@ -126,7 +132,7 @@ public class CollocazioniServiceImpl implements CollocazioniService {
 						collocazione.setColDescrizione(
 								abilitazione.getUtenteCollocazioneDto().getCollocazioneDto().getColDescrizione());
 						hashSetCollocazioniResponse.add(collocazione);
-					}
+//					}
 				}
 			}
 			if(!hashSetCollocazioniResponse.isEmpty()) {
@@ -146,8 +152,7 @@ public class CollocazioniServiceImpl implements CollocazioniService {
 			errori.add(logGeneralDao.logErrore(logGeneralDaoBean.getLogDto(), CatalogoLog.ERRORE_INTERNO.getValue()));
 			response = new GetCollocazioniResponse(errori, RisultatoCodice.FALLIMENTO);
 		} finally {
-			String xmlOut = Utils.xmlMessageFromObject(response);
-			logGeneralDao.logEnd(logGeneralDaoBean, null, response, null, xmlOut, "GetCollocazioni",
+			logGeneralDao.logEnd(logGeneralDaoBean, null, response, null, null, "GetCollocazioni",
 					response.getEsito().getValue());
 		}
 		return response;
@@ -205,8 +210,7 @@ public class CollocazioniServiceImpl implements CollocazioniService {
 
 		// Creo MessaggiXmlDto
 		MessaggiXmlDto messaggiXmlDto = new MessaggiXmlDto();
-		String xmlIn = Utils.xmlMessageFromObject(getCollocazioniRequest);
-		messaggiXmlDto.setXmlIn(xmlIn != null ? xmlIn.toString().getBytes() : null);
+		messaggiXmlDto.setId(Utils.getLXmlMessaggiIdFromInterceptor(wsContext));
 		messaggiXmlDto.setMessaggiDto(messaggiDto);
 
 		// Creo LogAuditDto

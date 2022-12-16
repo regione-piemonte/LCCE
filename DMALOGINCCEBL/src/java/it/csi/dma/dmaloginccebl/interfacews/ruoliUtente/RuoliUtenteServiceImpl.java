@@ -7,6 +7,7 @@ package it.csi.dma.dmaloginccebl.interfacews.ruoliUtente;
 
 import it.csi.dma.dmaloginccebl.business.dao.RuoloLowDao;
 import it.csi.dma.dmaloginccebl.business.dao.ServiziLowDao;
+import it.csi.dma.dmaloginccebl.business.dao.UtenteLowDao;
 import it.csi.dma.dmaloginccebl.business.dao.dto.*;
 import it.csi.dma.dmaloginccebl.business.dao.util.CatalogoLog;
 import it.csi.dma.dmaloginccebl.business.dao.util.CatalogoLogAudit;
@@ -52,6 +53,9 @@ public class RuoliUtenteServiceImpl implements RuoliUtenteService {
 	@Autowired
 	private ServiziLowDao serviziLowDao;
 	
+    @Autowired
+    private UtenteLowDao utenteLowDao;
+    
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	@Override
 	public GetRuoliUtenteResponse getRuoliUtente(GetRuoliUtenteRequest getRuoliUtenteRequest) {
@@ -91,10 +95,14 @@ public class RuoliUtenteServiceImpl implements RuoliUtenteService {
 					ruoloResponse.setDescrizione(ruolo.getDescrizione());
 					response.getListaRuoli().add(ruoloResponse);
 				}
+				
+				
 			} else {
 				errori.add(logGeneralDao.logErrore(logGeneralDaoBean.getLogDto(), CatalogoLog.LISTA_RUOLI_VUOTA.getValue()));
 				return response=new GetRuoliUtenteResponse(errori, RisultatoCodice.FALLIMENTO);
 			}
+			
+			utenteLowDao.updateUltimoAccessoPUAByCF(getRuoliUtenteRequest.getRichiedente().getCodiceFiscaleRichiedente());
 			logGeneralDao.logAudit(logGeneralDaoBean.getLogAuditDto(), validateRuoliUtenteResponse.getApplicazioneDto(), abilitazioneDto, validateRuoliUtenteResponse.getUtenteDto(), null, null, CatalogoLogAudit.LOG_SUCCESSO_RUOLI_UTENTE.getValue());
 			
 		} catch (Exception e) {
@@ -102,8 +110,7 @@ public class RuoliUtenteServiceImpl implements RuoliUtenteService {
 			errori.add(logGeneralDao.logErrore(logGeneralDaoBean.getLogDto(), CatalogoLog.ERRORE_INTERNO.getValue()));
             response = new GetRuoliUtenteResponse(errori, RisultatoCodice.FALLIMENTO);
 		} finally {
-			String xmlOut = Utils.xmlMessageFromObject(response);
-			logGeneralDao.logEnd(logGeneralDaoBean, abilitazioneDto, response, null, xmlOut, "GetRuoliUtente", response.getEsito().getValue());
+			logGeneralDao.logEnd(logGeneralDaoBean, abilitazioneDto, response, null, null, "GetRuoliUtente", response.getEsito().getValue());
 		}
 		return response;
 	}
@@ -148,8 +155,7 @@ public class RuoliUtenteServiceImpl implements RuoliUtenteService {
 		
 		//Creo MessaggiXmlDto
 		MessaggiXmlDto messaggiXmlDto = new MessaggiXmlDto();
-		String xmlIn = Utils.xmlMessageFromObject(getRuoliUtenteRequest);
-		messaggiXmlDto.setXmlIn(xmlIn != null ? xmlIn.toString().getBytes() : null);
+		messaggiXmlDto.setId(Utils.getLXmlMessaggiIdFromInterceptor(wsContext));
 		logDto.setMessaggiDto(messaggiDto);
 
 		return new LogGeneralDaoBean(logDto, logAuditDto, messaggiDto, messaggiXmlDto, null);

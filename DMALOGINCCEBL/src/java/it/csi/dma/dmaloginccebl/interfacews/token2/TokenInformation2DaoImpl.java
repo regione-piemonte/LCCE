@@ -215,8 +215,7 @@ public class TokenInformation2DaoImpl {
         	errori.add(logGeneralDao.logErrore(logGeneralDaoBean.getLogDto(), CatalogoLog.ERRORE_INTERNO.getValue()));
             response = new GetTokenInformation2Response(errori, RisultatoCodice.FALLIMENTO);
         } finally {
-            String xmlOut = Utils.xmlMessageFromObject(response);
-            logGeneralDao.logEnd(logGeneralDaoBean, null, response, getTokenInformation2Request.getToken(), xmlOut, GETTOKENINFORMATION, response.getEsito().getValue());
+            logGeneralDao.logEnd(logGeneralDaoBean, null, response, getTokenInformation2Request.getToken(), null, GETTOKENINFORMATION, response.getEsito().getValue());
         }
         return response;
     }
@@ -340,10 +339,18 @@ public class TokenInformation2DaoImpl {
 		if(ruoloDto != null) {
 			richiedente.setRuolo(ruoloDto.getCodice());
 		}
+		
+		//
+		if (collocazioneDto.getCollocazioneTipoDto() != null
+				&& "FARM".equalsIgnoreCase(collocazioneDto.getCollocazioneTipoDto().getColTipoCodice())) {
+			richiedente.setCodiceAzienda(collocazioneDto.getColAsrTerr());
+		} else {
+
+			richiedente.setCodiceAzienda(collocazioneDto.getColCodAzienda());
+		}
 
 		richiedente.setCodiceCollocazione(collocazioneDto.getColCodice());
 		richiedente.setDescrizioneCollocazione(collocazioneDto.getColDescrizione());
-		richiedente.setCodiceAzienda(collocazioneDto.getColCodAzienda());
 		richiedente.setDescrizioneAzienda(collocazioneDto.getColDescAzienda());
 
 		return richiedente;
@@ -382,7 +389,7 @@ public class TokenInformation2DaoImpl {
 		LogDto logDto = createLogDtoForTokenInformation(getTokenInformation2Request, tokenInformationService);
 
 		//Creo MessaggiXmlDto
-		MessaggiXmlDto messaggiXmlDto = createMessaggiXmlDtoForTokenInformation(getTokenInformation2Request); 
+		MessaggiXmlDto messaggiXmlDto = createMessaggiXmlDtoForTokenInformation(wsContext); 
 		
 		//Creo LogAuditDto
 		LogAuditDto logAuditDto = createLogAuditDtoForTokenInformation(getTokenInformation2Request, tokenInformationService);
@@ -417,11 +424,10 @@ public class TokenInformation2DaoImpl {
 		return logDto;
 	}
 
-	private MessaggiXmlDto createMessaggiXmlDtoForTokenInformation(GetTokenInformation2Request getTokenInformation2Request) {
+	private MessaggiXmlDto createMessaggiXmlDtoForTokenInformation(WebServiceContext wsContext) {
 		
 		MessaggiXmlDto messaggiXmlDto = new MessaggiXmlDto();
-		String xmlIn = Utils.xmlMessageFromObject(getTokenInformation2Request);
-		messaggiXmlDto.setXmlIn(xmlIn != null ? xmlIn.getBytes() : null);
+		messaggiXmlDto.setId(Utils.getLXmlMessaggiIdFromInterceptor(wsContext));
 		
 		return messaggiXmlDto;
 	}

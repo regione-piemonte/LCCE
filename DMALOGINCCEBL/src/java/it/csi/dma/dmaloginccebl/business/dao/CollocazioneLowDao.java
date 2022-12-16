@@ -5,7 +5,11 @@
 */
 package it.csi.dma.dmaloginccebl.business.dao;
 
+import java.util.List;
+
 import it.csi.dma.dmaloginccebl.business.dao.dto.CollocazioneDto;
 
 public interface CollocazioneLowDao extends EntityBaseLowDao<CollocazioneDto, Long> {
+
+	List<CollocazioneDto> findByFilterAndDF(String codiceCollocazione, String codiceAzienda);
 }

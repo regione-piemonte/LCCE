@@ -23,4 +23,16 @@ public class UtenteLowDaoImpl extends EntityBaseLowDaoImpl<UtenteDto, Long> impl
 		query.setParameter("codiceFiscale", codiceFiscale);
 		return query.getResultList();
 	}
+	
+
+	public void updateUltimoAccessoPUAByCF(String codiceFiscale) {
+
+		Query query = entityManager.createNativeQuery(
+				"update auth_t_utente set ultimo_accesso_pua=Current_timestamp where codice_fiscale=:codice_fiscale");
+
+		query.setParameter("codice_fiscale", codiceFiscale);
+
+		query.executeUpdate();
+
+	}
 }

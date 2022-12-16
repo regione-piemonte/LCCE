@@ -9,4 +9,5 @@ import it.csi.dma.dmaloginccebl.business.dao.dto.MessaggiXmlDto;
 
 public interface MessaggiXmlLowDao extends EntityBaseLowDao<MessaggiXmlDto, Long> {
 
+	public void updateIdMessaggio(MessaggiXmlDto obj);
 }

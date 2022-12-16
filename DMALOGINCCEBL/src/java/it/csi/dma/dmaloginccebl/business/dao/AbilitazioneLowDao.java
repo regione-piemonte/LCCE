@@ -19,4 +19,6 @@ public interface AbilitazioneLowDao extends EntityBaseLowDao<AbilitazioneDto, Lo
 	Collection<AbilitazioneDto> findByUtenteRuolo(AbilitazioneDto abilitazioneDto);
 
 	Collection<AbilitazioneDto> findAbilitazioneFarmacista(String codiceCollocazione, String codiceFarmacia, String codiceApplicazione);
+
+	Collection<AbilitazioneDto> findAbilitazioneAllCollocazioniByUtenteRuolo(AbilitazioneDto abilitazioneDto);
 }

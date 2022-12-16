@@ -5,17 +5,20 @@
 */
 package it.csi.dma.dmaloginccebl.business.dao.impl;
 
+import java.math.BigInteger;
+
+import javax.persistence.Query;
+
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+
 import it.csi.dma.dmaloginccebl.business.dao.MessaggiXmlLowDao;
 import it.csi.dma.dmaloginccebl.business.dao.dto.MessaggiXmlDto;
 import it.csi.dma.dmaloginccebl.business.dao.util.Constants;
 import it.csi.dma.dmaloginccebl.util.Utils;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
 
-import javax.persistence.Query;
-import java.math.BigInteger;
-
-@Component
+@Component("messaggiXmlLowDaoImpl")
 public class MessaggiXmlLowDaoImpl extends EntityBaseLowDaoImpl<MessaggiXmlDto, Long> implements MessaggiXmlLowDao{
 
 
@@ -32,13 +35,11 @@ public class MessaggiXmlLowDaoImpl extends EntityBaseLowDaoImpl<MessaggiXmlDto, 
         obj.setId(getNextValueSequence());
 
         Query query = entityManager.createNativeQuery("INSERT INTO "+getTableName()+
-                " (ID, ID_MESSAGGIO, XML_IN, DATA_INSERIMENTO) VALUES " +
-                " (:id, :idMessaggio, pgp_sym_encrypt_bytea(:xmlIn, '@encryption_key@'), :dataInserimento)");
+                " (ID, XML_IN, DATA_INSERIMENTO) VALUES " +
+                " (:id, pgp_sym_encrypt_bytea(:xmlIn, '@encryption_key@'), NOW())");
 
         query.setParameter("id", obj.getId());
-        query.setParameter("idMessaggio", obj.getMessaggiDto().getId());
         query.setParameter("xmlIn", obj.getXmlIn());
-        query.setParameter("dataInserimento", Utils.sysdate());
 
         query.executeUpdate();
 
@@ -59,15 +60,31 @@ public class MessaggiXmlLowDaoImpl extends EntityBaseLowDaoImpl<MessaggiXmlDto, 
 
 
         Query query = entityManager.createNativeQuery("UPDATE "+getTableName()+" SET" +
-                " XML_OUT = pgp_sym_encrypt_bytea(:xmlOut, '@encryption_key@'), DATA_AGGIORNAMENTO = :dataAggiornamento WHERE ID = :id");
+                " XML_OUT = pgp_sym_encrypt_bytea(:xmlOut, '@encryption_key@'), DATA_AGGIORNAMENTO = NOW() WHERE ID = :id");
 
         query.setParameter("xmlOut", obj.getXmlOut());
-        query.setParameter("dataAggiornamento", Utils.sysdate());
         query.setParameter("id", obj.getId());
 
         query.executeUpdate();
 
         log.info("END - override update xml dao");
     }
+
+	@Override
+	public void updateIdMessaggio(MessaggiXmlDto obj) {
+        log.info("START - override updateIdMessaggio xml dao");
+
+
+        Query query = entityManager.createNativeQuery("UPDATE "+getTableName()+" SET" +
+                " ID_MESSAGGIO = :idMessaggio, DATA_AGGIORNAMENTO = NOW() WHERE ID = :id");
+
+        query.setParameter("idMessaggio", obj.getMessaggiDto().getId());
+        query.setParameter("id", obj.getId());
+
+        query.executeUpdate();
+
+        log.info("END - override updateIdMessaggio xml dao");
+		
+	}
 
 }

@@ -5,9 +5,6 @@
 */
 package it.csi.dma.dmaloginccebl.interfacews.token;
 
-import it.csi.dma.dmaloginccebl.interfacews.token2.GetTokenInformation2Request;
-import it.csi.dma.dmaloginccebl.interfacews.token2.GetTokenInformation2Response;
-
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -15,12 +12,20 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.ws.BindingType;
 
+import org.apache.cxf.interceptor.InInterceptors;
+import org.apache.cxf.interceptor.OutInterceptors;
+
+import it.csi.dma.dmaloginccebl.interfacews.token2.GetTokenInformation2Request;
+import it.csi.dma.dmaloginccebl.interfacews.token2.GetTokenInformation2Response;
+
 /**
  * 
  */
 @WebService(targetNamespace = "http://dmacc.csi.it/", name = "TokenInformationService")
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 @BindingType(value = javax.xml.ws.soap.SOAPBinding.SOAP12HTTP_MTOM_BINDING)
+@InInterceptors (interceptors = {"it.csi.dma.dmaloginccebl.cxf.interceptor.LogXmlInInterceptor" })
+@OutInterceptors (interceptors = {"it.csi.dma.dmaloginccebl.cxf.interceptor.LogXmlOutInterceptor" })
 public interface TokenInformationService {
 
 	@WebMethod(action = "http://dmaccbl.csi.it/getTokenInformation")
