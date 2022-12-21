@@ -15,7 +15,7 @@ Il prodotto è composto attualmente dalle seguenti componenti
 | DMALOGINCCEDB | Script per creazione database che memorizza tutte le informazioni relative a utenti, ruoli, collocazioni e abilitazioni attive |-1.0.25-|
 | DMALOGINCCEBL | Web Service utili a realizzare un meccanismo di accesso per consentire l'integrazione sicura fra il PUA e i vari servizi online a cui l'utente è abilitato |-1.1.0-|
 | CONFIGURATOREWEB |  web application che consente di configurare gli utenti del sistema |-1.1.0-|
-| CONFIGURATOREAPI |  api rest per consente di configurare gli utenti del sistema |-1.1.0-|
+| CONFIGURATOREAPI |  api rest che consentono di configurare gli utenti del sistema |-1.1.0-|
 | BATCHABILITAZCONFIG |  batch che consente di configurare in maniera massiva gli utenti del sistema |-1.0.0-|
 
 
