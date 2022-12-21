@@ -1,0 +1,5 @@
+In questa cartella devono essere presenti i seguenti files: 
+  - spring-jdbc-3.1.1.RELEASE.jar
+  - spring-orm-3.1.1.RELEASE.jar
+  - spring-oxm-3.1.1.RELEASE.jar
+  - spring-tx-3.1.1.RELEASE.jar

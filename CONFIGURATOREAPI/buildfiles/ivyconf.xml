@@ -1,0 +1,14 @@
+<ivysettings>
+	<settings defaultCache="${basedir}/build/cache" defaultResolver="myUrlResolver"/>
+	<resolvers>
+		<url name="myUrlResolver">
+			<artifact pattern="@@repository_librerie@@/java/[organisation]/[module]/[revision]/lib/[artifact].[type]" />
+			<artifact pattern="@@repository_librerie@@/java/[organisation]/[module]/[revision]/conf/[artifact].[type]" />
+
+			<artifact pattern="@@repository_librerie@@/java/[organisation]/[module]/lib/[artifact].[type]" />
+
+			<ivy pattern="@@repository_librerie@@/java/[organisation]/[module]/[revision]/ivy-[module].xml" />
+			<ivy pattern="@@repository_librerie@@/java/[organisation]/[module]/ivy-[module].xml" />
+		</url>
+	</resolvers>
+</ivysettings>

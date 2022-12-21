@@ -1,0 +1,48 @@
+<ivy-module version="1.0">
+	<info organisation="csipiemonte" module="batchabilitazconfig" />
+	<dependencies>
+
+		<dependency org="apache" name="log4j" rev="1.2.14">
+			<artifact name="log4j-1.2.14" type="jar" />
+		</dependency>
+
+		<dependency org="postgresql" name="postgresql-jdbc"
+			rev="9.4-1201.jdbc4">
+			<artifact name="postgresql-9.4-1201.jdbc4" type="jar" />
+		</dependency>
+
+		<dependency org="apache" name="commons-lang" rev="2.6" />
+		<dependency org="apache" name="commons-io" rev="2.5" />
+
+		<dependency org="apache" name="commons-logging" rev="1.1.1">
+			<artifact name="commons-logging-1.1.1" type="jar" />
+		</dependency>
+
+		<dependency org="others" name="spring" rev="4.3.24.RELEASE"
+			transitive="false">
+			<artifact name="spring-aop-4.3.24.RELEASE" type="jar" />
+			<artifact name="spring-instrument-4.3.24.RELEASE" type="jar" />
+			<artifact name="spring-beans-4.3.24.RELEASE" type="jar" />
+			<artifact name="spring-context-4.3.24.RELEASE" type="jar" />
+			<artifact name="spring-core-4.3.24.RELEASE" type="jar" />
+			<artifact name="spring-expression-4.3.24.RELEASE" type="jar" />
+			<artifact name="spring-jdbc-4.3.24.RELEASE" type="jar" />
+			<artifact name="spring-tx-4.3.24.RELEASE" type="jar" />
+			<artifact name="spring-web-4.3.24.RELEASE" type="jar" />
+			<artifact name="spring-orm-4.3.24.RELEASE" type="jar" />
+		</dependency>
+		
+		<dependency org="apache" name="geronimo-javamail" rev="1.4">
+   			<artifact name="geronimo-javamail_1.4_spec-1.6" type="jar" />
+  		</dependency>
+  		
+  		
+  		<dependency org="sun" name="mail" rev="1.2">
+   			<artifact name="mail-1.2" type="jar" />
+  		</dependency>
+
+	</dependencies>
+
+
+</ivy-module>
+

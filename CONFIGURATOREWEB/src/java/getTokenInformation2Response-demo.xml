@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<getTokenInformation2Response xmlns:ns2="http://dma.csi.it/">
+    <esito>SUCCESSO</esito>
+    <ns2:richiedente>
+        <codiceAzienda>010301</codiceAzienda>
+        <codiceCollocazione>010007-00@03 33-0 01</codiceCollocazione>
+        <codiceFiscale>AAAAAA00B77B000F</codiceFiscale>
+        <cognome>DEMOVENTI</cognome>
+        <descrizioneAzienda>A.S.L. CITTA' DI TORINO</descrizioneAzienda>
+        <descrizioneCollocazione>OSPEDALE MARTINI@AA - NEUROPSICHIATRIA TORINO 1 OVEST</descrizioneCollocazione>
+        <nome>DEMOVENTI</nome>
+        <ruolo>OPCSI</ruolo>
+    </ns2:richiedente>
+    <ns2:funzionalitaAbilitate>
+        <funzionalita>
+            <codiceFunzionalita>OP-RicercaUtente</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Abilita la ricerca utente</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>OP-InserisciNuovoUtente</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Abilita inserimento nuovi utenti</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>OP-ModificaConfigurazioneUtente</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Abilita la modifica dei dati degli utenti</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>OP-InvioMailUtente</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Consente l'Invio mail della profilazione ad operatore inserito sul sistema</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>OP-ExportUtentiAbilitazioni</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Consente di effettuare Export delle abilitazioni utenti</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>OP-RichiestaCredenzialiRUPAR</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Abilita inserimento richiesta credenziali rupar (atttraverso Remedy)</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>OP-RicercaRuolo</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Abilita ricerca ruolo</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>OP-InserisciNuovoRuolo</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Abilita inserimento ruolo</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>OP-ModificaRuolo</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Abilita modifica ruolo</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>OP-RicercaProfilo</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Abilita ricerca profilo</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>OP-InserisciNuovoProfilo</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Abilita inserimento nuovo profilo</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>OP-ModificaProfilo</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Abilita modifica profilo</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>OP-ListaSOLconConfiguratore</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Abiilita Lista SOL compreso il Configuratore in inserimento e modifica utente</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>OP-ListaProfiliCompleta</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Consente di visualizzare la lista completa dei profili del Configuratore in inserimento e modifica utente</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>OP-RicercaCredenzialiRUPAR</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Ricerca credenziali rupar inserite sul sistema</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>OP-RicercaApplicazione</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Abilita ricerca applicazione</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>OP-ModificaApplicazione</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Abilita modifica applicazione</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>OP-InserisciApplicazione</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Abilita inserimento nuova applicazione</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>OP-RicercaAbilitazioneMassiva</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Abilita ricerca abilitazione massiva</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>OP-RicercaFunzionalita</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Abilita ricerca funzionalita</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>OP-AbilitazioneMassiva</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Abilita abilitazione massiva</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>OP-RicercaDisabilitazioneMassiva</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Abilita ricerca disabilitazione massiva</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>OP-ModificaFunzionalita</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Abilita modifica funzionalita</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>OP-DisabilitazioneMassiva</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Abilita disabilitazione massiva</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>OP-VisualizzaStoricoMassiva</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Abilita visualizzazione storico</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>OP-InserisciFunzionalita</codiceFunzionalita>
+            <codiceFunzionalitaPadre>SUPERUSERCONF</codiceFunzionalitaPadre>
+            <descrizioneFunzionalita>Abilita inserimento nuova funzionalita</descrizioneFunzionalita>
+            <descrizioneFunzionalitaPadre>Profilo SUPERUSER</descrizioneFunzionalitaPadre>
+        </funzionalita>
+        <funzionalita>
+            <codiceFunzionalita>SUPERUSERCONF</codiceFunzionalita>
+            <descrizioneFunzionalita>Profilo SUPERUSER</descrizioneFunzionalita>
+        </funzionalita>
+    </ns2:funzionalitaAbilitate>
+</getTokenInformation2Response>

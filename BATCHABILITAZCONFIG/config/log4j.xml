@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "http://logging.apache.org/log4j/docs/api/org/apache/log4j/xml/log4j.dtd"
+"http://logging.apache.org/log4j/docs/api/org/apache/log4j/xml/log4j.dtd">
+<log4j:configuration>
+
+  <appender name="fileOut" class="org.apache.log4j.RollingFileAppender">
+    <param name="File" value="/appserv/servizio/app/batchabilitazconfig/log/batchabilitazconfig.log"/>
+    <param name="MaxFileSize" value="5242880" />
+    <param name="MaxBackupIndex" value="3" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{yyyy-MM-dd - hh:mm:ss,SSSS} %5p %c{1}:%L - %m%n" />
+    </layout>
+  </appender>
+
+  <logger name="it.csi.solconfig.batchabilitazconfig" additivity="false">
+    <level value="debug" />
+    <appender-ref ref="fileOut" />
+  </logger>
+
+  <root>
+    <level value="on" />
+    <appender-ref ref="fileOut" />
+  </root>
+
+</log4j:configuration>

@@ -1,0 +1,686 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ##################################################### -->
+<!-- # Copyright 2006 (c) CSI Piemonte.                  # -->
+<!-- #                                                   # -->
+<!-- # build.xml file per compilazione e generazione     # -->
+<!-- # del pacchetto per il rilascio dell'applicazione.  # -->
+<!-- #                                                   # -->
+<!-- # Per una lista completa dei tasks eseguibili usare # -->
+<!-- # l'argomento di ant -projecthelp quando si         # -->
+<!-- # richiama questo build.xml.                        # -->
+<!-- ##################################################### -->
+
+<project basedir="." default="default" name="configuratore" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
+	<description>Build file per il progetto: [configuratore]</description>
+	<property environment="env" />
+
+	<property file="buildfiles/build.properties" />
+	<property file="buildfiles/beta.properties" />
+	<property file="buildfiles/${target}.properties" />
+
+	<taskdef name="decrypt" classname="DecryptTask" classpath="buildfiles/taskdef" />
+	<property name="secret" value="${SECRET_PWD}" />
+	<!--decrypt key="${secret}" decryptAll="true" /-->
+
+	<path id="library.ref">
+		<fileset dir="${lib}">
+			<include name="**/*.jar" />
+			<include name="**/*.zip" />
+		</fileset>
+	</path>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # Target: init                                              # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="init" description="Inizializza lo script Ant.">
+		<tstamp />
+		<condition property="target" value="dev">
+			<equals arg1="${target}" arg2="$${target}" />
+		</condition>
+		<condition property="beta" value="on">
+			<equals arg1="${beta}" arg2="$${beta}" />
+		</condition>
+		<mkdir dir="${build}/classes" />
+		<mkdir dir="${temp}/${target}/${earLib}" />
+		<mkdir dir="${build}/archives/${target}" />
+		<mkdir dir="${dist}/${target}" />
+		<mkdir dir="${build}/javadoc" />
+		<mkdir dir="${build}/jsp" />
+		<mkdir dir="${build}/swf" />
+		<mkdir dir="${build}/cache" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # Target: default                                           # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="default" description="Eseguire il build per l'environment
+                       specificato a linea di comando con
+                       -Dtarget=${target} o per tutti gli
+                       environment (se non specificato).">
+
+		<condition property="first-call" value="distribution">
+			<not>
+				<equals arg1="${target}" arg2="$${target}" />
+			</not>
+		</condition>
+
+		<condition property="first-call" value="all-targets">
+			<equals arg1="${target}" arg2="$${target}" />
+		</condition>
+
+		<condition property="isprod" value="true">
+			<equals arg1="${target}" arg2="prod" />
+		</condition>
+
+		<echo message="target: ${server}" />
+		<echo message="target: ${target}" />
+		<echo message="first-call: ${first-call}" />
+
+		<!-- <antcall target="clean-all" /> -->
+		<antcall target="${first-call}" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # Target: environment-recreate                              # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="environment-recreate">
+		<mkdir dir="build/temp/conf" />
+		<copy todir="build/temp/conf" overwrite="true">
+			<fileset dir="${conf}" excludes="${conf.excludes}" />
+		</copy>
+
+		<!-- jboss 6 merge web-jb6 whit web, ear-jb6 whith ear, ... -->
+		<move todir="build/temp/conf">
+			<fileset dir="build/temp/conf" />
+			<mapper type="regexp" from="(.*)-jb6(.*)" to="\1\2" />
+		</move>
+
+		<!--		<echo message="======risorse statiche nel pacchetto: ${locale}" />-->
+		<!--		<delete dir="build/temp/conf/static" failonerror="no" />-->
+		<!--		<mkdir dir="build/temp/conf/static" />-->
+		<!--		<antcall target="copy-static-resources" />-->
+		<antcall target="prod-environment-recreate" />
+	</target>
+
+	<!--	<target name="copy-static-resources" if="locale">-->
+	<!--		<echo message="======eseguo copia risorse statiche nel pacchetto" />-->
+	<!--		<copy todir="build/temp/conf/static" overwrite="true">-->
+	<!--			<fileset dir="${static}" />-->
+	<!--		</copy>-->
+	<!--	</target>-->
+
+	<target name="prod-environment-recreate" if="isprod">
+		<!--		<copy file="${conf}/tar/${target}/${componente}web-ds.xml" tofile="${temp}/conf/tar/${target}/${componente}web-ds.xml" />-->
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # Target: compile-all                                       # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="compile-all" depends="init,load-dependencies" description="Compila tutti i sorgenti.">
+
+		<echo message="===> Target: ${target}" />
+
+		<echo message="===> Src: ${src}/java" />
+
+		<javac srcdir="${src}/java" destdir="${build}/classes" optimize="on" deprecation="on" compiler="modern" target="1.8" encoding="UTF-8" debug="true">
+			<classpath refid="library.ref" />
+		</javac>
+
+
+
+		<copy todir="${build}/classes">
+			<fileset dir="${src}/java" excludes="**/*.java*,**/*.jbx*" />
+		</copy>
+
+		<copy todir="${build}/jsp" overwrite="true">
+			<fileset dir="${src}/web/${webapp}/WEB-INF" />
+		</copy>
+
+		<copy todir="${build}/" overwrite="true">
+			<fileset dir="${src}/web/${webapp}" />
+		</copy>
+
+		<antcall target="config-encrypt-key" />
+
+	</target>
+
+	<target name="beta-off">
+		<!-- elemino le librerie di dma scaricate da repart per riprenderle da dmaccmediator -->
+		<!--	<delete>
+			<fileset dir="lib" includes="dmacc*.jar,dmadd*.jar"/>
+		</delete>-->
+		<!-- copio le librerie da dmaccmediator mantenendo la versione-->
+		<!--<copy tofile="${lib}/dmacc-${version}.jar">
+			<fileset dir="../dmaccmediator/build/archives" includes="dmacc.jar" />
+		</copy>
+		<copy tofile="${lib}/dmadd-${version}.jar">
+			<fileset dir="../dmaccmediator/build/archives" includes="dmadd.jar" />
+		</copy>-->
+	</target>
+
+
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # Target: config-encrypt-key-all                                       # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="config-encrypt-key" description="Sostituisce la chiave con cui criptare i documenti sul db">
+
+		<echo message="encryption_key======================>${encryption_key}" />
+		<copy todir="${temp}/${target}/src/it/csi/solconfig/configuratoreweb/business/dao/impl/">
+			<fileset dir="${src}/java/it/csi/solconfig/configuratoreweb/business/dao/impl/" includes="*LowDaoImpl.java" />
+
+		</copy>
+		<copy todir="${temp}/${target}/src/it/csi/solconfig/configuratoreweb/business/dao/dto/">
+			<fileset dir="${src}/java/it/csi/solconfig/configuratoreweb/business/dao/dto/" includes="*Dto.java" />
+
+		</copy>
+
+		<replace dir="${temp}/${target}/src/it/csi/solconfig/configuratoreweb/business/dao/impl/">
+			<include name="*LowDaoImpl.java" />
+			<replacefilter token="@encryption_key@" value="${encryption_key}" />
+		</replace>
+		
+		<replace dir="${temp}/${target}/src/it/csi/solconfig/configuratoreweb/business/dao/dto/">
+			<include name="*Dto.java" />
+			<replacefilter token="@encryption_key@" value="${encryption_key}" />
+		</replace>
+
+		<javac srcdir="${temp}/${target}/src/it/csi/solconfig/configuratoreweb/business/dao/impl/" includes="*LowDaoImpl.java" destdir="${build}/classes" optimize="on" deprecation="on" compiler="modern" target="1.8" source="1.8" debug="true">
+			<classpath refid="library.ref" />
+		</javac>
+		<javac srcdir="${temp}/${target}/src/it/csi/solconfig/configuratoreweb/business/dao/dto/" includes="*Dto.java" destdir="${build}/classes" optimize="on" deprecation="on" compiler="modern" target="1.8" source="1.8" debug="true">
+			<classpath refid="library.ref" />
+		</javac>
+
+
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # Target: about                                             # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="about" description="Visualizza l'elenco dei target
+                                    pubblici dello script.">
+
+		<loadproperties srcfile="buildfiles/build.properties" />
+		<loadfile property="about" srcfile="buildfiles/about.txt" />
+		<echo message="${about}" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # Target: about-custom                                      # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="about-custom" description="Visualizza l'elenco di tutti i target,
+                       pubblici e privati
+                       (equivalente a 'ant -projecthelp')">
+
+		<loadproperties srcfile="buildfiles/build.properties" />
+		<loadfile property="about-custom" srcfile="buildfiles/about-custom.txt" />
+		<echo message="${about-custom}" />
+		<java classname="org.apache.tools.ant.Main">
+			<arg value="-projecthelp" />
+		</java>
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [DISTRIB]: all-targets                                    # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="all-targets" description="Esegue il build per le varie distribuzioni in sequenza.">
+		<antcall target="distribution" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [DISTRIB]: distribution                                   # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="distribution" depends="package-all" description="Costruisce il tar per la distribuzione.">
+		<echo message="====== Creating distribution for ${target} ..." />
+		<echo message="====== Basedir: ${build}/archives/${target} ..." />
+<!--		<copy file="${temp}/conf/tar/${target}/${componente}web-ds.xml" todir="${build}/archives/${target}" />-->
+		<tar tarfile="${dist}/${target}/${dist-file-name}.tar" basedir="${build}/archives/${target}" includes="${ear-file-name}.ear,*.xml" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [IVY]: resolve-dependencies                               # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="resolve-dependencies" description="carica le librerie dal repository remoto">
+		<ivy:configure file="${basedir}/buildfiles/ivyconf.xml" />
+		<ivy:resolve file="${basedir}/buildfiles/ivy.xml" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [IVY]: internal target: load-dependencies                 # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="load-dependencies" depends="resolve-dependencies" description="Risolve le dipendenze esterne.">
+		<ivy:retrieve pattern="${basedir}/lib/[artifact].[type]" />
+		<antcall target="beta-${beta}" />
+	</target>
+
+	<copy todir="${lib}">
+		<fileset dir="lib_ext" />
+	</copy>
+
+	<target name="beta-on">
+		<move todir="lib" overwrite="true">
+			<fileset dir="lib" />
+			<mapper>
+				<mapper type="regexp" from="(.*)-(\d{1,}\.\d{1,}.\d{1,})-beta(.*)\.jar" to="\1\.jar" />
+			</mapper>
+		</move>
+	</target>
+
+	<target name="beta-nop">
+	</target>
+
+
+	<target name="_clean-jenkins-tmplib" description="Rimuove la cartella di cache di Ivy e la lib.">
+		<delete dir="${temp}/jenkins-tmplib" failonerror="no" />
+	</target>
+
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # Target: environment-config                                # -->
+	<!-- #         Gestire qui i  replace delle variabile d'ambiente # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="environment-config" description="Predispone le configurazioni dipendenti dall'ambiente.">
+		<echo message="====== gestire qui i  replace delle variabile d'ambiente" />
+		<loadproperties srcfile="buildfiles/${target}.properties" />
+
+		<replace dir="${temp}/conf/ear/${webapp}/META-INF/">
+			<!-- <include name="jboss-app.xml" /> -->
+			<include name="jboss-deployment-structure.xml" />
+			<replacefilter token="@web-uri@" value="${war-file-name}.war" />
+			<replacefilter token="@context-root@" value="${war-file-name}" />
+			<replacefilter token="@ear-file-name@" value="${ear-file-name}" />
+		</replace>
+
+		<replace dir="${temp}/conf/web/${webapp}/WEB-INF/">
+			<include name="web.xml" />
+			<include name="cxf.xml" />
+			<replacefilter token="@remincl.resource.provider.rp@" value="${remincl.resource.provider.rp}" />
+			<replacefilter token="@urlServerParacadute@" value="${urlServerParacadute}" />
+			<replacefilter token="@edu.yale.its.tp.cas.client.filter.serverName@" value="${edu.yale.its.tp.cas.client.filter.serverName}" />
+			<replacefilter token="@edu.yale.its.tp.cas.client.filter.validateUrl@" value="${edu.yale.its.tp.cas.client.filter.validateUrl}" />
+			<replacefilter token="@sso.filter.name@" value="${sso.filter.name}" />
+			<replacefilter token="@sso.filter.url.pattern@" value="${sso.filter.url.pattern}" />
+			<replacefilter token="@shibboleth.devmode@" value="${shibboleth.devmode}" />
+			<replacefilter token="@context-root@" value="${alternative.context}" />
+			
+			<replacefilter token="@auraFindProfiliAddress@" value="${auraFindProfiliAddress}" />
+			<replacefilter token="@auraFindProfiliUser@" value="${auraFindProfiliUser}" />
+			<replacefilter token="@auraFindProfiliPassword@" value="${auraFindProfiliPassword}" />
+
+			<replacefilter token="@auraGetProfiloSanAddress@" value="${auraGetProfiloSanAddress}" />
+			<replacefilter token="@auraGetProfiloSanUser@" value="${auraGetProfiloSanUser}" />
+			<replacefilter token="@auraGetProfiloSanPassword@" value="${auraGetProfiloSanPassword}" />
+
+			<replacefilter token="@opessanAddress@" value="${opessanAddress}" />
+			<replacefilter token="@opessanUser@" value="${opessanUser}" />
+			<replacefilter token="@opessanPassword@" value="${opessanPassword}" />
+
+			<replacefilter token="@auraScreeningEpCAddress@" value="${auraScreeningEpCAddress}" />
+			<replacefilter token="@auraScreeningEpCUser@" value="${auraScreeningEpCUser}" />
+			<replacefilter token="@auraScreeningEpCPassword@" value="${auraScreeningEpCPassword}" />
+
+			<replacefilter token="@opessanDettaglioOPAddress@" value="${opessanDettaglioOPAddress}" />
+			<replacefilter token="@opessanDettaglioOPUser@" value="${opessanDettaglioOPUser}" />
+			<replacefilter token="@opessanDettaglioOPPassword@" value="${opessanDettaglioOPPassword}" />
+			<replacefilter token="@opessanDettaglioOPSender@" value="${opessanDettaglioOPSender}" />
+			
+			<replacefilter token="@opessanDettaglioOPDipAddress@" value="${opessanDettaglioOPDipAddress}" />
+			<replacefilter token="@opessanDettaglioOPDipUser@" value="${opessanDettaglioOPDipUser}" />
+			<replacefilter token="@opessanDettaglioOPDipPassword@" value="${opessanDettaglioOPDipPassword}" />
+			<replacefilter token="@opessanDettaglioOPDipSender@" value="${opessanDettaglioOPDipSender}" />
+			
+			<replacefilter token="@tokenInformationServiceUrl@" value="${tokenInformationServiceUrl}" />
+			<replacefilter token="@logoutUrl@" value="${sso.url.logout}" />
+
+			<replacefilter token="@confMailHost@" value="${confMailHost}" />
+			<replacefilter token="@confMailPort@" value="${confMailPort}" />
+			<replacefilter token="@confMailUsername@" value="${confMailUsername}" />
+			<replacefilter token="@confMailPassword@" value="${confMailPassword}" />
+			<replacefilter token="@auth@" value="${confMailPropertiesMailSmtpAuth}" />
+			<replacefilter token="@sslEnable@" value="${confMailPropertiesMailSmtpSslEnable}" />
+			<replacefilter token="@mittenteMail@" value="${reportMailFrom}" />
+
+
+		</replace>
+
+		<replace dir="${temp}/conf/web/${webapp}/WEB-INF/">
+			<include name="SSOBARTPepAuthPD.xml" />
+			<replacefilter token="@ssobart.java.naming.provider.url@" value="${ssobart.java.naming.provider.url}" />
+			<replacefilter token="@ssobart.multi@" value="${ssobart.multi}" />
+		</replace>
+
+		<replace dir="${temp}/conf/web/${webapp}/WEB-INF/">
+			<include name="context.xml" />
+			<replacefilter token="@cookiePathValve@" value="${cookiePathValve}" />
+		</replace>
+
+		<replace dir="${temp}/conf/web/${webapp}/WEB-INF/">
+			<include name="applicationContext.xml" />
+			<replacefilter token="@sso.url.logout@" value="${sso.url.logout}" />
+			<replacefilter token="@shibboleth.devmode@" value="${shibboleth.devmode}" />
+			<replacefilter token="@hibernate.showSql@" value="${hibernate.showSql}" />
+			<replacefilter token="@urlStazioneRefertante@" value="${urlStazioneRefertante}" />
+			<replacefilter token="@ambiente@" value="${target}" />
+			<replacefilter token="@encryption_key@" value="${encryption_key}" />
+			<replacefilter token="@solconfig.jdbc.dataSourceName@" value="${solconfig.jdbc.dataSourceName}" />
+			<replacefilter token="@solconfig.jdbc.dataSourceJndiName@" value="${solconfig.jdbc.dataSourceJndiName}" />
+			<replacefilter token="@solconfig.jdbc.driverClassName@" value="${solconfig.jdbc.driverClassName}" />
+		</replace>
+
+		<replace dir="${temp}/conf/web/${webapp}/WEB-INF/">
+			<include name="application.properties" />
+			<replacefilter token="@codiceAmbiente@" value="${codiceAmbiente}" />
+			<replacefilter token="@codiceUnitaInstallazione@" value="${codiceUnitaInstallazione}" />
+			<replacefilter token="@urlPua@" value="${urlPua}" />
+			<replacefilter token="@remedyInserimentoTicketAddress@" value="${remedyInserimentoTicketAddress}" />
+			<replacefilter token="@remedyInserimentoTicketUsername@" value="${remedyInserimentoTicketUsername}" />
+			<replacefilter token="@remedyInserimentoTicketPassword@" value="${remedyInserimentoTicketPassword}" />
+
+			<replacefilter token="@remedyInfoDettagliAddress@" value="${remedyInfoDettagliAddress}" />
+			<replacefilter token="@remedyInfoDettagliUsername@" value="${remedyInfoDettagliUsername}" />
+			<replacefilter token="@remedyInfoDettagliPassword@" value="${remedyInfoDettagliPassword}" />
+						
+			<replacefilter token="@apiManagerConsumerKey@" value="${apiManagerConsumerKey}" />
+			<replacefilter token="@apiManagerConsumerSecret@" value="${apiManagerConsumerSecret}" />
+			<replacefilter token="@apiManagerUrl@" value="${apiManagerUrl}" />
+			
+			<replacefilter token="@cf.validation.enabled@" value="${cf.validation.enabled}" />
+			<replacefilter token="@call.lcce.devMode@" value="${call.lcce.devMode}" />
+			
+			
+		</replace>
+
+		<replace dir="${build}/jsp/">
+			<include name="sessionTimeout.jsp" />
+			<include name="sceltaRuoli.jsp" />
+			<include name="homePage.jsp" />
+			<include name="common/portalHeader.jsp" />
+			<replacefilter token="@alternative.context@" value="${alternative.context}" />
+			<replacefilter token="@prefissoRisorseStatiche@" value="${prefissoRisorseStatiche}" />
+			<replacefilter token="@urlPua@" value="${urlPua}" />
+		</replace>
+
+		<!--		<replace dir="${temp}/conf/web/${webapp}/WEB-INF/">-->
+		<!--			<include name="struts-login.xml" />-->
+		<!--			<replacefilter token="@sso.url.logout@" value="${sso.url.logout}" />-->
+		<!--		</replace>-->
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [PKG]: package-all                                        # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="package-all" description="esegue il packaging di ogni componente del prodotto">
+		<antcall target="package-ear" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [PKG]: package-ear                                        # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="package-ear" depends="environment-recreate,compile-all,commons-jar,environment-config" description="costruisce l&apos;ear">
+
+		<copy todir="${temp}/${target}/${earLib}">
+			<fileset dir="${lib}" includes="${ear-libs-filter}" />
+		</copy>
+
+		<move file="${build}/archives/${target}/commons.jar" tofile="${temp}/${target}/${earLib}/commons.jar" />
+		<antcall target="package-war" />
+
+		<copy todir="${temp}/conf/ear/${webapp}/META-INF">
+			<fileset dir="conf/ear/configuratore/META-INF" includes="application.xml" />
+		</copy>
+
+		<echo message="======TEST variabile d'ambiente iscert per CERTIFICAZIONE" />
+		<condition property="l.context-root" value="${alternative.context}">
+			<not>
+				<equals arg1="${alternative.context}" arg2="$${alternative.context}" />
+			</not>
+		</condition>
+		<condition property="l.context-root" value="${context-root}">
+			<equals arg1="${alternative.context}" arg2="$${alternative.context}" />
+		</condition>
+
+		<echo message="======${war-file-name} iscert = ${iscert}" />
+		<echo message="====== l.context-root = ${l.context-root}" />
+
+		<replace dir="${temp}/conf/ear/${webapp}/META-INF/">
+			<include name="application.xml" />
+			<replacefilter token="@context-root@" value="${l.context-root}" />
+		</replace>
+		
+		<replace dir="${temp}/conf/web/${webapp}/WEB-INF/">
+		   		<include name="application.properties" />
+		   		<replacefilter token="@codiceAmbiente@" value="${codiceAmbiente}" />
+		   		<replacefilter token="@codiceUnitaInstallazione@" value="${codiceUnitaInstallazione}" />
+		</replace>
+
+
+		<ear appxml="${temp}/conf/ear/${webapp}/META-INF/application.xml" destfile="${build}/archives/${target}/${ear-file-name}.ear">
+			<fileset dir="${build}/archives/${target}" includes="*.war" />
+
+			<fileset dir="${temp}/${target}" excludes="src/**">
+				<include name="**/*" />
+			</fileset>
+
+			<zipfileset dir="${temp}/conf/ear/${webapp}/META-INF/" prefix="META-INF">
+				<!-- <include name="jboss-app.xml"/> -->
+				<include name="jboss-deployment-structure.xml" />
+			</zipfileset>
+
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Built-Date" value="${DSTAMP}" />
+				<attribute name="Target" value="${target}" />
+				<attribute name="Appl-Version" value="${version}" />
+			</manifest>
+		</ear>
+
+		<delete file="${build}/archives/${target}/${war-file-name}.war" />
+
+		<ear appxml="conf/ear/mobile/META-INF/application.xml" destfile="${build}/archives/${target}/${ear-mobile-file-name}.ear">
+			<fileset dir="${build}/archives/${target}" includes="*.war" />
+
+			<fileset dir="${temp}/${target}" excludes="src/**">
+				<include name="**/*" />
+			</fileset>
+
+			<zipfileset dir="conf/ear/mobile/META-INF/" prefix="META-INF">
+				<include name="jboss-app.xml" />
+				<!--TODO-->
+				<!--<include name="jboss-deployment-structure.xml" />-->
+			</zipfileset>
+
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Built-Date" value="${DSTAMP}" />
+				<attribute name="Target" value="${target}" />
+				<attribute name="Appl-Version" value="${version}" />
+			</manifest>
+		</ear>
+
+		<delete file="${build}/archives/${target}/${war-file-name}.war" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [PKG]: package-war                                        # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="package-war" description="Genera il war per lo strato web.">
+
+		<war destfile="${build}/archives/${target}/${war-file-name}.war" webxml="${temp}/conf/web/${webapp}/WEB-INF/web.xml" roundup="false" manifest="${temp}/conf/web/${webapp}/META-INF/MANIFEST.MF">
+			<webinf dir="${temp}/conf/web/${webapp}/WEB-INF" includes="context.xml,applicationContext.xml,application.properties,spring-servlet.xml,jboss-web.xml,dao-beans.xml,audit-beans.xml,cxf.xml,SSOBARTPepAuthPD.xml,classes/cache.ccf,classes/monitor.conf,certs/*.cer,tld/*.tld,tags/*.tag" />
+			<!--			<fileset dir="${srcweb}" />-->
+			<fileset dir="${build}" includes="css/**,js/**,lib/**,scss/**,content/**,im/**,*.jsp,*.htm,*.html" />
+			<fileset dir="${build}" includes="jsp/**/*.jsp" />
+			<classes dir="${build}/jsp" includes="**" />
+			<classes dir="${build}/swf" includes="**" />
+			<classes dir="${build}/classes" includes="it/csi/${prodotto}/${componente}web/**,*.xml,*.properties" />
+			<lib dir="${lib}" includes="*" excludes="${war-exclude-libs-filter}" />
+		</war>
+	</target>
+
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [PKG]: commons-jar                                        # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="commons-jar" description="Genera il jar per le classi comuni.">
+		<jar destfile="${build}/archives/${target}/commons.jar" basedir="${build}/classes" includes="it/csi/${prodotto}/${componente}web/dto/**,it/csi/${prodotto}/${componente}web/exception/**,it/csi/${prodotto}/${componente}web/util/**">
+		</jar>
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: clean-all                                        # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="clean-all" description="Rimuove tutte le cartelle temporanee." depends="clean-archives,clean-cache,clean-classes,
+                  clean-javadoc,clean-jsp,clean-temp, clean-dist" />
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: clean-cache                                      # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="clean-cache" description="Rimuove la cartella di cache di Ivy e la lib.">
+		<delete dir="${build}/cache" failonerror="yes" />
+		<delete dir="${lib}" failonerror="no" />
+
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: clean-temp                                       # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="clean-temp" description="Rimuove la cartella dei files temporanei di build.">
+		<delete dir="${temp}" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: clean-archives                                  # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="clean-archives" description="Rimuove la cartella degli archivi (war, ear, ...).">
+		<delete dir="${build}/archives" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: clean-dist                                       # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="clean-dist" description="Rimuove la cartella delle distribuzioni.">
+		<delete dir="${dist}" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: clean-classes                                    # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="clean-classes" description="Rimuove la cartella dei sorgenti compilati.">
+		<delete dir="${build}/classes" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: clean-javadoc                                    # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="clean-javadoc" description="Rimuove la cartella temporanea dei javadoc.">
+		<delete dir="${build}/javadoc" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: clean-jsp                                        # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="clean-jsp" description="Rimuove la cartella temporanea delle jsp compilate.">
+		<delete dir="${build}/jsp" />
+		<delete dir="${build}/swf" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: _clean-web-inf                                   # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="_clean-web-inf" description="Rimuove il contenuto di lib e classes della
+                       web application (per run locali).">
+		<delete dir="${srcweb}/WEB-INF/classes" />
+		<delete dir="/buildfiles/static/lib" />
+	</target>
+
+	<target name="_clean-jboss">
+		<delete dir="${env.JBOSS_HOME}/server/default/tmp" />
+		<delete dir="${env.JBOSS_HOME}/server/default/work" />
+	</target>
+
+	<target name="__deployOnTarget" depends="distribution, __deployOnTargetNode02" description="Eseguire il deploy per l'environment specificato a linea di comando con -Dtarget=${target}.">
+		<scp file="${build}/archives/${target}/${ear-file-name}.ear" todir="${applicationserver.deploy.dir}" trust="true">
+		</scp>
+		<!--
+		<scp file="${build}/archives/${target}/${prodotto}-${componente}web-ds.xml" todir="${applicationserver.deploy.dir}" trust="true">
+		</scp>
+		-->
+	</target>
+
+	<target name="__deployOnTargetNode02" if="applicationserver.node02.deploy.dir" description="Esegue il deploy per l'environment specificato a linea di comando con -Dtarget=${target}.">
+		<echo message="Deploy node02....." />
+		<scp file="${build}/archives/${target}/${ear-file-name}.ear" todir="${applicationserver.node02.deploy.dir}" trust="true">
+		</scp>
+		<!--
+		<scp file="${build}/archives/${target}/${prodotto}-${componente}web-ds.xml" todir="${applicationserver.node02.deploy.dir}" trust="true">
+		</scp>
+		-->
+	</target>
+
+	
+	<target name="deployLocal" description="deploy del pacchetto locale" depends="default">
+			
+			<echo message="*****************************************" />
+			<echo message="*****************************************" />
+			<echo message="************ DEPLOY LOCAL ***********" />
+					<move 
+						overwrite="true" 
+						file="${build}/archives/${target}/configuratoreweb.ear" 
+						todir="D:\jboss\JBoss-6.4.5_CSI\standalone\deployments" 
+						verbose="true"/>
+
+			</target>	
+	
+</project>

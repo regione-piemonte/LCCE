@@ -1,0 +1,16 @@
+{
+"java8": false,
+"useBeanValidation": true,
+"hideGenerationTimestamp": true,
+"apiPackage": "it.csi.configuratorews.business.configuratorews.temp",
+"modelPackage":  "it.csi.configuratorews.dto.configuratorews.temp",
+"invokerPackage": "it.csi.configuratorews.business.configuratorews.temp",
+"implFolder": "implfolder",
+"sourceFolder": "src/java",
+"useSwaggerFeature": false,
+"generateJbossDeploymentDescriptor": false,
+"generateImplArtifacts": true,
+"generateSwaggerMetadata": false,
+"attributeSerializationStrategy": "explicit-as-modeled", 
+"accessHttpHeaders": true
+}

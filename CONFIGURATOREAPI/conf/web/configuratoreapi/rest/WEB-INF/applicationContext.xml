@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:cxf="http://cxf.apache.org/core"
+	   xmlns:http="http://cxf.apache.org/transports/http/configuration"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   		http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+	   		http://www.springframework.org/schema/context
+	   		http://www.springframework.org/schema/context/spring-context-4.1.xsd
+			http://www.springframework.org/schema/tx
+			http://www.springframework.org/schema/tx/spring-tx.xsd
+			http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+			http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd">
+
+	<context:component-scan base-package="it.csi.configuratorews"/>
+
+	<!-- Activates various annotations to be detected in bean classes e.g: @Autowired -->
+	<context:property-placeholder location="WEB-INF/*.properties"/>
+	<context:annotation-config/>
+
+	<bean id="entityManagerFactory"
+		  class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+		  p:packagesToScan="it.csi.configuratorews.business.dto"
+		  p:dataSource-ref="@config.jdbc.dataSourceName@">
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="generateDdl" value="true" />
+				<property name="showSql" value="@showSql@" />
+			</bean>
+		</property>
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+				<prop key="hibernate.hbm2ddl.auto">validate</prop>
+				<!-- <prop key="hibernate.default_schema">lcce</prop>
+               <prop key="hibernate.id.new_generator_mappings">false</prop> -->
+			</props>
+		</property>
+	</bean>
+
+	<bean id="configJndiDataSource"
+		class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName"
+			value="@config.jdbc.dataSourceJndiName@" />
+		<property name="lookupOnStartup" value="false" />
+		<property name="proxyInterface" value="javax.sql.DataSource" />
+		<property name="resourceRef" value="true" />
+	</bean>
+	
+	<!-- <bean id="configDirectDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="@config.jdbc.driverClassName@"/>
+		<property name="url" value="@dataSource.url@"/>
+		<property name="username" value="@dataSource.username@"/>
+		<property name="password" value="@dataSource.password@"/>
+	</bean>
+ -->
+	<!-- Transactions -->
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<!-- enable the configuration of transactional behavior based on annotations -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+
+	<!-- BEANS -->
+	<!-- abstractLoggingInterceptor that will enable pretty printing of messages -->
+	<bean id="abstractLoggingInterceptor" abstract="true">
+		<property name="prettyLogging" value="true" />
+	</bean>
+	<bean id="loggingInInterceptor"
+		  class="org.apache.cxf.interceptor.LoggingInInterceptor"
+		  parent="abstractLoggingInterceptor">
+	</bean>
+	<bean id="loggingOutInterceptor"
+		  class="org.apache.cxf.interceptor.LoggingOutInterceptor"
+		  parent="abstractLoggingInterceptor">
+	</bean>
+	<bean id="headInt" class="it.csi.configuratorews.integration.facade.HttpHeaderInterceptor" />
+
+	<cxf:bus>
+		<cxf:inInterceptors>
+			<ref bean="loggingInInterceptor" />
+			<!--<ref bean="logInbound" /> -->
+		</cxf:inInterceptors>
+
+		<cxf:outInterceptors>
+			<ref bean="loggingOutInterceptor" />
+			<!--<ref bean="logOutbound" /> -->
+		</cxf:outInterceptors>
+
+		<cxf:inFaultInterceptors>
+			<ref bean="loggingInInterceptor" />
+			<!--<ref bean="logInbound" /> -->
+		</cxf:inFaultInterceptors>
+
+		<cxf:outFaultInterceptors>
+			<ref bean="loggingOutInterceptor" />
+			<!--<ref bean="logOutbound" /> -->
+		</cxf:outFaultInterceptors>
+	</cxf:bus>
+
+	<bean id="saajOut"
+		  class="org.apache.cxf.binding.soap.saaj.SAAJOutInterceptor" />
+	
+	<!-- CLIENT -->
+
+	<bean id="abilitazioniClient"
+		  class="it.csi.configuratorews.interfacews.client.abilitazione.AbilitazioniServiceClient">
+		<property name="abilitazioniService"
+				  ref="abilitazioniServiceClient" />
+	</bean>
+	<bean id="abilitazioniServiceClient"
+		  factory-bean="abilitazioniServiceClientFactory"
+		  factory-method="create" />
+	<bean id="abilitazioniServiceClientFactory"
+		  class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass"
+				  value="it.csi.configuratorews.interfacews.client.abilitazione.AbilitazioneService" />
+		<property name="address" value="@abilitazioniServiceUrl@" />
+		<property name="bindingId"
+				  value="http://www.w3.org/2003/05/soap/bindings/HTTP/" />
+		<property name="outInterceptors">
+			<list>
+				<!-- <ref bean="wss4jOut" /> -->
+				<ref bean="saajOut" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="collocazioniClient"
+		  class="it.csi.configuratorews.interfacews.client.collocazioni.CollocazioniServiceClient">
+		<property name="collocazioniService"
+				  ref="collocazioniServiceClient" />
+	</bean>
+	<bean id="collocazioniServiceClient"
+		  factory-bean="collocazioniServiceClientFactory"
+		  factory-method="create" />
+	<bean id="collocazioniServiceClientFactory"
+		  class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass"
+				  value="it.csi.configuratorews.interfacews.client.collocazioni.CollocazioniService" />
+		<property name="address" value="@collocazioniServiceUrl@" />
+		<property name="bindingId"
+				  value="http://www.w3.org/2003/05/soap/bindings/HTTP/" />
+		<property name="outInterceptors">
+			<list>
+				<!-- <ref bean="wss4jOut" /> -->
+				<ref bean="saajOut" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="ruoliUtenteClient"
+		  class="it.csi.configuratorews.interfacews.client.ruoliUtente.RuoliUtenteServiceClient">
+		<property name="ruoliUtenteService"
+				  ref="ruoliUtenteServiceClient" />
+	</bean>
+	<bean id="ruoliUtenteServiceClient"
+		  factory-bean="ruoliUtenteServiceClientFactory" factory-method="create" />
+	<bean id="ruoliUtenteServiceClientFactory"
+		  class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass"
+				  value="it.csi.configuratorews.interfacews.client.ruoliUtente.RuoliUtenteService" />
+		<property name="address" value="@ruoliUtenteServiceUrl@" />
+		<property name="bindingId"
+				  value="http://www.w3.org/2003/05/soap/bindings/HTTP/" />
+		<property name="outInterceptors">
+			<list>
+				<!-- <ref bean="wss4jOut" /> -->
+				<ref bean="saajOut" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tokenInformationServiceClient"
+		  class="it.csi.configuratorews.interfacews.client.tokenInformation.TokenInformationServiceClient">
+		<property name="tokenInformationService"
+				  ref="tokenInformationService" />
+	</bean>
+	<bean id="tokenInformationService"
+		  factory-bean="tokenInformationServiceClientFactory"
+		  factory-method="create" />
+	<bean id="tokenInformationServiceClientFactory"
+		  class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass"
+				  value="it.csi.configuratorews.interfacews.client.tokenInformation.TokenInformationService" />
+		<property name="address" value="@tokenInformationServiceUrl@" />
+		<property name="bindingId"
+				  value="http://www.w3.org/2003/05/soap/bindings/HTTP/" />
+		<property name="outInterceptors">
+			<list>
+				<!-- <ref bean="wss4jOut" /> -->
+				<ref bean="saajOut" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="authentication2Client"
+		  class="it.csi.configuratorews.interfacews.client.authentication2.Authentication2ServiceClient">
+		<property name="authentication2Service"
+				  ref="authentication2ServiceClient" />
+	</bean>
+	<bean id="authentication2ServiceClient"
+		  factory-bean="authentication2ServiceClientFactory"
+		  factory-method="create" />
+	<bean id="authentication2ServiceClientFactory"
+		  class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass"
+				  value="it.csi.configuratorews.interfacews.client.authentication2.Authentication2Service" />
+		<property name="address" value="@authentication2ServiceUrl@" />
+		<property name="bindingId"
+				  value="http://www.w3.org/2003/05/soap/bindings/HTTP/" />
+		<property name="outInterceptors">
+			<list>
+				<!-- <ref bean="wss4jOut" /> -->
+				<ref bean="saajOut" />
+			</list>
+		</property>
+	</bean>
+
+</beans>

@@ -1,0 +1,48 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+        http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- Spring MVC -->
+    <mvc:annotation-driven />
+    <context:component-scan
+            base-package="it.csi.solconfig.configuratoreweb" />
+    <mvc:default-servlet-handler />
+    
+    <context:property-placeholder location="WEB-INF/*.properties"/>
+
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <property name="viewClass"
+                  value="org.springframework.web.servlet.view.JstlView" />
+        <property name="prefix" value="/jsp/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <!-- enable the configuration of transactional behavior based on annotations -->
+    <tx:annotation-driven
+            transaction-manager="transactionManager" />
+
+    <!-- Configures Interceptors -->
+    <mvc:interceptors>
+
+        <!-- This XML will intercept all URIs -->
+        <bean class="it.csi.solconfig.configuratoreweb.util.SessionManagerInterceptor"></bean>
+
+        <!-- This XML will apply interceptor to only configured URIs -->
+        <!--
+        <mvc:interceptor>
+             <mvc:mapping path="/users"></mvc:mapping>
+             <bean class="com.howtodoinjava.interceptor.DemoInterceptor"></bean>
+        <mvc:interceptor>
+         -->
+    </mvc:interceptors>
+
+</beans>

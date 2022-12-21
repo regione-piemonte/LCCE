@@ -1,0 +1,8 @@
+In questa cartella devono essere presenti i seguenti files: 
+  - bcpkix-jdk15on-155.jar
+  - bcprov-jdk15on-155.jar
+  - hibernate-validator-4.1.0.Final.jar
+  - javax.persistence-api-2.2.jar
+  - validation-api-1.1.0.Final.jar
+  - woodstox-core-asl-4.4.1.jar
+  - xmlsec-2.1.4.jar

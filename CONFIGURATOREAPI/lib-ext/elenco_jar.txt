@@ -1,0 +1,7 @@
+In questa cartella devono essere presenti i seguenti files: 
+  - csi-java-swagger-codegen-1.0.0.jar
+  - guava-20.0.jar
+  - java-jwt-4.0.0.jar
+  - javassist-3.12.1.GA.jar
+  - reflections-0.9.11.jar
+  - swagger-codegen-cli.jar

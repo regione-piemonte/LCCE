@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:cxf="http://cxf.apache.org/core"
+	xmlns:http="http://cxf.apache.org/transports/http/configuration"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:soap="http://cxf.apache.org/bindings/soap"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+   http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+   http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd
+   http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+    http://www.springframework.org/schema/aop     
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<!-- import cxf resources -->
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<!--<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" /> 
+		CON CXF 3 non serve importarla manualmente -->
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+	<!-- abstractLoggingInterceptor that will enable pretty printing of messages -->
+	<bean id="abstractLoggingInterceptor" abstract="true">
+		<property name="prettyLogging" value="true" />
+	</bean>
+
+	<!-- logging interceptors that will log all received/sent messages -->
+	<bean id="loggingInInterceptor"
+		class="org.apache.cxf.interceptor.LoggingInInterceptor"
+		parent="abstractLoggingInterceptor">
+	</bean>
+	<bean id="loggingOutInterceptor"
+		class="org.apache.cxf.interceptor.LoggingOutInterceptor"
+		parent="abstractLoggingInterceptor">
+	</bean>
+
+	<!-- CLIENT -->
+
+	<bean id="tokenInformationServiceClient"
+		  class="it.csi.solconfig.configuratoreweb.interfacews.tokeninformation.client.TokenInformationServiceClient">
+		<property name="tokenInformationService"
+				  ref="tokenInformationService" />
+	</bean>
+	<bean id="tokenInformationService"
+		  factory-bean="tokenInformationServiceClientFactory"
+		  factory-method="create" />
+	<bean id="tokenInformationServiceClientFactory"
+		  class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass"
+				  value="it.csi.solconfig.configuratoreweb.interfacews.tokeninformation.client.TokenInformationService" />
+		<property name="address" value="@tokenInformationServiceUrl@" />
+		<property name="bindingId"
+				  value="http://www.w3.org/2003/05/soap/bindings/HTTP/" />
+		<property name="outInterceptors">
+			<list>
+				<!-- <ref bean="wss4jOut" /> -->
+				<ref bean="saajOut" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="urlUtils" class="it.csi.solconfig.configuratoreweb.util.UrlUtils">
+		<property name="logoutUrl" value="@logoutUrl@" />
+	</bean>
+
+	<bean id="auraFindProfiliCB" class="it.csi.solconfig.configuratoreweb.wsdl.ClientPasswordCallback">
+		<property name="password" value="@auraFindProfiliPassword@"/>
+	</bean>
+
+	<bean id="auraSanProfiliCB" class="it.csi.solconfig.configuratoreweb.wsdl.ClientPasswordCallback">
+		<property name="password" value="@auraGetProfiloSanPassword@"/>
+	</bean>
+
+	<bean id="opessanCB" class="it.csi.solconfig.configuratoreweb.wsdl.ClientPasswordCallback">
+		<property name="password" value="@opessanPassword@"/>
+	</bean>
+	
+	<bean id="auraScreeningEpatiteCCB" class="it.csi.solconfig.configuratoreweb.wsdl.ClientPasswordCallback">
+		<property name="password" value="@auraScreeningEpCPassword@"/>
+	</bean>
+	
+	<bean id="opessanDettaglioOPCB" class="it.csi.solconfig.configuratoreweb.wsdl.ClientPasswordCallback">
+		<property name="password" value="@opessanDettaglioOPPassword@"/>
+	</bean>
+	
+	<bean id="opessanDettaglioOPDipCB" class="it.csi.solconfig.configuratoreweb.wsdl.ClientPasswordCallback">
+		<property name="password" value="@opessanDettaglioOPDipPassword@"/>
+	</bean>
+
+
+	<bean id="auraAnagrafeServiceClient"
+		  class="it.csi.solconfig.configuratoreweb.wsdl.aura.findprofilianagrafici.client.AuraAnagrafeServiceClient">
+		<property name="anagrafeFindSoap"
+				  ref="anagrafeFindSoap" />
+	</bean>
+	<bean id="anagrafeFindSoap"
+		  factory-bean="auraFindProfiliClientFactory"
+		  factory-method="create" />
+
+
+	<bean id="wss4jOutFindProfili" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+		<constructor-arg>
+			<map>
+				<entry key="action" value="UsernameToken" />
+				<entry key="user" value="@auraFindProfiliUser@" />
+				<entry key="passwordType" value="PasswordText" />
+				<entry key="passwordCallbackRef">
+					<ref bean="auraFindProfiliCB" />
+				</entry>
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<bean id="wss4jOutGetProfiloSan" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+		<constructor-arg>
+			<map>
+				<entry key="action" value="UsernameToken" />
+				<entry key="user" value="@auraGetProfiloSanUser@" />
+				<entry key="passwordType" value="PasswordText" />
+				<entry key="passwordCallbackRef">
+					<ref bean="auraSanProfiliCB" />
+				</entry>
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<bean id="wss4jOutOpessan" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+		<constructor-arg>
+			<map>
+				<entry key="action" value="UsernameToken" />
+				<entry key="user" value="@opessanUser@" />
+				<entry key="passwordType" value="PasswordText" />
+				<entry key="passwordCallbackRef">
+					<ref bean="opessanCB" />
+				</entry>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="wss4jOutSceeningEpC" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+		<constructor-arg>
+			<map>
+				<entry key="action" value="UsernameToken" />
+				<entry key="user" value="@auraScreeningEpCUser@" />
+				<entry key="passwordType" value="PasswordText" />
+				<entry key="passwordCallbackRef">
+					<ref bean="auraScreeningEpatiteCCB" />
+				</entry>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="wss4jOutOpessanDettaglioOp" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+		<constructor-arg>
+			<map>
+				<entry key="action" value="UsernameToken" />
+				<entry key="user" value="@opessanDettaglioOPUser@" />
+				<entry key="passwordType" value="PasswordDigest" />
+				<entry key="passwordCallbackRef">
+					<ref bean="opessanDettaglioOPCB" />
+				</entry>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="wss4jOutOpessanDettaglioOpDip" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+		<constructor-arg>
+			<map>
+				<entry key="action" value="UsernameToken" />
+				<entry key="user" value="@opessanDettaglioOPDipUser@" />
+				<entry key="passwordType" value="PasswordDigest" />
+				<entry key="passwordCallbackRef">
+					<ref bean="opessanDettaglioOPDipCB" />
+				</entry>
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<!-- factory WS AURA -->
+	<bean id="auraFindProfiliClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.solconfig.configuratoreweb.wsdl.aura.findprofilianagrafici.AnagrafeFindSoap" />
+		<property name="address" value="@auraFindProfiliAddress@" />
+		<property name="outInterceptors">
+			<list>
+				<ref bean="saajOut" />
+				<ref bean="wss4jOutFindProfili" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="auraGetProfiloSanServiceClient"
+		  class="it.csi.solconfig.configuratoreweb.wsdl.aura.getprofilosanitario.client.AuraGetProfiloSanServiceClient">
+		<property name="auraGetProfiloSanClient"
+				  ref="auraGetProfiloSanClient" />
+	</bean>
+	<bean id="auraGetProfiloSanClient"
+		  factory-bean="auraGetProfiloSanClientFactory"
+		  factory-method="create" />
+
+	<bean id="auraGetProfiloSanClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.solconfig.configuratoreweb.wsdl.aura.getprofilosanitario.AnagrafeSanitariaSoap" />
+		<property name="address" value="@auraGetProfiloSanAddress@" />
+		<property name="outInterceptors">
+			<list>
+				<ref bean="saajOut" />
+				<ref bean="wss4jOutGetProfiloSan" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="ricercaOperatoreServiceClient"
+		  class="it.csi.solconfig.configuratoreweb.wsdl.opessan.client.RicercaOperatoreServiceClient">
+		<property name="ricercaOperatore"
+				  ref="ricercaOperatore" />
+	</bean>
+	<bean id="ricercaOperatore"
+		  factory-bean="ricercaOperatoreFactory"
+		  factory-method="create" />
+
+	<bean id="ricercaOperatoreFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.solconfig.configuratoreweb.wsdl.opessan.RicercaOperatore" />
+		<property name="address" value="@opessanAddress@" />
+		<property name="outInterceptors">
+			<list>
+				<ref bean="saajOut" />
+				<ref bean="wss4jOutOpessan" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="ScreeningEpatiteCServiceClient"
+		  class="it.csi.solconfig.configuratoreweb.wsdl.aura.ScreeningEpatiteC.client.ScreeningEpatiteCServiceClient">
+		<property name="screeningEpatiteCClient"
+				  ref="screeningEpatiteCClient" />
+	</bean>
+	<bean id="screeningEpatiteCClient"
+		  factory-bean="auraScreeningEpCFactory"
+		  factory-method="create" />
+
+	<bean id="auraScreeningEpCFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.solconfig.configuratoreweb.wsdl.aura.ScreeningEpatiteC.ScreeningEpatiteCSoap" />
+		<property name="address" value="@auraScreeningEpCAddress@" />
+		<property name="outInterceptors">
+			<list>
+				<ref bean="saajOut" />
+				<ref bean="wss4jOutSceeningEpC" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="dettaglioOperatoreServiceClient"
+		  class="it.csi.solconfig.configuratoreweb.wsdl.opessanDettaglioOperatore.client.DettaglioOperatoreServiceClient">
+		<property name="dettaglioOperatore"
+				  ref="dettaglioOperatore" />
+		<property name="sender"
+				  value="@opessanDettaglioOPSender@"/>
+	</bean>
+	<bean id="dettaglioOperatore"
+		  factory-bean="dettaglioOperatoreFactory"
+		  factory-method="create" />
+
+	<bean id="dettaglioOperatoreFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.solconfig.configuratoreweb.wsdl.opessanDettaglioOperatore.GetDettaglioOperatore" />
+		<property name="address" value="@opessanDettaglioOPAddress@" />
+		<property name="outInterceptors">
+			<list>
+				<ref bean="saajOut" />
+				<ref bean="wss4jOutOpessanDettaglioOp" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="operatoreDipendenteServiceClient"
+		  class="it.csi.solconfig.configuratoreweb.wsdl.opessanDettaglioOperatoreDipendente.client.OperatoreDipendenteServiceClient">
+		<property name="operatoreDipendente"
+				  ref="operatoreDipendente" />
+		<property name="sender"
+				  value="@opessanDettaglioOPDipSender@"/>
+	</bean>
+	<bean id="operatoreDipendente"
+		  factory-bean="operatoreDipendenteFactory"
+		  factory-method="create" />
+
+	<bean id="operatoreDipendenteFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.solconfig.configuratoreweb.wsdl.opessanDettaglioOperatoreDipendente.OperatoreDipendente" />
+		<property name="address" value="@opessanDettaglioOPDipAddress@" />
+		<property name="outInterceptors">
+			<list>
+				<ref bean="saajOut" />
+				<ref bean="wss4jOutOpessanDettaglioOpDip" />
+			</list>
+		</property>
+	</bean>
+	
+	<!-- auth section -->
+
+	<bean id="saajOut"
+		class="org.apache.cxf.binding.soap.saaj.SAAJOutInterceptor" />
+
+	<!-- bean's definition -->
+
+	<cxf:bus>
+		<cxf:inInterceptors>
+			<ref bean="loggingInInterceptor" />
+			<!--<ref bean="logInbound" /> -->
+		</cxf:inInterceptors>
+
+		<cxf:outInterceptors>
+			<ref bean="loggingOutInterceptor" />
+			<!--<ref bean="logOutbound" /> -->
+		</cxf:outInterceptors>
+
+		<cxf:inFaultInterceptors>
+			<ref bean="loggingInInterceptor" />
+			<!--<ref bean="logInbound" /> -->
+		</cxf:inFaultInterceptors>
+
+		<cxf:outFaultInterceptors>
+			<ref bean="loggingOutInterceptor" />
+			<!--<ref bean="logOutbound" /> -->
+		</cxf:outFaultInterceptors>
+	</cxf:bus>
+
+	<bean id="javaMailUtil" class="it.csi.solconfig.configuratoreweb.util.mailsender.JavaMailUtil">
+		<property name="confMailHost" value="@confMailHost@" />
+		<property name="confMailPort" value="@confMailPort@" />
+		<property name="confMailUsername" value="@confMailUsername@" />
+		<property name="confMailPassword" value="@confMailPassword@" />
+		<property name="auth" value="@auth@" />
+		<property name="sslEnable" value="@sslEnable@" />
+	</bean>
+
+	<bean id="MailMessage" class="it.csi.solconfig.configuratoreweb.util.mailsender.MailMessage">
+		<property name="mittenteMail" value="@mittenteMail@" />
+	</bean>
+
+
+</beans>
